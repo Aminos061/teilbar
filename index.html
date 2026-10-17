@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teilbar · Prototyp</title>
+<style>
+@font-face{font-family:Inter;font-weight:400;src:url(fonts/inter-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:Inter;font-weight:500;src:url(fonts/inter-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:Inter;font-weight:600;src:url(fonts/inter-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:Inter;font-weight:700;src:url(fonts/inter-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:Inter;font-weight:800;src:url(fonts/inter-latin-800-normal.woff2) format('woff2')}
+:root{
+  --deep:#1B6B3A; --green:#2E9E5B; --leaf:#3DB36E; --mint:#5CC98A;
+  --yellow:#FFC83D; --card:#F2F9F4; --ink:#15291C; --muted:#5B6B60; --pale:#D9EFE0;
+  --line:#E2EEE6; --tier:#E8732A; --wohnung:#3B7DD8; --red:#C8483A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Inter,system-ui,sans-serif;background:var(--deep);color:var(--ink);margin:0;overflow:hidden;-webkit-font-smoothing:antialiased}
+.stage{position:absolute;left:50%;top:50%;width:780px;height:880px;display:flex;gap:46px;align-items:center;transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+
+/* Demo-Steuerung neben dem Phone */
+.ctrl{width:320px;height:868px;color:var(--pale);display:flex;flex-direction:column;justify-content:center;gap:14px;flex:none}
+.ctrl h1{display:flex;align-items:center;gap:12px;color:#fff;font-size:30px;font-weight:800;letter-spacing:-.5px}
+.ctrl h1 svg{width:44px;height:44px}
+.ctrl .tag{color:var(--yellow);font-style:italic;font-size:17px;margin-top:-10px}
+.ctrl label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mint)}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.roles button{background:rgba(255,255,255,.08);border-radius:12px;padding:10px 12px;text-align:left;font-size:15px;font-weight:600;color:#fff;display:flex;gap:10px;align-items:center}
+.roles button small{display:block;font-weight:400;font-size:12px;color:var(--pale)}
+.roles button.on{background:var(--yellow);color:var(--ink)}
+.roles button.on small{color:var(--ink)}
+.cbtn{background:rgba(255,255,255,.12);color:#fff;border-radius:12px;padding:12px 14px;font-weight:600;font-size:15px;text-align:left}
+.cbtn:hover{background:rgba(255,255,255,.2)}
+.hint{background:rgba(0,0,0,.18);border-radius:14px;padding:14px;font-size:15px;line-height:1.45;color:#fff}
+.hint b{color:var(--yellow)}
+.daypill{display:inline-block;background:var(--yellow);color:var(--ink);border-radius:99px;padding:2px 10px;font-weight:700;font-size:13px}
+.uc{display:flex;flex-direction:column;gap:2px}
+.uc h4.fold{cursor:pointer;opacity:.75;margin:0;padding:6px 10px;border-radius:12px;background:rgba(255,255,255,.06)}
+.uc h4.fold:hover{opacity:1}
+.uc h4 em{margin-left:auto;font-style:normal;font-size:12px;font-weight:600;color:var(--mint)}
+.cap{display:none}
+.guide{display:none}
+.guide .gtop{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--mint)}
+.guide .gtop em{margin-left:auto;font-style:normal;color:var(--pale);font-weight:600}
+.guide .gcap{font-size:19px;line-height:1.25;font-weight:800;color:#fff;margin:6px 0 10px;text-wrap:balance}
+.guide .gbtns{display:flex;gap:8px}
+.guide .gbtns button{flex:1;min-height:44px;border-radius:12px;font-weight:700;font-size:16px;background:rgba(255,255,255,.14);color:#fff}
+.guide .gbtns button.next{flex:2;background:var(--yellow);color:var(--ink)}
+.guide .gbtns button:disabled{opacity:.35}
+body.beamer .stage{width:1000px}
+body.beamer .ctrl{width:540px}
+body.beamer #steps,body.beamer .viewas,body.beamer .tag{display:none}
+body.beamer .cap{display:flex;flex-direction:column;gap:18px;background:rgba(0,0,0,.16);border-radius:24px;padding:28px}
+.cap .uct{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;color:var(--mint)}
+.cap .uct em{margin-left:auto;font-style:normal;color:var(--pale);font-weight:600}
+.cap .big{font-size:46px;line-height:1.12;font-weight:800;color:#fff;letter-spacing:-.5px;text-wrap:balance}
+.cap .big b{color:var(--yellow)}
+.cap .who{display:flex;align-items:center;gap:14px;font-size:26px;font-weight:700;color:#fff}
+.cap .who .av{width:58px;height:58px;font-size:24px}
+.cap .dots{display:flex;gap:6px}
+.cap .dots i{flex:1;height:8px;border-radius:99px;background:rgba(255,255,255,.2)}
+.cap .dots i.on{background:var(--yellow)}
+body.beamer{--muted:#3A4A40;--line:#C2D6C9}
+body.beamer .meta,body.beamer p.sub{font-size:16px}
+body.beamer h3{font-size:15px}
+body.beamer .field small,body.beamer .steplabels{font-size:13.5px}
+body.beamer .tabs button{font-size:14px}
+body.beamer .lvl,body.beamer .kind,body.beamer .pill{font-size:14px}
+body.beamer .m.sys,body.beamer .check small,body.beamer p.flag{font-size:15px}
+body.beamer .card.white,body.beamer .field,body.beamer .chip,body.beamer .seg button{border-color:#B7CFBF}
+.keys{font-size:12.5px;color:var(--mint);text-align:center}
+.keys kbd{display:inline-block;border:1.5px solid rgba(255,255,255,.35);border-radius:6px;padding:0 6px;margin:0 2px;color:#fff;font:inherit;font-weight:700}
+.uc h4{display:flex;align-items:center;gap:8px;color:#fff;font-size:15px;font-weight:700;margin:0 0 6px}
+.uc h4 span{font-size:18px}
+.st{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:12px;text-align:left;color:var(--pale);font-size:14.5px;font-weight:500;width:100%}
+.st:hover{background:rgba(255,255,255,.08)}
+.st .n{width:24px;height:24px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid rgba(255,255,255,.35);color:#fff}
+.st .who{width:22px;height:22px;border-radius:50%;flex:none;margin-left:auto;font-size:11px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center}
+.st.done{color:rgba(217,239,224,.6)}
+.st.done .n{background:var(--green);border-color:var(--green)}
+.st.now{background:var(--yellow);color:var(--ink);font-weight:700}
+.st.now .n{border-color:var(--ink);color:var(--ink)}
+.ctrlrow{display:flex;gap:8px}
+.ctrlrow .cbtn{flex:1;text-align:center;padding:10px 8px;font-size:14px}
+.cbtn:disabled{opacity:.35;cursor:default}
+.viewas{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--pale)}
+.viewas button{opacity:.45}
+.viewas button.on{opacity:1;outline:2px solid var(--yellow);outline-offset:2px;border-radius:50%}
+
+/* Phone */
+.phone{width:414px;height:868px;border-radius:52px;background:#0F1F15;padding:12px;box-shadow:0 30px 80px rgba(0,0,0,.35);flex:none}
+.screen{width:390px;height:844px;border-radius:40px;background:#fff;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.status{height:44px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 28px;font-size:15px;font-weight:600}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:120px;height:30px;background:#0F1F15;border-radius:20px}
+.view{flex:1;overflow-y:auto;overflow-x:hidden;padding:4px 20px 24px}
+.view::-webkit-scrollbar{display:none}
+.tabs{flex:none;height:78px;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 6px 18px;background:#fff}
+.tabs button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--muted);width:76px;position:relative}
+.tabs button .ic{font-size:22px;line-height:26px;filter:grayscale(1);opacity:.7}
+.tabs button.on{color:var(--deep)}
+.tabs button.on .ic{filter:none;opacity:1}
+.tabs .dot{position:absolute;top:-2px;right:16px;background:var(--red);color:#fff;font-size:11px;border-radius:99px;min-width:18px;height:18px;line-height:18px;text-align:center}
+
+/* Bausteine */
+.top{display:flex;align-items:center;gap:10px;padding:6px 0 14px}
+.top svg{width:34px;height:34px;flex:none}
+.top .brand{font-weight:800;font-size:22px;color:var(--deep);letter-spacing:-.3px}
+.top .where{margin-left:auto;font-size:13px;color:var(--muted);background:var(--card);padding:6px 10px;border-radius:99px;font-weight:600}
+.back{display:flex;align-items:center;gap:8px;font-weight:600;font-size:16px;color:var(--deep);padding:8px 0 12px}
+h2{font-size:26px;font-weight:800;letter-spacing:-.4px;line-height:1.15;margin-bottom:6px}
+h3{font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:22px 0 10px}
+p.sub{color:var(--muted);font-size:16px;line-height:1.4}
+.card{background:var(--card);border-radius:18px;padding:16px;margin-bottom:12px}
+.card.white{background:#fff;border:1.5px solid var(--line)}
+.card.tap{cursor:pointer;transition:transform .1s}
+.card.tap:active{transform:scale(.98)}
+.row{display:flex;align-items:center;gap:12px}
+.av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:17px;flex:none}
+.av.sm{width:34px;height:34px;font-size:14px}
+.av.lg{width:72px;height:72px;font-size:28px}
+.name{font-weight:700;font-size:17px}
+.meta{font-size:14px;color:var(--muted);margin-top:2px}
+.kind{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:4px 10px;border-radius:99px}
+.kind.tier{background:#FDEBDD;color:#B4531A}
+.kind.wohnung{background:#E2ECFA;color:#2A5FAD}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--pale);color:var(--deep)}
+.pill.y{background:#FFF1C9;color:#7A5A00}
+.pill.g{background:var(--green);color:#fff}
+.lvl{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--deep);background:#fff;border:1.5px solid var(--pale);border-radius:99px;padding:2px 8px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;border-radius:16px;font-weight:700;font-size:18px;background:var(--deep);color:#fff;margin-top:10px}
+.btn.y{background:var(--yellow);color:var(--ink)}
+.btn.o{background:#fff;color:var(--deep);border:2px solid var(--pale)}
+.btn.sm{min-height:44px;font-size:16px;border-radius:12px}
+.btn:disabled{opacity:.4}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;font-weight:600;background:#fff}
+.chip.on{border-color:var(--green);background:#E7F6EC;color:var(--deep)}
+.seg{display:grid;gap:8px}
+.seg button{border:2px solid var(--line);border-radius:14px;padding:12px 14px;text-align:left;display:flex;gap:12px;align-items:center;background:#fff}
+.seg button.on{border-color:var(--green);background:#E7F6EC}
+.seg b{font-size:16px;display:block}
+.seg small{font-size:13px;color:var(--muted)}
+.seg .n{margin-left:auto;font-weight:700;color:var(--deep);font-size:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.field small{display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.field span{font-size:16px;font-weight:600}
+.check{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line);font-size:16px;cursor:pointer}
+.check:last-child{border:0}
+.box{width:28px;height:28px;border-radius:8px;border:2.5px solid #B8CFC0;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px}
+.check.on .box{background:var(--green);border-color:var(--green)}
+.check.on .t{color:var(--muted);text-decoration:line-through}
+.check small{display:block;color:var(--muted);font-size:13px;margin-top:2px;text-decoration:none}
+.hero{background:var(--deep);color:#fff;border-radius:22px;padding:20px;margin-bottom:12px;position:relative;overflow:hidden}
+.hero h2{color:#fff}
+.hero p{color:var(--pale);font-size:16px;line-height:1.4}
+.hero:after{content:"";position:absolute;left:-20%;right:-20%;bottom:-60px;height:90px;border-radius:50%;background:var(--green);opacity:.7}
+.hero > *{position:relative;z-index:1}
+.faces{display:flex;margin:6px 0}
+.faces .av{border:3px solid #fff;margin-right:-10px}
+.stat{display:flex;gap:8px;margin-top:10px}
+.stat div{flex:1;background:#fff;border-radius:14px;padding:10px;text-align:center}
+.stat b{display:block;font-size:22px;font-weight:800;color:var(--deep)}
+.stat span{font-size:12px;color:var(--muted);font-weight:600}
+.banner{background:#FFF1C9;border-radius:16px;padding:14px;margin-bottom:12px;font-size:15px;line-height:1.4}
+.banner b{display:block;font-size:16px;margin-bottom:2px}
+.prog{height:10px;background:var(--pale);border-radius:99px;overflow:hidden;margin:10px 0 4px}
+.prog i{display:block;height:100%;background:var(--green);border-radius:99px}
+.steps{display:flex;gap:4px;margin:10px 0 2px}
+.steps i{flex:1;height:6px;border-radius:99px;background:var(--pale)}
+.steps i.on{background:var(--green)}
+.steplabels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600}
+
+/* Chat */
+.chathead{display:flex;align-items:center;gap:10px;padding:4px 0 10px;border-bottom:1px solid var(--line);margin:0 -20px;padding-left:20px;padding-right:20px}
+.ctx{margin:10px 0;background:var(--card);border-radius:14px;padding:10px 12px;font-size:14px;display:flex;gap:10px;align-items:center}
+.msgs{display:flex;flex-direction:column;gap:8px;padding:8px 0}
+.m{max-width:80%;padding:10px 14px;border-radius:18px;font-size:16px;line-height:1.35}
+.m.me{align-self:flex-end;background:var(--deep);color:#fff;border-bottom-right-radius:6px}
+.m.them{align-self:flex-start;background:var(--card);border-bottom-left-radius:6px}
+.m.sys{align-self:center;background:none;color:var(--muted);font-size:13px;font-weight:600;text-align:center;max-width:95%;padding:4px}
+.m.sys b{color:var(--deep)}
+.m.photo{padding:6px;background:var(--card)}
+.m.photo .img{width:200px;height:150px;border-radius:14px;background:linear-gradient(160deg,#FFE7A6,#FFC83D);display:flex;align-items:center;justify-content:center;font-size:76px}
+.m.card2{background:#fff;border:2px solid var(--pale);align-self:center;max-width:100%;width:100%}
+.quick{display:flex;flex-wrap:wrap;gap:8px;padding:8px 0}
+.quick button{background:#fff;border:2px solid var(--green);color:var(--deep);border-radius:99px;padding:10px 16px;font-weight:700;font-size:16px}
+.input{display:flex;gap:8px;align-items:center;margin-top:6px}
+.input input{flex:1;min-width:0;border:2px solid var(--line);border-radius:99px;padding:12px 16px;font:inherit;font-size:16px;color:var(--ink);outline:none}
+.input input:focus{border-color:var(--green)}
+.input button{width:48px;height:48px;border-radius:50%;background:var(--deep);color:#fff;font-size:20px}
+.flag{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
+
+/* Sheet + Toast */
+.sheet{position:absolute;inset:0;background:rgba(21,41,28,.45);display:flex;align-items:flex-end;z-index:5}
+.sheet .in{background:#fff;width:100%;border-radius:28px 28px 0 0;padding:20px 20px 30px;max-height:85%;overflow:auto}
+.toast{position:absolute;left:16px;right:16px;bottom:92px;background:var(--ink);color:#fff;border-radius:16px;padding:14px 16px;font-size:15px;font-weight:600;z-index:6;animation:t 3.2s forwards}
+@keyframes t{0%{opacity:0;transform:translateY(10px)}8%,85%{opacity:1;transform:none}100%{opacity:0}}
+
+/* Screenshot-Modus: nur der Bildschirm */
+body.bare{background:#fff;padding:0;display:block}
+body.bare .stage{position:static;transform:none;width:auto;height:auto;display:block}
+body.bare .ctrl{display:none}
+body.bare .phone{width:390px;height:844px;border-radius:0;padding:0;box-shadow:none;background:none}
+body.bare .screen{border-radius:0}
+body.bare .notch{display:none}
+body.bare .toast{display:none}
+@media (max-width:500px){
+  body{padding:0;gap:0;display:block;background:var(--deep);overflow:auto}
+  .stage{position:static;transform:none;width:auto;height:auto;display:flex;flex-direction:column;gap:0}
+  .ctrl{height:auto;order:3}
+  .guide{display:block;order:0;padding:14px 16px 10px}
+  .phone{order:1}
+  .keys{display:none}
+  .phone{width:100vw;height:calc(100dvh - 150px);border-radius:0;padding:0;box-shadow:none;background:none}
+  .screen{width:100%;height:100%;border-radius:0}
+  .notch,.status{display:none}
+  .ctrl{width:100%;padding:20px 16px 40px}
+}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+<aside class="ctrl">
+  <h1><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#FFC83D"/><circle cx="25" cy="27" r="13" fill="#2E9E5B"/><circle cx="39" cy="27" r="13" fill="#3DB36E"/><path d="M32 17.6a13 13 0 0 1 0 18.8a13 13 0 0 1 0-18.8z" fill="#5CC98A"/><rect x="29.5" y="36" width="5" height="12" fill="#1B6B3A"/><path d="M0 52q32-12 64 0v12H0z" fill="#2E9E5B"/><path d="M0 58q32-10 64 0v6H0z" fill="#1B6B3A"/></svg>Teilbar</h1>
+  <div class="tag">Nachbarn statt Fremde.</div>
+  <div class="cap" id="cap"></div>
+  <div id="steps"></div>
+  <div class="ctrlrow">
+    <button class="cbtn" data-act="day" id="daybtn">⏩ Tag vorspulen</button>
+    <button class="cbtn" data-act="reset">↺ Neustart</button>
+    <button class="cbtn" data-act="beamer" id="beambtn">📽 Beamer</button>
+  </div>
+  <div class="viewas" id="roles"></div>
+  <div class="keys"><kbd>←</kbd><kbd>→</kbd> oder Presenter-Klicker · <kbd>B</kbd> Beamer-Modus</div>
+</aside>
+
+<div class="guide" id="guide"></div>
+<div class="phone"><div class="screen" id="screen">
+  <div class="notch"></div>
+  <div class="status"><span>9:41</span><svg width="62" height="12" viewBox="0 0 62 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="1" fill="#15291C"/><rect x="5" y="5" width="3" height="7" rx="1" fill="#15291C"/><rect x="10" y="2" width="3" height="10" rx="1" fill="#15291C"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#15291C"/><rect x="34" y="1" width="23" height="10" rx="3" fill="none" stroke="#15291C" stroke-width="1.4"/><rect x="36" y="3" width="16" height="6" rx="1.5" fill="#15291C"/><rect x="58.5" y="4" width="2" height="4" rx="1" fill="#15291C"/></svg></div>
+  <div class="view" id="view"></div>
+  <nav class="tabs" id="tabs"></nav>
+  <div id="overlay"></div>
+</div></div>
+</div>
+
+<script>
+const LOGO = document.querySelector('.ctrl h1 svg').outerHTML;
+const P = {
+  sarah:{n:'Sarah Okafor',s:'Sarah',c:'#E8732A',i:'S',where:'Lindenstr. 12 · 2. OG',lvl:2},
+  lena:{n:'Lena Hartmann',s:'Lena',c:'#3B7DD8',i:'L',where:'Lindenstr. 12 · 4. OG',lvl:2},
+  karl:{n:'Karl Brandt',s:'Karl',c:'#8A5CD6',i:'K',where:'Lindenstr. 7',lvl:2},
+  jonas:{n:'Jonas Weber',s:'Jonas',c:'#1FA8A0',i:'J',where:'Lindenstr. 14',lvl:2},
+};
+const HAUS = [
+  {n:'Sarah Okafor',c:'#E8732A',i:'S',t:'2. OG · Katze Minka',l:2},
+  {n:'Lena Hartmann',c:'#3B7DD8',i:'L',t:'4. OG · sittet Katzen, Pflanzen',l:2},
+  {n:'Familie Becker',c:'#2E9E5B',i:'B',t:'EG · gießt gern Pflanzen',l:2},
+  {n:'Milan Novak',c:'#B5523B',i:'M',t:'1. OG',l:1},
+  {n:'Aylin Demir',c:'#E0A93B',i:'A',t:'3. OG · Kaninchen Lotte',l:2},
+  {n:'Tom & Jule',c:'#5B6B60',i:'T',t:'DG · sitten am Wochenende',l:2},
+];
+const STRASSE = [
+  {n:'Karl Brandt',c:'#8A5CD6',i:'K',t:'Nr. 7 · Hund Bruno · geht gern Gassi',l:2},
+  {n:'Jonas Weber',c:'#1FA8A0',i:'J',t:'Nr. 14 · Hund Fiete',l:2},
+  {n:'Petra Schulz',c:'#B5523B',i:'P',t:'Nr. 3 · sittet Katzen',l:2},
+  {n:'Deniz Kaya',c:'#3B7DD8',i:'D',t:'Nr. 9',l:1},
+];
+const TASKS = [
+  {t:'Minka füttern',d:'morgens und abends'},
+  {t:'Wasser frisch machen',d:'Küche'},
+  {t:'Katzenklo sauber machen',d:'alle zwei Tage'},
+  {t:'Pflanzen gießen',d:'Balkon, abends'},
+];
+const STEPS = ['offen','angebot','zugesagt','kennengelernt','laeuft','abgeschlossen'];
+const STEPNAMES = ['Offen','Angebot','Zugesagt','Kennengelernt','Läuft','Fertig'];
+
+let S;
+function fresh(){
+  return {role:'sarah',screen:'start',
+    req:null, form:{kind:'tier',tasks:[0,1,2,3],kreis:'haus'},
+    chat:[], day:0, done:{}, photo:false,
+    meet:{sarah:false,lena:false,vers:false,key:false},
+    end:{key:false,recS:false,recL:false},
+    karl:'haus', kchat:[], sheet:null, toast:null, uc:'sit', ob:0, code:'', obrole:'helfe', obcan:['Hunde']};
+}
+S = fresh();
+
+const av = (p,cls='') => `<div class="av ${cls}" style="background:${p.c}">${p.i}</div>`;
+const lvl = l => `<span class="lvl">${'●'.repeat(l)}${'○'.repeat(3-l)} Stufe ${l}</span>`;
+const st = () => S.req ? STEPS.indexOf(S.req.status) : -1;
+const toast = t => { S.toast = t; };
+
+function stepbar(){
+  const k = st();
+  return `<div class="steps">${STEPS.map((_,i)=>`<i class="${i<=k?'on':''}"></i>`).join('')}</div>
+  <div class="steplabels">${STEPNAMES.map((n,i)=>`<span style="${i==k?'color:#1B6B3A':''}">${n}</span>`).join('')}</div>`;
+}
+function topbar(){
+  const p = P[S.role];
+  return `<div class="top">${LOGO}<span class="brand">Teilbar</span><span class="where">${S.role==='karl'||S.role==='jonas'?'Lindenstraße':'Lindenstr. 12'}</span></div>`;
+}
+function back(to,label='Zurück'){ return `<button class="back" data-go="${to}">‹ ${label}</button>`; }
+function reqCard(forRole){
+  const r = S.req;
+  return `<div class="card tap" data-go="${forRole==='sarah'?'myreq':'detail'}">
+    <div class="row" style="margin-bottom:10px"><span class="kind tier">🐾 Tier</span><span class="kind wohnung">🏠 Wohnung</span><span class="pill" style="margin-left:auto">${forRole==='sarah'?STEPNAMES[st()]:'Haus'}</span></div>
+    <div class="name">Minka füttern & Pflanzen gießen</div>
+    <div class="meta">1.–10. August · 10 Tage · ${forRole==='sarah'?'sichtbar für dein Haus':'Sarah, 2. OG'}</div>
+    ${forRole==='sarah'?stepbar():''}
+  </div>`;
+}
+
+/* ---------- Screens ---------- */
+const V = {};
+
+V.start = () => {
+  const r = S.role;
+  if (r==='sarah') {
+    let h = topbar() + `<h2>Hallo Sarah 👋</h2>`;
+    if (!S.req) h += `<div class="hero" style="margin-top:14px"><h2>Fährst du bald weg?</h2><p>Nachbarn passen auf. Kostenlos.</p><button class="btn y" data-go="neu">＋ Anfrage stellen</button></div>`;
+    else {
+      h += `<h3>Meine Anfrage</h3>` + reqCard('sarah');
+      if (S.req.status==='angebot') h += `<div class="banner"><b>Lena möchte helfen 🎉</b>Schau dir ihr Profil an und schreib ihr.</div>`;
+      if (S.req.status==='laeuft' && S.day<10) h += `<div class="banner tap" style="background:#E7F6EC" data-go="status"><b>Minka geht es gut ✓</b>Tag ${S.day} von 10 · Status ansehen ›</div>`;
+      if (S.req.status==='laeuft' && S.day>=10) h += `<div class="banner"><b>Du bist zurück 🏡</b><button class="btn sm" data-go="abschluss">Sitting abschließen</button></div>`;
+    }
+    h += neighborhoodCard() + `<h3>Offen in deinem Haus</h3>` + beckerCard();
+    return h;
+  }
+  if (r==='lena') {
+    let h = topbar() + `<h2>Hallo Lena 👋</h2>`;
+    if (S.req && ['zugesagt','kennengelernt','laeuft','abgeschlossen'].includes(S.req.status)) {
+      h += `<h3>Mein Sitting</h3><div class="card tap" data-go="${S.req.status==='laeuft'?'sitting':S.req.status==='abgeschlossen'?'abschluss':'chat'}"><div class="row">${av(P.sarah)}<div><div class="name">Minka & Pflanzen bei Sarah</div><div class="meta">1.–10. August · ${STEPNAMES[st()]}</div></div></div>${S.req.status==='laeuft'?`<div class="prog"><i style="width:${S.day*10}%"></i></div><div class="meta">Tag ${S.day} von 10</div>`:''}</div>`;
+    }
+    h += `<h3>Offene Anfragen · Haus</h3>`;
+    if (S.req && ['offen','angebot'].includes(S.req.status)) h += reqCard('lena');
+    h += beckerCard() + neighborhoodCard();
+    return h;
+  }
+  if (r==='karl') {
+    let h = topbar() + `<h2>Hallo Karl</h2>`;
+    if (S.karl==='strasse') h += `<div class="banner"><b>Neu in deiner Straße</b>Jonas sucht Gassi-Begleitung.</div><h3>Offene Anfragen · Straße</h3>` + fieteCard('karl');
+    else if (S.karl==='angebot') h += `<h3>Meine Zusagen</h3>` + fieteCard('karl');
+    else h += `<div class="card"><div class="name">Gerade nichts offen</div></div>`;
+    h += `<h3>Mein Profil</h3><div class="card"><div class="row">${av(P.karl)}<div><div class="name">Karl Brandt</div><div class="meta">Hund Bruno · geht gern Gassi</div></div></div><div style="margin-top:10px">${lvl(2)} <span class="pill y">2 Empfehlungen</span></div></div>`;
+    return h;
+  }
+  /* jonas */
+  let h = topbar() + `<h2>Hallo Jonas</h2><h3>Meine Anfrage</h3>` + fieteCard('jonas');
+  if (S.karl==='haus') h += `<div class="banner"><b>Im Haus hat niemand Zeit</b>Seit 24 h keine Rückmeldung.<button class="btn sm" data-act="expand">Auf die Straße erweitern</button></div>`;
+  if (S.karl==='strasse') h += `<div class="banner" style="background:#E7F6EC"><b>Sichtbar für die Straße ✓</b>23 Nachbarn</div>`;
+  if (S.karl==='angebot') h += `<div class="banner"><b>Karl aus Nr. 7 hilft 🎉</b>Bruno kommt mit.</div>`;
+  return h;
+};
+function beckerCard(){ return `<div class="card white"><div class="row" style="margin-bottom:8px"><span class="kind wohnung">🏠 Wohnung</span><span class="pill" style="margin-left:auto">Haus</span></div><div class="name">Post reinholen</div><div class="meta">Familie Becker, EG · 24.–27. Juli</div></div>`; }
+function fieteCard(r){
+  const kreis = S.karl==='haus'?'Haus':'Straße';
+  return `<div class="card ${r==='karl'?'tap':''}" ${r==='karl'?'data-go="fiete"':''}><div class="row" style="margin-bottom:8px"><span class="kind tier">🐾 Tier</span><span class="pill" style="margin-left:auto">${kreis}</span></div><div class="name">Fiete freut sich über Gassi-Begleitung</div><div class="meta">Jonas, Nr. 14 · Mo–Fr, 17 Uhr · 2 Wochen</div>${S.karl==='angebot'?'<div style="margin-top:8px"><span class="pill g">Karl hat zugesagt ✓</span></div>':''}</div>`;
+}
+function neighborhoodCard(){
+  return `<h3>Deine Nachbarschaft</h3><div class="card tap" data-tab="nachbarn"><div class="faces">${HAUS.map(n=>av(n,'sm')).join('')}</div><div class="stat"><div><b>6</b><span>im Haus</span></div><div><b>23</b><span>in der Straße</span></div><div><b>4</b><span>sitten gern</span></div></div></div>`;
+}
+
+V.ob = () => {
+  const k = S.ob;
+  const dots = `<div class="steps" style="margin:6px 0 18px">${[0,1,2,3].map(i=>`<i class="${i<=k?'on':''}"></i>`).join('')}</div>`;
+  if (k===0) return `<div style="text-align:center;padding-top:70px"><div style="width:120px;height:120px;margin:0 auto">${LOGO}</div><h2 style="font-size:38px;margin-top:22px;color:var(--deep)">Teilbar</h2><p class="sub" style="font-size:19px">Nachbarn passen aufeinander auf.<br>Kostenlos.</p></div>
+    <div style="margin-top:90px"><button class="btn y" style="min-height:64px;font-size:20px" data-act="obnext">Los geht's</button><button class="btn o" data-act="obnext">👪 Mit Hilfe einrichten</button></div>`;
+  if (k===1) return dots + `<h2>Wer bist du?</h2><p class="sub">Nachbarn sehen deinen echten Namen.</p><div style="margin-top:16px">
+    <div class="field"><small>Vorname</small><span>Karl</span></div><div class="field"><small>Nachname</small><span>Brandt</span></div>
+    <div class="field"><small>Adresse</small><span>Lindenstraße 7</span></div><div class="field"><small>PLZ · Ort</small><span>68169 Mannheim</span></div></div>
+    <button class="btn" style="min-height:64px;font-size:20px" data-act="obnext">Weiter</button><p class="flag">Kein Passwort. Anmelden mit Handynummer.</p>`;
+  if (k===2) { const c = S.code.padEnd(4,' ').split('');
+    return dots + `<h2>Dein Brief-Code</h2><p class="sub">Wir schicken dir einen Brief an Lindenstraße 7. So wissen deine Nachbarn: Du wohnst wirklich hier.</p>
+    <div style="display:flex;gap:10px;justify-content:center;margin:28px 0">${c.map(x=>`<div style="width:64px;height:76px;border-radius:16px;border:2.5px solid ${x.trim()?'var(--green)':'var(--line)'};display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800">${x.trim()}</div>`).join('')}</div>
+    ${S.code.length<4?'<button class="btn o" data-act="obcode">✉️ Code aus dem Brief eingeben</button><p class="flag">Demo: der Code ist 1234</p>':'<button class="btn" style="min-height:64px;font-size:20px" data-act="obnext">Bestätigen ✓</button>'}`; }
+  const opt = (v,l,d) => `<button class="${S.obrole===v?'on':''}" data-act="obrole" data-v="${v}"><div><b>${l}</b><small>${d}</small></div></button>`;
+  return dots + `<h2>Wie möchtest du mitmachen?</h2><div class="seg" style="margin-top:14px">${opt('suche','Ich suche Hilfe','für Tier oder Wohnung')}${opt('helfe','Ich helfe gern','Gassi, Katze, Pflanzen')}${opt('beides','Beides','')}</div>
+    <h3>Ich kann</h3><div class="chips">${['Hunde','Katzen','Pflanzen','Post'].map(x=>`<button class="chip ${S.obcan.includes(x)?'on':''}" data-act="obcan" data-v="${x}">${S.obcan.includes(x)?'✓ ':''}${x}</button>`).join('')}</div>
+    <div class="field" style="background:#FFF8E1;border-color:#FFE7A6;margin-top:14px"><small>Was ich gern zurückgebe</small><span>Werkzeug leihen · Fahrrad reparieren</span></div>
+    <button class="btn y" style="min-height:64px;font-size:20px" data-act="obfin">Fertig</button>`;
+};
+
+V.neu = () => {
+  const f = S.form;
+  return back('start','Abbrechen') + `<h2>Neue Anfrage</h2><p class="sub">In zwei Minuten fertig.</p>
+  <h3>Worum geht es?</h3><div class="two">
+    <button class="chip ${f.kind!=='wohnung'?'on':''}" data-act="kind" data-v="tier">🐾 Tier</button>
+    <button class="chip ${f.kind!=='tier'?'on':''}" data-act="kind" data-v="beides">🏠 Wohnung</button></div>
+  <div class="field" style="margin-top:10px"><small>Tier</small><span>Minka · Katze, 6 Jahre</span></div>
+  <div class="field"><small>Zeitraum</small><span>1.–10. August · 10 Tage</span></div>
+  <h3>Aufgaben · aus Vorlagen</h3><div class="chips">${TASKS.map((t,i)=>`<button class="chip ${f.tasks.includes(i)?'on':''}" data-act="task" data-v="${i}">${f.tasks.includes(i)?'✓ ':''}${t.t}</button>`).join('')}<button class="chip">＋ Post reinholen</button></div>
+  <h3>Wer soll es sehen?</h3><div class="seg">
+    ${[['haus','🏠 Mein Haus','Lindenstr. 12','6 Nachbarn'],['strasse','🛣️ Meine Straße','Lindenstraße','23 Nachbarn'],['viertel','🏘️ Mein Viertel','Neckarstadt-West','180 Nachbarn']].map(([k,a,b,n])=>`<button class="${f.kreis===k?'on':''}" data-act="kreis" data-v="${k}"><div><b>${a}</b><small>${b}</small></div><span class="n">${n}</span></button>`).join('')}
+  </div>
+  <button class="btn y" data-act="post">Anfrage einstellen</button>
+  <p class="flag">Kein Preis. Nur dein Kreis sieht die Anfrage.</p>`;
+};
+
+V.myreq = () => {
+  const r = S.req; let h = back('start') + `<span class="kind tier">🐾 Tier</span> <span class="kind wohnung">🏠 Wohnung</span><h2 style="margin-top:10px">Minka füttern & Pflanzen gießen</h2><p class="sub">1.–10. August · Kreis: Haus</p>${stepbar()}`;
+  if (r.status==='offen') h += `<div class="card" style="margin-top:16px"><div class="name">Sichtbar für 6 Nachbarn</div></div>`;
+  if (r.status==='angebot') h += `<h3>Möchte helfen</h3>` + lenaOffer();
+  if (['zugesagt','kennengelernt'].includes(r.status)) h += `<button class="btn" data-go="chat">💬 Chat mit Lena</button>`;
+  if (r.status==='laeuft') h += S.day>=10 ? `<button class="btn y" data-go="abschluss">Sitting abschließen</button>` : `<button class="btn" data-go="status">Status ansehen</button>`;
+  return h;
+};
+function lenaOffer(){
+  return `<div class="card white"><div class="row">${av(P.lena)}<div><div class="name">Lena Hartmann, 22</div><div class="meta">4. OG · gleiches Haus</div></div></div>
+  <div style="margin:10px 0">${lvl(2)} <span class="pill y">1 Empfehlung</span></div>
+  <div class="field"><small>Ich kann</small><span>Katzen · Pflanzen · Post</span></div>
+  <div class="field" style="background:#FFF8E1;border-color:#FFE7A6"><small>Was ich gern zurückgebe</small><span>Im Sommer ein paar Tage in einer größeren Wohnung wohnen und dabei aufpassen. Und Kuchen 🍰</span></div>
+  <div class="two"><button class="btn o sm" data-go="chat">💬 Schreiben</button><button class="btn sm" data-act="choose">Lena auswählen</button></div></div>`;
+}
+
+V.detail = () => back('start') + `<span class="kind tier">🐾 Tier</span> <span class="kind wohnung">🏠 Wohnung</span><h2 style="margin-top:10px">Minka füttern & Pflanzen gießen</h2><p class="sub">1.–10. August · 10 Tage · in deinem Haus</p>
+  <div class="card white" style="margin-top:14px"><div class="row">${av(P.sarah)}<div><div class="name">Sarah Okafor</div><div class="meta">2. OG · Projektleiterin, 2 Kinder</div></div></div><div style="margin-top:10px">${lvl(2)} <span class="pill y">2 Empfehlungen</span></div></div>
+  <h3>Aufgaben</h3><div class="card">${TASKS.map(t=>`<div class="check"><div><div class="t">${t.t}</div><small>${t.d}</small></div></div>`).join('')}</div>
+  <div class="card" style="background:#FFF8E1"><div class="name" style="font-size:15px">Sarah gibt gern zurück</div><div class="meta">Im Sommer die Wohnung mit Balkon nutzen · Lastenrad leihen</div></div>
+  ${S.req.status==='offen'?'<button class="btn y" data-act="offer">🙋 Kann ich übernehmen</button>':'<button class="btn" data-go="chat">💬 Zum Chat</button>'}`;
+
+V.fiete = () => back('start') + `<span class="kind tier">🐾 Tier</span><h2 style="margin-top:10px">Fiete freut sich über Gassi-Begleitung</h2><p class="sub">Mo–Fr um 17 Uhr · 2 Wochen · Lindenstraße</p>
+  <div class="card white" style="margin-top:14px"><div class="row">${av(P.jonas)}<div><div class="name">Jonas Weber</div><div class="meta">Nr. 14 · Hund Fiete, klein, freundlich</div></div></div><div style="margin-top:10px">${lvl(2)}</div></div>
+  <div class="card"><div class="name" style="font-size:16px">Ohne Schlüssel · Übergabe an der Haustür</div></div>
+  ${S.karl==='strasse'?'<button class="btn y" style="min-height:64px;font-size:20px" data-act="karloffer">🙋 Kann ich übernehmen</button>':'<button class="btn" data-go="kchat">💬 Zum Chat</button>'}`;
+
+V.chat = () => {
+  const other = S.role==='sarah'?P.lena:P.sarah;
+  let h = `<div class="chathead"><button class="back" style="padding:0" data-go="start">‹</button>${av(other,'sm')}<div><div class="name" style="font-size:16px">${other.n}</div><div class="meta" style="font-size:12px">${lvl(S.meet.key?3:2)}</div></div><button style="margin-left:auto;font-size:13px;color:var(--muted);font-weight:600" data-act="report">⚑ Melden</button></div>
+  <div class="ctx">🐾 <div><b>Minka & Pflanzen</b> · 1.–10. August<br><span class="meta">${STEPNAMES[st()]}</span></div></div><div class="msgs">`;
+  S.chat.forEach(m=>{
+    if (m.sys) h += `<div class="m sys">${m.t}</div>`;
+    else if (m.meet) h += `<div class="m card2"><div class="name" style="font-size:16px">🤝 Kennenlern-Treffen</div><div class="meta">Sa, 26. Juli · 10:00 · bei Sarah, 2. OG links</div><button class="btn sm" data-go="treffen">Sitting-Vereinbarung öffnen</button></div>`;
+    else if (m.photo) h += `<div class="m photo ${m.from===S.role?'me':'them'}" style="align-self:${m.from===S.role?'flex-end':'flex-start'}"><div class="img">🐈</div><div style="padding:6px 6px 2px;font-size:14px">${m.t}</div></div>`;
+    else h += `<div class="m ${m.from===S.role?'me':'them'}">${m.t}</div>`;
+  });
+  h += `</div>`;
+  const q = quickReplies();
+  if (q.length) h += `<div class="quick">${q.map(([t,a])=>`<button data-act="${a}">${t}</button>`).join('')}</div>`;
+  h += `<div class="input"><input id="msg" placeholder="Nachricht schreiben …" autocomplete="off"><button data-act="send">➤</button></div>`;
+  return h;
+};
+function quickReplies(){
+  const r = S.req.status, me = S.role;
+  if (r==='angebot' && me==='sarah') return [['Lena auswählen ✓','choose']];
+  if (r==='zugesagt' && me==='sarah' && !S.chat.some(m=>m.meet)) return [['Treffen vorschlagen: Sa 10 Uhr','meet']];
+  if (r==='zugesagt' && me==='lena' && S.chat.some(m=>m.meet) && !S.chat.some(m=>m.t==='Passt mir 👍')) return [['Passt mir 👍','ok'],['Anderer Termin?','alt']];
+  if (r==='laeuft' && me==='lena') return [['📷 Foto von Minka','photo'],['Alles gut hier','allgood']];
+  if (r==='laeuft' && me==='sarah') return [['Danke dir! 💚','thanks']];
+  return [];
+}
+
+V.kchat = () => {
+  let h = `<div class="chathead"><button class="back" style="padding:0" data-go="start">‹</button>${av(S.role==='karl'?P.jonas:P.karl,'sm')}<div><div class="name" style="font-size:16px">${S.role==='karl'?'Jonas Weber':'Karl Brandt'}</div><div class="meta" style="font-size:12px">${lvl(2)}</div></div><button style="margin-left:auto;font-size:13px;color:var(--muted);font-weight:600" data-act="report">⚑ Melden</button></div>
+  <div class="ctx">🐾 <div><b>Gassi mit Fiete</b> · Mo–Fr, 17 Uhr</div></div><div class="msgs">`;
+  S.kchat.forEach(m=>{ h += m.sys?`<div class="m sys">${m.t}</div>`:`<div class="m ${m.from===S.role?'me':'them'}">${m.t}</div>`; });
+  h += `</div>`;
+  if (S.role==='karl' && S.kchat.length<4) h += `<div class="quick"><button data-act="karlok" style="font-size:18px;padding:14px 20px">Passt mir 👍</button><button data-act="karlwhen" style="font-size:18px;padding:14px 20px">Wann darf ich vorbeikommen?</button></div>`;
+  h += `<div class="input"><input id="msg" placeholder="Nachricht schreiben …" autocomplete="off"><button data-act="send">➤</button></div>`;
+  return h;
+};
+
+V.treffen = () => {
+  const m = S.meet, both = m.sarah && m.lena;
+  const ck = (k,t,d) => `<div class="check ${m[k]?'on':''}" data-act="mt" data-v="${k}"><div class="box">${m[k]?'✓':''}</div><div><div class="t" style="text-decoration:none;color:inherit">${t}</div>${d?`<small>${d}</small>`:''}</div></div>`;
+  return back('chat','Chat') + `<h2>Sitting-Vereinbarung</h2>
+  <div class="row" style="margin:14px 0">${av(P.sarah,'sm')}<span style="font-weight:700">🤝</span>${av(P.lena,'sm')}<span class="meta">Sa, 26. Juli · 10:00</span></div>
+  <div class="field"><small>Aufgaben und Zeiten</small><span>Füttern 8 & 19 Uhr · Klo alle 2 Tage · Balkon abends gießen</span></div>
+  <div class="two"><div class="field"><small>Notfallkontakt</small><span>Bruder David<br>0170 ···</span></div><div class="field"><small>Tierarzt</small><span>Dr. Kern, Mittelstr.<br>Vollmacht: ja</span></div></div>
+  <div class="field"><small>Hausregeln</small><span>Nur Küche, Bad, Balkon · keine Gäste · Fenster zu</span></div>
+  <div class="card" style="margin-top:4px">${ck('vers','Versicherungs-Check','„Meine Privathaftpflicht deckt das ab“')}</div>
+  <h3>Beide bestätigen</h3><div class="card">${ck('sarah','Sarah bestätigt','')}${ck('lena','Lena bestätigt','')}</div>
+  ${both?`<button class="btn ${m.key?'o':'y'}" data-act="key" ${m.key?'disabled':''}>🔑 ${m.key?'Schlüssel übergeben ✓':'Schlüsselübergabe bestätigen'}</button>`:'<p class="flag">🔑 Schlüssel erst, wenn beide bestätigen.</p>'}
+  ${m.key?'<div class="banner" style="background:#E7F6EC;margin-top:12px"><b>Ihr kennt euch jetzt persönlich ✓</b>Lena ist für Sarah Stufe 3.</div>':''}`;
+};
+
+V.sitting = () => {
+  const d = Math.max(S.day,1);
+  return back('start') + `<p class="sub">Tag ${d} von 10 · bei Sarah, 2. OG</p><h2>Heute für Minka</h2><div class="prog"><i style="width:${d*10}%"></i></div>
+  <div class="card" style="margin-top:12px">${TASKS.map((t,i)=>{const k=d+'-'+i;return `<div class="check ${S.done[k]?'on':''}" data-act="done" data-v="${k}"><div class="box">${S.done[k]?'✓':''}</div><div><div class="t">${t.t}</div><small>${t.d}</small></div></div>`}).join('')}</div>
+  <div class="two"><button class="btn o sm" data-go="chat">💬 Chat</button><button class="btn sm" style="background:var(--red)" data-act="sos">🆘 Notfall</button></div>
+  ${S.day>=10?'<button class="btn y" data-go="abschluss">Sitting abschließen</button>':''}`;
+};
+
+V.status = () => {
+  const d = Math.max(S.day,1), n = TASKS.filter((_,i)=>S.done[d+'-'+i]).length;
+  return back('start') + `<p class="sub">Du bist im Urlaub 🌊</p><h2>Minka geht es gut</h2>
+  <div class="card" style="margin-top:12px"><div class="row">${av(P.lena)}<div><div class="name">Lena kümmert sich</div><div class="meta">Tag ${d} von 10</div></div></div><div class="prog"><i style="width:${d*10}%"></i></div></div>
+  <div class="card"><div class="name" style="font-size:16px">Heute erledigt: ${n} von 4</div>${TASKS.map((t,i)=>`<div class="meta" style="margin-top:6px">${S.done[d+'-'+i]?'✅':'⬜'} ${t.t}</div>`).join('')}</div>
+  ${S.photo?'<div class="m photo" style="max-width:100%"><div class="img" style="width:100%;height:180px">🐈</div><div style="padding:8px;font-size:14px">Minka hat heute auf dem Balkon geschlafen ☀️</div></div>':''}
+  <button class="btn o" data-go="chat">💬 Chat mit Lena</button>`;
+};
+
+V.abschluss = () => {
+  const e = S.end, me = S.role;
+  const recKey = me==='sarah'?'recS':'recL', other = me==='sarah'?P.lena:P.sarah;
+  return back('start') + `<h2>Sitting abschließen</h2>
+  <div class="card" style="margin-top:12px"><div class="check ${e.key?'on':''}" data-act="endkey"><div class="box">${e.key?'✓':''}</div><div><div class="t" style="text-decoration:none;color:inherit">🔑 Schlüssel zurückgegeben</div><small>Beide bestätigen in der App</small></div></div></div>
+  <h3>Empfehlung für ${other.s}</h3>
+  <div class="field" style="min-height:96px"><span style="font-weight:500">${me==='sarah'?'Lena war super zuverlässig, Minka war total entspannt. Und die Pflanzen leben alle noch!':'Sarah hat alles genau erklärt. Gern wieder, und danke für den Kuchen!'}</span></div>
+  <p class="meta">Sichtbar für die Nachbarschaft · keine Sterne</p>
+  <button class="btn ${e[recKey]?'o':'y'}" data-act="rec" ${e[recKey]?'disabled':''}>${e[recKey]?'Empfehlung gesendet ✓':'💚 Danke sagen & empfehlen'}</button>
+  ${e.recS&&e.recL?`<div class="hero" style="margin-top:14px;text-align:center"><div class="faces" style="justify-content:center">${av(P.sarah)}${av(P.lena)}</div><h2 style="margin-top:6px">Ihr habt euch 1× geholfen</h2><p>Keine Punkte, kein Konto. Nur gute Nachbarschaft.</p></div>`:''}`;
+};
+
+V.nachbarn = () => {
+  const list = (S.role==='karl'||S.role==='jonas') ? STRASSE : HAUS;
+  return topbar() + `<h2>Deine Nachbarschaft</h2>
+  <div class="seg" style="margin-top:14px">
+    <button class="on"><div><b>🏠 Haus · Lindenstr. 12</b></div><span class="n">6</span></button>
+    <button><div><b>🛣️ Straße · Lindenstraße</b></div><span class="n">23</span></button>
+    <button><div><b>🏘️ Viertel · Neckarstadt-West</b></div><span class="n">180</span></button>
+  </div><h3>${list===HAUS?'In deinem Haus':'In deiner Straße'}</h3>
+  ${list.map(n=>`<div class="card white" style="padding:12px"><div class="row">${av(n,'sm')}<div style="flex:1"><div class="name" style="font-size:16px">${n.n}</div><div class="meta">${n.t}</div></div>${lvl(n.l)}</div></div>`).join('')}
+`;
+};
+
+V.profil = () => {
+  const p = P[S.role];
+  const extra = {
+    sarah:['Katze Minka · Pflanzen','Im Sommer die Wohnung mit Balkon nutzen · Lastenrad leihen'],
+    lena:['Katzen · Pflanzen · Post','Ein paar Sommertage in einer größeren Wohnung · Kuchen 🍰'],
+    karl:['Hunde jeder Größe · Gassi','Werkzeug leihen · Fahrrad reparieren'],
+    jonas:['Pflanzen · Post','Bohrmaschine leihen · Grillabend'],
+  }[S.role];
+  return topbar() + `<div style="text-align:center;margin:10px 0 16px"><div style="display:inline-block">${av(p,'lg')}</div><h2 style="margin-top:8px">${p.n}</h2><p class="sub">${p.where}</p><div style="margin-top:8px">${lvl(p.lvl)}</div></div>
+  <div class="field"><small>Ich kann</small><span>${extra[0]}</span></div>
+  <div class="field" style="background:#FFF8E1;border-color:#FFE7A6"><small>Was ich gern zurückgebe</small><span>${extra[1]}</span></div>
+  <h3>Vertrauensstufen</h3><div class="card">
+    <div class="check on"><div class="box">✓</div><div><div class="t" style="text-decoration:none;color:inherit">1 · Registriert</div><small>Klarname und Adresse</small></div></div>
+    <div class="check on"><div class="box">✓</div><div><div class="t" style="text-decoration:none;color:inherit">2 · Verifiziert</div><small>Brief-Code bestätigt</small></div></div>
+    <div class="check ${S.meet.key&&(S.role==='sarah'||S.role==='lena')?'on':''}"><div class="box">${S.meet.key&&(S.role==='sarah'||S.role==='lena')?'✓':''}</div><div><div class="t" style="text-decoration:none;color:inherit">3 · Persönlich bekannt</div><small>${S.meet.key&&(S.role==='sarah'||S.role==='lena')?'mit '+(S.role==='sarah'?'Lena':'Sarah'):'nach dem ersten Kennenlern-Treffen'}</small></div></div>
+  </div>`;
+};
+
+V.chats = () => {
+  let h = topbar() + `<h2>Nachrichten</h2>`;
+  if ((S.role==='sarah'||S.role==='lena') && S.chat.length) {
+    const o = S.role==='sarah'?P.lena:P.sarah, last = S.chat[S.chat.length-1];
+    h += `<div class="card white tap" data-go="chat" style="margin-top:14px"><div class="row">${av(o)}<div style="flex:1;min-width:0"><div class="name">${o.n}</div><div class="meta" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${(last.t||'Kennenlern-Treffen').replace(/<[^>]+>/g,'')}</div></div></div></div>`;
+  } else if ((S.role==='karl'||S.role==='jonas') && S.kchat.length) {
+    h += `<div class="card white tap" data-go="kchat" style="margin-top:14px"><div class="row">${av(S.role==='karl'?P.jonas:P.karl)}<div><div class="name">${S.role==='karl'?'Jonas Weber':'Karl Brandt'}</div><div class="meta">Gassi mit Fiete</div></div></div></div>`;
+  } else h += `<p class="sub" style="margin-top:14px">Noch keine Nachrichten. Ein Chat startet, sobald jemand „Kann ich übernehmen“ tippt.</p>`;
+  return h;
+};
+
+function sheet(){
+  if (S.sheet==='sos') return `<div class="sheet" data-act="close"><div class="in"><h2>Notfall-Leitfaden</h2>
+    ${[['🤒 Tier krank oder verletzt','Tierarzt Dr. Kern anrufen 📞'],['🐈 Tier entlaufen','Haus absuchen, Nachbarn fragen'],['💧 Wasserschaden','Haupthahn im Bad zudrehen'],['🔑 Schlüssel verloren','Notfallkontakt David anrufen'],['📵 Sarah nicht erreichbar','Bruder David anrufen']].map(([a,b])=>`<div class="card" style="margin-top:10px"><div class="name" style="font-size:16px">${a}</div><div class="meta" style="margin-top:4px;line-height:1.45">${b}</div></div>`).join('')}
+    <button class="btn" data-act="close">Schließen</button></div></div>`;
+  if (S.sheet==='report') return `<div class="sheet" data-act="close"><div class="in"><h2>Melden oder blockieren</h2><p class="sub">Vertraulich.</p><div class="seg" style="margin-top:12px"><button data-act="reported">Unangemessene Nachricht</button><button data-act="reported">Fake-Profil</button><button data-act="reported">Etwas anderes</button></div><button class="btn o" data-act="blocked">Blockieren</button><button class="btn" data-act="close">Abbrechen</button></div></div>`;
+  return '';
+}
+
+/* ---------- Render ---------- */
+const TABS = [['start','🏠','Start'],['nachbarn','👥','Nachbarn'],['chats','💬','Chats'],['profil','👤','Profil']];
+function render(){
+  if (!V[S.screen]) S.screen='start';
+  document.getElementById('view').innerHTML = V[S.screen]();
+  const tabOf = {start:'start',neu:'start',myreq:'start',detail:'start',fiete:'start',sitting:'start',status:'start',abschluss:'start',treffen:'chats',chat:'chats',kchat:'chats',nachbarn:'nachbarn',chats:'chats',profil:'profil'}[S.screen];
+  const unread = (S.role==='sarah'&&S.req&&S.req.status==='angebot')||(S.role==='jonas'&&S.karl==='angebot');
+  document.getElementById('tabs').style.display = S.screen==='ob' ? 'none' : '';
+  document.getElementById('tabs').innerHTML = TABS.map(([k,i,l])=>`<button class="${tabOf===k?'on':''}" data-tab="${k}"><span class="ic">${i}</span>${l}${k==='chats'&&unread?'<span class="dot">1</span>':''}</button>`).join('');
+  let ov = sheet();
+  if (S.toast) { ov += `<div class="toast">${S.toast}</div>`; S.toast=null; }
+  document.getElementById('overlay').innerHTML = ov;
+  document.getElementById('roles').innerHTML = 'Ansicht:' + Object.entries(P).map(([k,p])=>`<button class="${S.role===k?'on':''}" data-role="${k}" title="${p.n}">${av(p,'sm')}</button>`).join('');
+  const canDay = S.req && (S.req.status==='kennengelernt' || (S.req.status==='laeuft' && S.day<10));
+  const db = document.getElementById('daybtn'); db.disabled = !canDay; db.textContent = S.req&&S.req.status==='laeuft' ? `⏩ Tag ${S.day} → ${Math.min(10,S.day+(S.day<3?1:3))}` : '⏩ Tag vorspulen';
+  document.getElementById('steps').innerHTML = UC.map(u=>{
+    const cur = u.steps.findIndex(x=>!x.done(S));
+    const nd = u.steps.filter(x=>x.done(S)).length;
+    if (u.id!==S.uc) return `<div class="uc"><h4 class="fold" data-step="${u.id}:${Math.max(0,cur)}"><span>${u.icon}</span>${u.title}<em>${nd===u.steps.length?'✓ fertig':nd+' / '+u.steps.length}</em></h4></div>`;
+    return `<div class="uc"><h4><span>${u.icon}</span>${u.title}<em>${nd} / ${u.steps.length}</em></h4>${u.steps.map((x,i)=>{
+      const w = P[typeof x.who==='function'?x.who(S):x.who];
+      const cls = x.done(S)?'done':(i===cur&&S.uc===u.id?'now':'');
+      return `<button class="st ${cls}" data-step="${u.id}:${i}"><span class="n">${x.done(S)?'✓':i+1}</span>${x.l}<span class="who" style="background:${w.c}">${w.i}</span></button>`;
+    }).join('')}</div>`;
+  }).join('');
+  const au = UC.find(u=>u.id===S.uc), ci = au.steps.findIndex(x=>!x.done(S)), cs = ci<0 ? null : au.steps[ci];
+  const cw = cs ? P[typeof cs.who==='function'?cs.who(S):cs.who] : null;
+  document.getElementById('cap').innerHTML = `<div class="uct"><span>${au.icon}</span>${au.title.replace(' (Karl)','')}<em>${ci<0?'fertig':'Schritt '+(ci+1)+' von '+au.steps.length}</em></div>
+    <div class="dots">${au.steps.map((x,i)=>`<i class="${x.done(S)||i===ci?'on':''}"></i>`).join('')}</div>
+    <div class="big">${cs ? cs.c : '✓ Ablauf abgeschlossen.'}</div>
+    ${cw ? `<div class="who">${av(cw)}${cw.n}</div>` : ''}`;
+  const flatAll = UC.flatMap(u=>u.steps.map((_,i)=>[u.id,i])), gk = flatAll.findIndex(([u,i])=>u===S.uc && i===(ci<0?au.steps.length-1:ci));
+  document.getElementById('guide').innerHTML = `<div class="gtop"><span>${au.icon}</span>${au.title.replace(' (Karl)','')}<em>${ci<0?'fertig':(ci+1)+' / '+au.steps.length}</em></div>
+    <div class="gcap">${cs ? cs.c : '✓ Fertig. Weiter mit dem nächsten Ablauf.'}</div>
+    <div class="gbtns"><button data-act="nav" data-v="-1" ${gk<=0&&ci<=0?'disabled':''}>‹ Zurück</button><button class="next" data-act="nav" data-v="1">${cs ? (cw ? 'Zeig mir das als '+cw.s : 'Weiter') : 'Weiter ›'}</button></div>`;
+  document.getElementById('beambtn').textContent = document.body.classList.contains('beamer') ? '📽 Beamer aus' : '📽 Beamer';
+  document.getElementById('view').scrollTop = 0;
+}
+const OFFER = () => [{sys:1,t:'<b>Lena</b> hat „Kann ich übernehmen“ getippt'},{from:'lena',t:'Hi Sarah! Ich wohne zwei Stockwerke über dir und kann gern auf Minka aufpassen 🙂'}];
+const CHOSEN = () => [...OFFER(),{sys:1,t:'<b>Sarah hat Lena ausgewählt</b> · Adresse freigegeben: 2. OG links'},{from:'sarah',t:'Wie schön, danke! Lass uns vorher kurz kennenlernen.'}];
+const MET = () => [...CHOSEN(),{meet:1},{from:'sarah',t:'Samstag um 10 bei mir?'},{from:'lena',t:'Passt mir 👍'},{sys:1,t:'<b>Treffen am Sa um 10 Uhr bestätigt</b>'}];
+const KEYED = () => [...MET(),{sys:1,t:'🔑 <b>Schlüssel übergeben</b> · beide bestätigt'}];
+const UC = [
+  {id:'sit', icon:'🐾', title:'Sitting im Haus', steps:[
+    {l:'Anfrage stellen', c:'Sarah stellt in zwei Minuten eine Anfrage.', who:'sarah', go:'neu', done:s=>!!s.req, pre:s=>{}},
+    {l:'„Kann ich übernehmen“', c:'Lena aus dem 4. OG bietet ihre Hilfe an.', who:'lena', go:'detail', done:s=>st2(s)>=1, pre:s=>{s.req={status:'offen'};}},
+    {l:'Lena auswählen', c:'Sarah sieht Lenas Profil und wählt sie aus.', who:'sarah', go:'myreq', done:s=>st2(s)>=2, pre:s=>{s.req={status:'angebot'};s.chat=OFFER();}},
+    {l:'Treffen ausmachen', c:'Im Chat verabreden sie ein Treffen.', who:s=>s.chat.some(m=>m.meet)?'lena':'sarah', go:'chat', done:s=>st2(s)>=3||s.chat.some(m=>m.t==='Passt mir 👍'), pre:s=>{s.req={status:'zugesagt'};s.chat=CHOSEN();}},
+    {l:'Kennenlernen, Schlüssel', c:'Beim Treffen: Vereinbarung, dann der Schlüssel.', who:'sarah', go:'treffen', done:s=>s.meet.key, pre:s=>{s.req={status:'zugesagt'};s.chat=MET();}},
+    {l:'Vorspulen: Urlaub', c:'Sarah fährt in den Urlaub.', who:'lena', go:'start', done:s=>st2(s)>=4, pre:s=>{s.req={status:'kennengelernt'};s.chat=KEYED();s.meet={sarah:true,lena:true,vers:true,key:true};}},
+    {l:'Aufgaben, Katzenfoto', c:'Lena hakt Aufgaben ab und schickt ein Foto.', who:'lena', go:'sitting', done:s=>s.photo||st2(s)>=5, pre:s=>{s.req={status:'laeuft'};s.day=1;s.chat=KEYED();s.meet={sarah:true,lena:true,vers:true,key:true};}},
+    {l:'Status im Urlaub', c:'Sarah sieht im Urlaub: Alles gut.', who:'sarah', go:'status', done:s=>s.day>=10||st2(s)>=5, pre:s=>{s.req={status:'laeuft'};s.day=3;s.done={'3-0':1,'3-1':1,'3-3':1};s.photo=true;s.chat=[...KEYED(),{from:'lena',photo:1,t:'Minka schläft auf dem Balkon ☀️'}];s.meet={sarah:true,lena:true,vers:true,key:true};}},
+    {l:'Zurück und empfehlen', c:'Schlüssel zurück. Beide empfehlen sich.', who:s=>s.end.recL&&!s.end.recS?'sarah':'lena', go:'abschluss', done:s=>s.end.recS&&s.end.recL, pre:s=>{s.req={status:'laeuft'};s.day=10;s.photo=true;s.chat=KEYED();s.meet={sarah:true,lena:true,vers:true,key:true};}},
+  ]},
+  {id:'ob', icon:'👋', title:'Anmelden (Karl)', steps:[
+    {l:'Willkommen', c:'Karl richtet die App ein, gern mit Hilfe.', who:'karl', go:'ob', done:s=>s.ob>=1, pre:s=>{s.ob=0;}},
+    {l:'Name und Adresse', c:'Echter Name und Adresse. Kein Passwort.', who:'karl', go:'ob', done:s=>s.ob>=2, pre:s=>{s.ob=1;}},
+    {l:'Brief-Code', c:'Ein Brief mit Code bestätigt die Adresse.', who:'karl', go:'ob', done:s=>s.ob>=3, pre:s=>{s.ob=2;s.code='';}},
+    {l:'Wie mitmachen?', c:'Karl sagt, wobei er gern hilft.', who:'karl', go:'ob', done:s=>s.ob>=4, pre:s=>{s.ob=3;s.code='1234';}},
+  ]},
+  {id:'str', icon:'🛣️', title:'Gassi in der Straße', steps:[
+    {l:'Niemand da: erweitern', c:'Im Haus hat niemand Zeit. Jonas erweitert auf die Straße.', who:'jonas', go:'start', done:s=>s.karl!=='haus', pre:s=>{}},
+    {l:'Karl übernimmt', c:'Karl sieht die Anfrage und übernimmt.', who:'karl', go:'fiete', done:s=>s.karl==='angebot', pre:s=>{s.karl='strasse';}},
+    {l:'Treffen an der Haustür', c:'Kennenlernen an der Haustür, ohne Schlüssel.', who:'karl', go:'kchat', done:s=>s.kchat.length>=5, pre:s=>{s.karl='angebot';s.kchat=KCHAT();}},
+  ]},
+];
+UC.push(UC.splice(UC.findIndex(u=>u.id==='ob'),1)[0]);
+const KCHAT = () => [{sys:1,t:'<b>Karl</b> hat „Kann ich übernehmen“ getippt'},{from:'karl',t:'Guten Tag, ich bin Karl aus Nr. 7. Bruno kommt gern mit.'},{from:'jonas',t:'Toll! Morgen um 17 Uhr an der Haustür?'}];
+function st2(s){ return s.req ? STEPS.indexOf(s.req.status) : -1; }
+function gotoStep(uid, i){
+  const u = UC.find(x=>x.id===uid), x = u.steps[i];
+  const cur = u.steps.findIndex(y=>!y.done(S));
+  if (i !== cur || S.uc !== uid) {
+    const keep = uid==='ob' ? JSON.parse(JSON.stringify(S)) : uid==='sit' ? {karl:S.karl,kchat:S.kchat,ob:S.ob,code:S.code} : {req:S.req,chat:S.chat,day:S.day,done:S.done,photo:S.photo,meet:S.meet,end:S.end,ob:S.ob,code:S.code};
+    S = Object.assign(fresh(), keep); x.pre(S);
+  }
+  if (innerWidth<=500) scrollTo({top:0,behavior:'smooth'});
+  S.uc = uid; S.cursor = i; S.role = typeof x.who==='function' ? x.who(S) : x.who; S.screen = x.go; S.sheet = null;
+  render();
+}
+function sys(t){ S.chat.push({sys:1,t}); }
+function setStatus(s){ S.req.status=s; }
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-go],[data-act],[data-tab],[data-role],[data-step]');
+  if (!el) return;
+  if (el.dataset.step){ const [u,i]=el.dataset.step.split(':'); return gotoStep(u,+i); }
+  if (el.dataset.role){ S.role=el.dataset.role; S.screen='start'; S.sheet=null; return render(); }
+  if (el.dataset.tab){ S.screen=el.dataset.tab; return render(); }
+  if (el.dataset.go){ S.screen=el.dataset.go; return render(); }
+  const a = el.dataset.act, v = el.dataset.v;
+  if (a==='close' && el.classList.contains('sheet') && e.target!==el) return;
+  switch(a){
+    case 'kind': S.form.kind = v; break;
+    case 'task': { const i=+v, t=S.form.tasks; t.includes(i)?t.splice(t.indexOf(i),1):t.push(i); break; }
+    case 'kreis': S.form.kreis = v; break;
+    case 'post': S.req={status:'offen'}; S.screen='start'; toast('✓ Anfrage ist sichtbar für 6 Nachbarn in deinem Haus'); break;
+    case 'offer': setStatus('angebot'); S.chat=[{sys:1,t:'<b>Lena</b> hat „Kann ich übernehmen“ getippt'},{from:'lena',t:'Hi Sarah! Ich wohne zwei Stockwerke über dir und mag Katzen sehr. Ich kann gern auf Minka aufpassen 🙂'}]; S.screen='chat'; break;
+    case 'choose': setStatus('zugesagt'); sys('<b>Sarah hat Lena ausgewählt</b> · Adresse freigegeben: Lindenstr. 12, 2. OG links'); S.chat.push({from:'sarah',t:'Wie schön, danke dir! Lass uns vorher kurz kennenlernen.'}); S.screen='chat'; break;
+    case 'meet': S.chat.push({meet:1}); S.chat.push({from:'sarah',t:'Passt dir Samstag um 10 bei mir? Dann zeige ich dir alles.'}); break;
+    case 'ok': S.chat.push({from:'lena',t:'Passt mir 👍'}); sys('<b>Treffen am Sa um 10 Uhr bestätigt</b>'); break;
+    case 'mt': S.meet[v]=!S.meet[v]; break;
+    case 'key': S.meet.key=true; setStatus('kennengelernt'); sys('🔑 <b>Schlüssel übergeben</b> · beide bestätigt'); toast('✓ Ihr kennt euch jetzt persönlich'); break;
+    case 'day':
+      if (S.req && S.req.status==='kennengelernt'){ setStatus('laeuft'); S.day=1; sys('▶ <b>Sitting läuft</b> · Tag 1 von 10'); toast('Sarah ist im Urlaub. Das Sitting läuft.'); if(S.role==='lena') S.screen='sitting'; }
+      else if (S.req && S.req.status==='laeuft' && S.day<10){ S.day=Math.min(10,S.day+ (S.day<3?1:3)); toast('Tag '+S.day+' von 10'); }
+      else if (S.karl==='haus' && S.req && S.req.status==='abgeschlossen'){ toast('24 Stunden später …'); }
+      else toast('Gerade gibt es nichts vorzuspulen');
+      break;
+    case 'done': S.done[v]=!S.done[v]; break;
+    case 'photo': S.photo=true; S.chat.push({from:'lena',photo:1,t:'Minka hat heute auf dem Balkon geschlafen ☀️'}); break;
+    case 'allgood': S.chat.push({from:'lena',t:'Alles gut hier 🙂'}); break;
+    case 'thanks': S.chat.push({from:'sarah',t:'Danke dir! 💚'}); break;
+    case 'sos': S.sheet='sos'; break;
+    case 'report': S.sheet='report'; break;
+    case 'close': S.sheet=null; break;
+    case 'endkey': S.end.key=!S.end.key; break;
+    case 'rec': S.end[S.role==='sarah'?'recS':'recL']=true; if(S.end.recS&&S.end.recL&&S.req.status!=='abgeschlossen'){ setStatus('abgeschlossen'); sys('✓ <b>Sitting abgeschlossen</b> · Schlüssel zurück'); S.uc='str'; } break;
+    case 'send': { const f=document.getElementById('msg'), v2=f&&f.value.trim(); if(!v2) return; (S.screen==='kchat'?S.kchat:S.chat).push({from:S.role,t:v2.replace(/</g,'&lt;')}); break; }
+    case 'alt': S.chat.push({from:'lena',t:'Geht auch Sonntag?'}); break;
+    case 'karlwhen': S.kchat.push({from:'karl',t:'Wann darf ich vorbeikommen?'}); break;
+    case 'reported': S.sheet=null; toast('✓ Danke. Die Meldung geht vertraulich an das Team.'); break;
+    case 'blocked': S.sheet=null; toast('✓ Blockiert. Ihr seht euch gegenseitig nicht mehr.'); break;
+    case 'nav': return nav(+v);
+    case 'beamer': document.body.classList.toggle('beamer'); fit(); break;
+    case 'obnext': S.ob++; S.uc='ob'; break;
+    case 'obcode': S.code='1234'; break;
+    case 'obrole': S.obrole=v; break;
+    case 'obcan': { const c=S.obcan; c.includes(v)?c.splice(c.indexOf(v),1):c.push(v); break; }
+    case 'obfin': S.ob=4; S.screen='start'; toast('✓ Willkommen in der Lindenstraße! Du bist jetzt Stufe 2.'); break;
+    case 'expand': S.uc='str'; S.karl='strasse'; toast('✓ Jetzt sichtbar für 23 Nachbarn in der Lindenstraße'); break;
+    case 'karloffer': S.uc='str'; S.karl='angebot'; S.kchat=KCHAT(); S.screen='kchat'; break;
+    case 'karlok': S.kchat.push({from:'karl',t:'Passt mir 👍'}); S.kchat.push({sys:1,t:'<b>Kennenlernen morgen um 17 Uhr</b> · Haustür Nr. 14'}); break;
+  }
+  render();
+});
+
+/* Screenshot-Voreinstellungen: index.html?shot=<name> */
+const SHOTS = {
+  start:   s=>{ s.role='sarah'; s.screen='start'; },
+  anfrage: s=>{ s.role='sarah'; s.screen='neu'; },
+  angebot: s=>{ s.role='sarah'; s.req={status:'angebot'}; s.screen='myreq'; },
+  detail:  s=>{ s.role='lena'; s.req={status:'offen'}; s.screen='detail'; },
+  chat:    s=>{ s.role='lena'; s.req={status:'zugesagt'}; s.chat=[{sys:1,t:'<b>Lena</b> hat „Kann ich übernehmen“ getippt'},{from:'lena',t:'Hi Sarah! Ich wohne zwei Stockwerke über dir und mag Katzen sehr. Ich kann gern auf Minka aufpassen 🙂'},{sys:1,t:'<b>Sarah hat Lena ausgewählt</b> · Adresse freigegeben: Lindenstr. 12, 2. OG links'},{from:'sarah',t:'Wie schön, danke dir! Lass uns vorher kurz kennenlernen.'},{meet:1},{from:'sarah',t:'Passt dir Samstag um 10 bei mir? Dann zeige ich dir alles.'}]; s.screen='chat'; },
+  vereinbarung: s=>{ s.role='lena'; s.req={status:'zugesagt'}; s.meet={sarah:true,lena:true,vers:true,key:false}; s.screen='treffen'; },
+  sitting: s=>{ s.role='lena'; s.req={status:'laeuft'}; s.day=3; s.done={'3-0':1,'3-1':1}; s.screen='sitting'; },
+  status:  s=>{ s.role='sarah'; s.req={status:'laeuft'}; s.day=3; s.done={'3-0':1,'3-1':1,'3-3':1}; s.photo=true; s.screen='status'; },
+  abschluss: s=>{ s.role='sarah'; s.req={status:'abgeschlossen'}; s.end={key:true,recS:true,recL:true}; s.meet.key=true; s.screen='abschluss'; },
+  erweitern: s=>{ s.role='jonas'; s.req={status:'abgeschlossen'}; s.karl='haus'; s.screen='start'; },
+  karl:    s=>{ s.role='karl'; s.req={status:'abgeschlossen'}; s.karl='strasse'; s.screen='fiete'; },
+  nachbarn: s=>{ s.role='sarah'; s.screen='nachbarn'; },
+  profil:  s=>{ s.role='lena'; s.screen='profil'; },
+  ob0: s=>{ s.role='karl'; s.screen='ob'; s.ob=0; },
+  ob2: s=>{ s.role='karl'; s.screen='ob'; s.ob=2; s.code='12'; },
+  ob3: s=>{ s.role='karl'; s.screen='ob'; s.ob=3; },
+  notfall: s=>{ s.role='lena'; s.req={status:'laeuft'}; s.day=3; s.screen='sitting'; s.sheet='sos'; },
+};
+document.addEventListener('keydown', e => {
+  if (e.target.id==='msg') { if (e.key==='Enter') document.querySelector('[data-act="send"]').click(); return; }
+  if (e.key==='b' || e.key==='B') { document.body.classList.toggle('beamer'); fit(); render(); return; }
+  const fwd = ['ArrowRight','ArrowDown','PageDown',' '].includes(e.key), back = ['ArrowLeft','ArrowUp','PageUp'].includes(e.key);
+  if (!fwd && !back) return;
+  e.preventDefault();
+  nav(fwd?1:-1);
+});
+function nav(d){
+  const flat = UC.flatMap(u=>u.steps.map((_,i)=>[u.id,i]));
+  let k = flat.findIndex(([u,i])=>u===S.uc && i===S.cursor);
+  if (k<0) { const u = UC.find(x=>x.id===S.uc), cur = u.steps.findIndex(x=>!x.done(S)); k = flat.findIndex(([a,i])=>a===S.uc && i===Math.max(0,cur)) - 1; }
+  k = Math.max(0, Math.min(flat.length-1, k + d));
+  gotoStep(...flat[k]);
+}
+function fit(){ const st=document.getElementById('stage'); if(!st) return; st.style.setProperty('--s', Math.max(0.35, Math.min((innerWidth-32)/(document.body.classList.contains('beamer')?1000:780), (innerHeight-24)/880, 1.35))); }
+addEventListener('resize', fit); if (location.hash==='#beamer') document.body.classList.add('beamer'); fit();
+const q = new URLSearchParams(location.search);
+if (q.get('shot') && SHOTS[q.get('shot')]) { SHOTS[q.get('shot')](S); }
+if (q.has('bare')) document.body.classList.add('bare');
+document.querySelector('[data-act="reset"]').addEventListener('click',()=>{S=fresh();render();},true);
+render();
+</script>
+</body>
+</html>
