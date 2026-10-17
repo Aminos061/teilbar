@@ -208,6 +208,7 @@ body.bare .phone{width:390px;height:844px;border-radius:0;padding:0;box-shadow:n
 body.bare .screen{border-radius:0}
 body.bare .notch{display:none}
 body.bare .toast{display:none}
+body.bare .guide{display:none !important}
 @media (max-width:500px){
   body{padding:0;gap:0;display:block;background:var(--deep);overflow:auto}
   .stage{position:static;transform:none;width:auto;height:auto;display:flex;flex-direction:column;gap:0}
@@ -220,6 +221,93 @@ body.bare .toast{display:none}
   .notch,.status{display:none}
   .ctrl{width:100%;padding:20px 16px 40px}
 }
+
+/* ---------- UI-Schicht v2: Icons, Tiefe, Bewegung ---------- */
+:root{--shadow:0 1px 2px rgba(21,41,28,.06),0 8px 24px -10px rgba(21,41,28,.18);--shadow-lg:0 2px 4px rgba(21,41,28,.06),0 18px 40px -14px rgba(21,41,28,.28);--ease:cubic-bezier(.2,.8,.2,1)}
+.i{width:1.15em;height:1.15em;vertical-align:-.2em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.screen{background:#FAFCFA}
+.view.enter{animation:viewIn .32s var(--ease)}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* Kopfzeile bleibt beim Scrollen stehen */
+.top{position:sticky;top:0;z-index:4;margin:0 -20px 4px;padding:8px 20px 12px;background:rgba(250,252,250,.86);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px)}
+.top .where{background:#fff;box-shadow:var(--shadow);display:inline-flex;align-items:center;gap:4px}
+h2{letter-spacing:-.6px}
+h3{font-size:12px;letter-spacing:.09em}
+/* Karten: Tiefe statt Rahmen */
+.card{border-radius:20px}
+.card.white,.seg button,.field{border:1px solid rgba(21,41,28,.06);box-shadow:var(--shadow);background:#fff}
+.card.tap,.banner.tap{transition:transform .18s var(--ease),box-shadow .18s var(--ease);cursor:pointer}
+.card.tap:hover,.banner.tap:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.card.tap:active{transform:scale(.985)}
+.hero{box-shadow:0 18px 40px -18px rgba(27,107,58,.7)}
+.stat div{box-shadow:var(--shadow)}
+.banner{display:block;border-radius:18px;box-shadow:var(--shadow)}
+.banner b .i{color:var(--deep)}
+/* Buttons */
+.btn{gap:10px;border-radius:18px;transition:transform .12s var(--ease),box-shadow .2s var(--ease),filter .2s;box-shadow:0 10px 22px -12px rgba(27,107,58,.9)}
+.btn.y{box-shadow:0 10px 22px -10px rgba(224,160,20,.85)}
+.btn.o{box-shadow:var(--shadow);border:1px solid rgba(21,41,28,.08)}
+.btn:hover{filter:brightness(1.04)}
+.btn:active{transform:scale(.97)}
+.btn .i{width:1.25em;height:1.25em}
+.back{display:flex;width:max-content;align-items:center;gap:2px;font-size:15px;padding:6px 0 12px}
+.back .i{width:20px;height:20px}
+/* Chips und Labels */
+.chip{border-radius:999px;padding:9px 14px;border:1.5px solid #DCE8E0;transition:all .15s var(--ease)}
+.chip.on{border-color:var(--green);background:#E3F4E9;box-shadow:inset 0 0 0 1px var(--green)}
+.chip .i{width:15px;height:15px;vertical-align:-3px}
+.kind .i,.pill .i,.lvl .i{width:14px;height:14px;vertical-align:-2px}
+.kind{gap:6px;padding:5px 11px}
+.seg button{border-radius:16px;transition:all .15s var(--ease)}
+.seg button.on{border-color:var(--green);background:#EAF7EF;box-shadow:inset 0 0 0 1.5px var(--green),var(--shadow)}
+.seg b .i{color:var(--deep);margin-right:4px}
+.box{border-radius:9px;transition:all .15s var(--ease)}
+.box .i{width:17px;height:17px;stroke-width:3}
+.check{transition:background .15s}
+/* Avatare */
+.av{font-size:16px}
+.faces .av{box-shadow:0 0 0 3px #fff !important;margin-right:-8px}
+/* Tab-Leiste mit Pill */
+.tabs{background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid rgba(21,41,28,.06)}
+.tabs button .ic{display:flex;align-items:center;justify-content:center;width:58px;height:30px;border-radius:999px;filter:none;opacity:1;color:#7C8C82;transition:all .2s var(--ease)}
+.tabs button .ic .i{width:22px;height:22px}
+.tabs button.on .ic{background:#DDF1E4;color:var(--deep)}
+.tabs button.on{color:var(--deep)}
+.tabs .dot{top:-4px;right:12px;box-shadow:0 0 0 2px #fff}
+/* Chat */
+.chathead{position:sticky;top:0;z-index:4;background:rgba(250,252,250,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.chathead .back{padding:0 4px 0 0}
+.ctx{box-shadow:var(--shadow);background:#fff}
+.ctx .i{color:var(--tier);width:20px;height:20px}
+.m{box-shadow:0 1px 1px rgba(21,41,28,.05)}
+.m.them{background:#fff;border:1px solid rgba(21,41,28,.06)}
+.m.me{background:linear-gradient(160deg,#23824A,var(--deep))}
+.m.sys .i{width:14px;height:14px;vertical-align:-2px}
+.m.card2{box-shadow:var(--shadow);border:0}
+.m.photo{background:#fff;border:1px solid rgba(21,41,28,.06)}
+.quick button{border-width:1.5px;transition:all .15s var(--ease);background:#fff}
+.quick button:hover{background:#EAF7EF}
+.quick button:active{transform:scale(.96)}
+.input input{border:1.5px solid #DCE8E0;background:#fff}
+.input button{display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px -8px rgba(27,107,58,.9)}
+.input button .i{width:20px;height:20px;margin-left:-2px}
+/* Sheet und Toast */
+.sheet{animation:fadeIn .2s ease}
+.sheet .in{animation:sheetUp .32s var(--ease);box-shadow:0 -10px 40px rgba(21,41,28,.2)}
+.sheet .in .name .i{color:var(--red)}
+@keyframes sheetUp{from{transform:translateY(40px);opacity:.4}}
+@keyframes fadeIn{from{opacity:0}}
+.toast{display:flex;gap:10px;align-items:center;border-radius:18px;box-shadow:0 18px 40px -12px rgba(0,0,0,.45);background:rgba(21,41,28,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.toast .i{color:var(--mint);width:20px;height:20px}
+/* Demo-Steuerung */
+.cbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.cbtn .i{width:16px;height:16px}
+.ctrlrow .cbtn{white-space:nowrap;font-size:13.5px;padding:10px 6px}
+.st .n .i{width:13px;height:13px;stroke-width:3}
+.uc h4 .i{width:18px;height:18px;color:var(--yellow)}
+.cap .uct .i{width:24px;height:24px;color:var(--yellow)}
+.guide .gtop .i{color:var(--yellow)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
 </style>
 </head>
 <body>
@@ -230,7 +318,7 @@ body.bare .toast{display:none}
   <div class="cap" id="cap"></div>
   <div id="steps"></div>
   <div class="ctrlrow">
-    <button class="cbtn" data-act="day" id="daybtn">⏩ Tag vorspulen</button>
+    <button class="cbtn" data-act="day" id="daybtn">⏩ Vorspulen</button>
     <button class="cbtn" data-act="reset">↺ Neustart</button>
     <button class="cbtn" data-act="beamer" id="beambtn">📽 Beamer</button>
   </div>
@@ -250,22 +338,28 @@ body.bare .toast{display:none}
 
 <script>
 const LOGO = document.querySelector('.ctrl h1 svg').outerHTML;
+const ICONS = {"home": "<path d=\"m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/><path d=\"M9 22V12h6v10\"/>", "users": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/>", "message": "<path d=\"M7.9 20A9 9 0 1 0 4 16.1L2 22Z\"/>", "user": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/><circle cx=\"12\" cy=\"7\" r=\"4\"/>", "paw": "<circle cx=\"11\" cy=\"4\" r=\"2\"/><circle cx=\"18\" cy=\"8\" r=\"2\"/><circle cx=\"20\" cy=\"16\" r=\"2\"/><path d=\"M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z\"/>", "key": "<circle cx=\"7.5\" cy=\"15.5\" r=\"5.5\"/><path d=\"m21 2-9.6 9.6\"/><path d=\"m15.5 7.5 3 3L22 7l-3-3\"/>", "forward": "<path d=\"m13 19 9-7-9-7z\"/><path d=\"m2 19 9-7-9-7z\"/>", "monitor": "<rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/><path d=\"M8 21h8\"/><path d=\"M12 17v4\"/>", "signpost": "<path d=\"M12 13v8\"/><path d=\"M12 3v3\"/><path d=\"M18 6a2 2 0 0 1 1.39.56l2.3 2.22a1 1 0 0 1 0 1.44l-2.3 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.39-.56l-2.3-2.22a1 1 0 0 1 0-1.44l2.3-2.22A2 2 0 0 1 6 6z\"/>", "pin": "<path d=\"M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/>", "heart": "<path d=\"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z\"/>", "flag": "<path d=\"M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z\"/><path d=\"M4 22v-7\"/>", "calendar": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M16 2v4\"/><path d=\"M8 2v4\"/><path d=\"M3 10h18\"/>", "send": "<path d=\"m22 2-7 20-4-9-9-4Z\"/><path d=\"M22 2 11 13\"/>", "reset": "<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/>", "mail": "<rect width=\"20\" height=\"16\" x=\"2\" y=\"4\" rx=\"2\"/><path d=\"m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7\"/>", "camera": "<path d=\"M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>", "checksq": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"4\"/><path d=\"m9 12 2 2 4-4\"/>", "thermo": "<path d=\"M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z\"/>", "phone": "<path d=\"M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z\"/>", "search": "<circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>", "drop": "<path d=\"M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z\"/>", "phoneoff": "<path d=\"M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67\"/><path d=\"M22 2 2 22\"/><path d=\"M4.19 12.18a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 3.11 1.37h3a2 2 0 0 1 2 1.72\"/>", "plus": "<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>", "check": "<path d=\"M20 6 9 17l-5-5\"/>", "idcard": "<rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"2\"/><circle cx=\"9\" cy=\"11\" r=\"2\"/><path d=\"M6.17 15a3 3 0 0 1 5.66 0\"/><path d=\"M16 10h2\"/><path d=\"M16 14h2\"/>", "sparkle": "<path d=\"M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0L14.06 8.5A2 2 0 0 0 15.5 9.94l6.14 1.58a.5.5 0 0 1 0 .96L15.5 14.06a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z\"/>", "alert": "<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>", "square": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"4\"/>", "chevl": "<path d=\"m15 18-6-6 6-6\"/>"};
+const I = (n, cls='') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]||''}</svg>`;
+/* UI emoji become line icons; emoji that people type in chats stay */
+const EMO = {"⬜": "square", "🔍": "search", "🐾": "paw", "🏠": "home", "💬": "message", "🔑": "key", "⏩": "forward", "📽": "monitor", "🛣️": "signpost", "🏘️": "pin", "🙋": "heart", "⚑": "flag", "🤝": "calendar", "➤": "send", "↺": "reset", "🏡": "home", "👪": "users", "✉️": "mail", "📷": "camera", "🌊": "sun", "✅": "checksq", "🤒": "thermo", "📞": "phone", "💧": "drop", "📵": "phoneoff", "👥": "users", "👤": "user", "＋": "plus", "✓": "check", "🪪": "idcard", "🎉": "sparkle", "🆘": "alert"};
+const EMO_RE = new RegExp(Object.keys(EMO).join('|'), 'g');
+const X = h => h.replace(/ 👋/g, '').replace(EMO_RE, m => I(EMO[m]));
 const P = {
-  sarah:{n:'Sarah Okafor',s:'Sarah',c:'#E8732A',i:'S',where:'Lindenstr. 12 · 2. OG',lvl:2},
-  lena:{n:'Lena Hartmann',s:'Lena',c:'#3B7DD8',i:'L',where:'Lindenstr. 12 · 4. OG',lvl:2},
-  karl:{n:'Karl Brandt',s:'Karl',c:'#8A5CD6',i:'K',where:'Lindenstr. 7',lvl:2},
+  sarah:{n:'Sarah Okafor',s:'Sarah',c:'#E8732A',i:'S',img:'img/sarah.jpg',where:'Lindenstr. 12 · 2. OG',lvl:2},
+  lena:{n:'Lena Hartmann',s:'Lena',c:'#3B7DD8',i:'L',img:'img/lena.jpg',where:'Lindenstr. 12 · 4. OG',lvl:2},
+  karl:{n:'Karl Brandt',s:'Karl',c:'#8A5CD6',i:'K',img:'img/karl.jpg',where:'Lindenstr. 7',lvl:2},
   jonas:{n:'Jonas Weber',s:'Jonas',c:'#1FA8A0',i:'J',where:'Lindenstr. 14',lvl:2},
 };
 const HAUS = [
-  {n:'Sarah Okafor',c:'#E8732A',i:'S',t:'2. OG · Katze Minka',l:2},
-  {n:'Lena Hartmann',c:'#3B7DD8',i:'L',t:'4. OG · sittet Katzen, Pflanzen',l:2},
+  {n:'Sarah Okafor',c:'#E8732A',i:'S',img:'img/sarah.jpg',t:'2. OG · Katze Minka',l:2},
+  {n:'Lena Hartmann',c:'#3B7DD8',i:'L',img:'img/lena.jpg',t:'4. OG · sittet Katzen, Pflanzen',l:2},
   {n:'Familie Becker',c:'#2E9E5B',i:'B',t:'EG · gießt gern Pflanzen',l:2},
   {n:'Milan Novak',c:'#B5523B',i:'M',t:'1. OG',l:1},
   {n:'Aylin Demir',c:'#E0A93B',i:'A',t:'3. OG · Kaninchen Lotte',l:2},
   {n:'Tom & Jule',c:'#5B6B60',i:'T',t:'DG · sitten am Wochenende',l:2},
 ];
 const STRASSE = [
-  {n:'Karl Brandt',c:'#8A5CD6',i:'K',t:'Nr. 7 · Hund Bruno · geht gern Gassi',l:2},
+  {n:'Karl Brandt',c:'#8A5CD6',i:'K',img:'img/karl.jpg',t:'Nr. 7 · Hund Bruno · geht gern Gassi',l:2},
   {n:'Jonas Weber',c:'#1FA8A0',i:'J',t:'Nr. 14 · Hund Fiete',l:2},
   {n:'Petra Schulz',c:'#B5523B',i:'P',t:'Nr. 3 · sittet Katzen',l:2},
   {n:'Deniz Kaya',c:'#3B7DD8',i:'D',t:'Nr. 9',l:1},
@@ -290,7 +384,7 @@ function fresh(){
 }
 S = fresh();
 
-const av = (p,cls='') => `<div class="av ${cls}" style="background:${p.c}">${p.i}</div>`;
+const av = (p,cls='') => p.img ? `<div class="av ${cls}" style="background:${p.c} url(${p.img}) center/cover;box-shadow:0 0 0 2px #fff,0 0 0 4px ${p.c}"></div>` : `<div class="av ${cls}" style="background:${p.c}">${p.i}</div>`;
 const lvl = l => `<span class="lvl">${'●'.repeat(l)}${'○'.repeat(3-l)} Stufe ${l}</span>`;
 const st = () => S.req ? STEPS.indexOf(S.req.status) : -1;
 const toast = t => { S.toast = t; };
@@ -304,7 +398,7 @@ function topbar(){
   const p = P[S.role];
   return `<div class="top">${LOGO}<span class="brand">Teilbar</span><span class="where">${S.role==='karl'||S.role==='jonas'?'Lindenstraße':'Lindenstr. 12'}</span></div>`;
 }
-function back(to,label='Zurück'){ return `<button class="back" data-go="${to}">‹ ${label}</button>`; }
+function back(to,label='Zurück'){ return `<button class="back" data-go="${to}">${I('chevl')} ${label}</button>`; }
 function reqCard(forRole){
   const r = S.req;
   return `<div class="card tap" data-go="${forRole==='sarah'?'myreq':'detail'}">
@@ -436,7 +530,7 @@ V.chat = () => {
   S.chat.forEach(m=>{
     if (m.sys) h += `<div class="m sys">${m.t}</div>`;
     else if (m.meet) h += `<div class="m card2"><div class="name" style="font-size:16px">🤝 Kennenlern-Treffen</div><div class="meta">Sa, 26. Juli · 10:00 · bei Sarah, 2. OG links</div><button class="btn sm" data-go="treffen">Sitting-Vereinbarung öffnen</button></div>`;
-    else if (m.photo) h += `<div class="m photo ${m.from===S.role?'me':'them'}" style="align-self:${m.from===S.role?'flex-end':'flex-start'}"><div class="img">🐈</div><div style="padding:6px 6px 2px;font-size:14px">${m.t}</div></div>`;
+    else if (m.photo) h += `<div class="m photo ${m.from===S.role?'me':'them'}" style="align-self:${m.from===S.role?'flex-end':'flex-start'}"><div class="img" style="background:url(img/minka.jpg) center/cover"></div><div style="padding:6px 6px 2px;font-size:14px">${m.t}</div></div>`;
     else h += `<div class="m ${m.from===S.role?'me':'them'}">${m.t}</div>`;
   });
   h += `</div>`;
@@ -492,7 +586,7 @@ V.status = () => {
   return back('start') + `<p class="sub">Du bist im Urlaub 🌊</p><h2>Minka geht es gut</h2>
   <div class="card" style="margin-top:12px"><div class="row">${av(P.lena)}<div><div class="name">Lena kümmert sich</div><div class="meta">Tag ${d} von 10</div></div></div><div class="prog"><i style="width:${d*10}%"></i></div></div>
   <div class="card"><div class="name" style="font-size:16px">Heute erledigt: ${n} von 4</div>${TASKS.map((t,i)=>`<div class="meta" style="margin-top:6px">${S.done[d+'-'+i]?'✅':'⬜'} ${t.t}</div>`).join('')}</div>
-  ${S.photo?'<div class="m photo" style="max-width:100%"><div class="img" style="width:100%;height:180px">🐈</div><div style="padding:8px;font-size:14px">Minka hat heute auf dem Balkon geschlafen ☀️</div></div>':''}
+  ${S.photo?'<div class="m photo" style="max-width:100%"><div class="img" style="width:100%;height:190px;background:url(img/minka.jpg) center/cover"></div><div style="padding:8px;font-size:14px">Minka hat heute auf dem Balkon geschlafen ☀️</div></div>':''}
   <button class="btn o" data-go="chat">💬 Chat mit Lena</button>`;
 };
 
@@ -551,7 +645,7 @@ V.chats = () => {
 
 function sheet(){
   if (S.sheet==='sos') return `<div class="sheet" data-act="close"><div class="in"><h2>Notfall-Leitfaden</h2>
-    ${[['🤒 Tier krank oder verletzt','Tierarzt Dr. Kern anrufen 📞'],['🐈 Tier entlaufen','Haus absuchen, Nachbarn fragen'],['💧 Wasserschaden','Haupthahn im Bad zudrehen'],['🔑 Schlüssel verloren','Notfallkontakt David anrufen'],['📵 Sarah nicht erreichbar','Bruder David anrufen']].map(([a,b])=>`<div class="card" style="margin-top:10px"><div class="name" style="font-size:16px">${a}</div><div class="meta" style="margin-top:4px;line-height:1.45">${b}</div></div>`).join('')}
+    ${[['🤒 Tier krank oder verletzt','Tierarzt Dr. Kern anrufen 📞'],['🔍 Tier entlaufen','Haus absuchen, Nachbarn fragen'],['💧 Wasserschaden','Haupthahn im Bad zudrehen'],['🔑 Schlüssel verloren','Notfallkontakt David anrufen'],['📵 Sarah nicht erreichbar','Bruder David anrufen']].map(([a,b])=>`<div class="card" style="margin-top:10px"><div class="name" style="font-size:16px">${a}</div><div class="meta" style="margin-top:4px;line-height:1.45">${b}</div></div>`).join('')}
     <button class="btn" data-act="close">Schließen</button></div></div>`;
   if (S.sheet==='report') return `<div class="sheet" data-act="close"><div class="in"><h2>Melden oder blockieren</h2><p class="sub">Vertraulich.</p><div class="seg" style="margin-top:12px"><button data-act="reported">Unangemessene Nachricht</button><button data-act="reported">Fake-Profil</button><button data-act="reported">Etwas anderes</button></div><button class="btn o" data-act="blocked">Blockieren</button><button class="btn" data-act="close">Abbrechen</button></div></div>`;
   return '';
@@ -561,38 +655,39 @@ function sheet(){
 const TABS = [['start','🏠','Start'],['nachbarn','👥','Nachbarn'],['chats','💬','Chats'],['profil','👤','Profil']];
 function render(){
   if (!V[S.screen]) S.screen='start';
-  document.getElementById('view').innerHTML = V[S.screen]();
+  const vw = document.getElementById('view'); vw.innerHTML = X(V[S.screen]());
+  if (S.screen !== render.last) { vw.classList.remove('enter'); void vw.offsetWidth; vw.classList.add('enter'); render.last = S.screen; }
   const tabOf = {start:'start',neu:'start',myreq:'start',detail:'start',fiete:'start',sitting:'start',status:'start',abschluss:'start',treffen:'chats',chat:'chats',kchat:'chats',nachbarn:'nachbarn',chats:'chats',profil:'profil'}[S.screen];
   const unread = (S.role==='sarah'&&S.req&&S.req.status==='angebot')||(S.role==='jonas'&&S.karl==='angebot');
   document.getElementById('tabs').style.display = S.screen==='ob' ? 'none' : '';
-  document.getElementById('tabs').innerHTML = TABS.map(([k,i,l])=>`<button class="${tabOf===k?'on':''}" data-tab="${k}"><span class="ic">${i}</span>${l}${k==='chats'&&unread?'<span class="dot">1</span>':''}</button>`).join('');
+  document.getElementById('tabs').innerHTML = X(TABS.map(([k,i,l])=>`<button class="${tabOf===k?'on':''}" data-tab="${k}"><span class="ic">${i}</span>${l}${k==='chats'&&unread?'<span class="dot">1</span>':''}</button>`).join(''));
   let ov = sheet();
   if (S.toast) { ov += `<div class="toast">${S.toast}</div>`; S.toast=null; }
-  document.getElementById('overlay').innerHTML = ov;
+  document.getElementById('overlay').innerHTML = X(ov);
   document.getElementById('roles').innerHTML = 'Ansicht:' + Object.entries(P).map(([k,p])=>`<button class="${S.role===k?'on':''}" data-role="${k}" title="${p.n}">${av(p,'sm')}</button>`).join('');
   const canDay = S.req && (S.req.status==='kennengelernt' || (S.req.status==='laeuft' && S.day<10));
-  const db = document.getElementById('daybtn'); db.disabled = !canDay; db.textContent = S.req&&S.req.status==='laeuft' ? `⏩ Tag ${S.day} → ${Math.min(10,S.day+(S.day<3?1:3))}` : '⏩ Tag vorspulen';
-  document.getElementById('steps').innerHTML = UC.map(u=>{
+  const db = document.getElementById('daybtn'); db.disabled = !canDay; db.innerHTML = X(S.req&&S.req.status==='laeuft' ? `⏩ Tag ${S.day} → ${Math.min(10,S.day+(S.day<3?1:3))}` : '⏩ Vorspulen');
+  document.getElementById('steps').innerHTML = X(UC.map(u=>{
     const cur = u.steps.findIndex(x=>!x.done(S));
     const nd = u.steps.filter(x=>x.done(S)).length;
     if (u.id!==S.uc) return `<div class="uc"><h4 class="fold" data-step="${u.id}:${Math.max(0,cur)}"><span>${u.icon}</span>${u.title}<em>${nd===u.steps.length?'✓ fertig':nd+' / '+u.steps.length}</em></h4></div>`;
     return `<div class="uc"><h4><span>${u.icon}</span>${u.title}<em>${nd} / ${u.steps.length}</em></h4>${u.steps.map((x,i)=>{
       const w = P[typeof x.who==='function'?x.who(S):x.who];
       const cls = x.done(S)?'done':(i===cur&&S.uc===u.id?'now':'');
-      return `<button class="st ${cls}" data-step="${u.id}:${i}"><span class="n">${x.done(S)?'✓':i+1}</span>${x.l}<span class="who" style="background:${w.c}">${w.i}</span></button>`;
+      return `<button class="st ${cls}" data-step="${u.id}:${i}"><span class="n">${x.done(S)?'✓':i+1}</span>${x.l}<span class="who" style="background:${w.c}${w.img?` url(${w.img}) center/cover`:""}">${w.img?"":w.i}</span></button>`;
     }).join('')}</div>`;
-  }).join('');
+  }).join(''));
   const au = UC.find(u=>u.id===S.uc), ci = au.steps.findIndex(x=>!x.done(S)), cs = ci<0 ? null : au.steps[ci];
   const cw = cs ? P[typeof cs.who==='function'?cs.who(S):cs.who] : null;
-  document.getElementById('cap').innerHTML = `<div class="uct"><span>${au.icon}</span>${au.title.replace(' (Karl)','')}<em>${ci<0?'fertig':'Schritt '+(ci+1)+' von '+au.steps.length}</em></div>
+  document.getElementById('cap').innerHTML = X(`<div class="uct"><span>${au.icon}</span>${au.title.replace(' (Karl)','')}<em>${ci<0?'fertig':'Schritt '+(ci+1)+' von '+au.steps.length}</em></div>
     <div class="dots">${au.steps.map((x,i)=>`<i class="${x.done(S)||i===ci?'on':''}"></i>`).join('')}</div>
     <div class="big">${cs ? cs.c : '✓ Ablauf abgeschlossen.'}</div>
-    ${cw ? `<div class="who">${av(cw)}${cw.n}</div>` : ''}`;
+    ${cw ? `<div class="who">${av(cw)}${cw.n}</div>` : ''}`);
   const flatAll = UC.flatMap(u=>u.steps.map((_,i)=>[u.id,i])), gk = flatAll.findIndex(([u,i])=>u===S.uc && i===(ci<0?au.steps.length-1:ci));
-  document.getElementById('guide').innerHTML = `<div class="gtop"><span>${au.icon}</span>${au.title.replace(' (Karl)','')}<em>${ci<0?'fertig':(ci+1)+' / '+au.steps.length}</em></div>
+  document.getElementById('guide').innerHTML = X(`<div class="gtop"><span>${au.icon}</span>${au.title.replace(' (Karl)','')}<em>${ci<0?'fertig':(ci+1)+' / '+au.steps.length}</em></div>
     <div class="gcap">${cs ? cs.c : '✓ Fertig. Weiter mit dem nächsten Ablauf.'}</div>
-    <div class="gbtns"><button data-act="nav" data-v="-1" ${gk<=0&&ci<=0?'disabled':''}>‹ Zurück</button><button class="next" data-act="nav" data-v="1">${cs ? (cw ? 'Zeig mir das als '+cw.s : 'Weiter') : 'Weiter ›'}</button></div>`;
-  document.getElementById('beambtn').textContent = document.body.classList.contains('beamer') ? '📽 Beamer aus' : '📽 Beamer';
+    <div class="gbtns"><button data-act="nav" data-v="-1" ${gk<=0&&ci<=0?'disabled':''}>‹ Zurück</button><button class="next" data-act="nav" data-v="1">${cs ? (cw ? 'Zeig mir das als '+cw.s : 'Weiter') : 'Weiter ›'}</button></div>`);
+  document.getElementById('beambtn').innerHTML = X(document.body.classList.contains('beamer') ? '📽 Beamer aus' : '📽 Beamer');
   document.getElementById('view').scrollTop = 0;
 }
 const OFFER = () => [{sys:1,t:'<b>Lena</b> hat „Kann ich übernehmen“ getippt'},{from:'lena',t:'Hi Sarah! Ich wohne zwei Stockwerke über dir und kann gern auf Minka aufpassen 🙂'}];
@@ -611,7 +706,7 @@ const UC = [
     {l:'Status im Urlaub', c:'Sarah sieht im Urlaub: Alles gut.', who:'sarah', go:'status', done:s=>s.day>=10||st2(s)>=5, pre:s=>{s.req={status:'laeuft'};s.day=3;s.done={'3-0':1,'3-1':1,'3-3':1};s.photo=true;s.chat=[...KEYED(),{from:'lena',photo:1,t:'Minka schläft auf dem Balkon ☀️'}];s.meet={sarah:true,lena:true,vers:true,key:true};}},
     {l:'Zurück und empfehlen', c:'Schlüssel zurück. Beide empfehlen sich.', who:s=>s.end.recL&&!s.end.recS?'sarah':'lena', go:'abschluss', done:s=>s.end.recS&&s.end.recL, pre:s=>{s.req={status:'laeuft'};s.day=10;s.photo=true;s.chat=KEYED();s.meet={sarah:true,lena:true,vers:true,key:true};}},
   ]},
-  {id:'ob', icon:'👋', title:'Anmelden (Karl)', steps:[
+  {id:'ob', icon:'🪪', title:'Anmelden (Karl)', steps:[
     {l:'Willkommen', c:'Karl richtet die App ein, gern mit Hilfe.', who:'karl', go:'ob', done:s=>s.ob>=1, pre:s=>{s.ob=0;}},
     {l:'Name und Adresse', c:'Echter Name und Adresse. Kein Passwort.', who:'karl', go:'ob', done:s=>s.ob>=2, pre:s=>{s.ob=1;}},
     {l:'Brief-Code', c:'Ein Brief mit Code bestätigt die Adresse.', who:'karl', go:'ob', done:s=>s.ob>=3, pre:s=>{s.ob=2;s.code='';}},
@@ -734,6 +829,7 @@ addEventListener('resize', fit); if (location.hash==='#beamer') document.body.cl
 const q = new URLSearchParams(location.search);
 if (q.get('shot') && SHOTS[q.get('shot')]) { SHOTS[q.get('shot')](S); }
 if (q.has('bare')) document.body.classList.add('bare');
+document.querySelectorAll('.ctrlrow .cbtn').forEach(b=>b.innerHTML=X(b.innerHTML));
 document.querySelector('[data-act="reset"]').addEventListener('click',()=>{S=fresh();render();},true);
 render();
 </script>
