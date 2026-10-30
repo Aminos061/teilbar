@@ -1,0 +1,15 @@
+# Secrets und lokale Agenten-Einstellungen
+.env
+.env.*
+auth.json
+.claude/settings.local.json
+.codex/
+.qwen/
+.openhands/
+
+# Werkzeuge
+node_modules/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

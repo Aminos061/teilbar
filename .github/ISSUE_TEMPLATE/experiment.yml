@@ -1,0 +1,32 @@
+name: Experiment (KI-Labor)
+description: Ein Test einer Hypothese. Die Issue-Nummer wird die ID (E<nr>). Ablauf in .agents/skills/ki-labor/experiment.md
+title: "[Experiment] "
+labels: ["ki-labor"]
+body:
+  - type: input
+    id: hypothese
+    attributes:
+      label: Hypothese
+      placeholder: "H12"
+    validations:
+      required: true
+  - type: input
+    id: variable
+    attributes:
+      label: Die eine Variable
+      placeholder: "mit vs. ohne Skill grill-me"
+    validations:
+      required: true
+  - type: input
+    id: rater
+    attributes:
+      label: Wer bewertet blind? (nicht die durchführende Person)
+    validations:
+      required: true
+  - type: textarea
+    id: regel
+    attributes:
+      label: Entscheidungsregel (vorab festgelegt)
+      placeholder: "Gestützt, wenn B in mindestens 2 von 3 Läufen weniger Nacharbeit braucht als A und keine schlechtere Note bekommt."
+    validations:
+      required: true

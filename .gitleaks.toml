@@ -1,0 +1,6 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Platzhalter in Doku und Vorlagen"
+regexes = ['''<dein-key>''', '''\[GESCHWÄRZT\]''']

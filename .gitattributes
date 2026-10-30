@@ -1,0 +1,11 @@
+* text=auto eol=lf
+*.sh text eol=lf
+.githooks/* text eol=lf
+.devcontainer/** text eol=lf
+# Labor-Daten: ein Datensatz pro Zeile, bei Konflikten beide Zeilen behalten (docs/adr/0005)
+ai-lab/daten/**/*.jsonl merge=union
+*.png binary
+*.jpg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary

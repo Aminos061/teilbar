@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Erinnert an das Sitzungsprotokoll (docs/adr/0002). Blockiert nie.
+branch=$(git rev-parse --abbrev-ref HEAD)
+case $branch in main|exp/*|HEAD) exit 0 ;; esac
+
+base=$(git merge-base HEAD origin/main 2>/dev/null) || exit 0
+if ! git diff "$base" HEAD -- ai-lab/daten/sitzungen/ | grep -q '^+{'; then
+  echo "Erinnerung: Auf '$branch' gibt es noch kein Sitzungsprotokoll."
+  echo "Hast du mit einem Agenten gearbeitet? Sag ihm: \"Sitzung protokollieren\"."
+fi
+exit 0

@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Aminos061/teilbar/ai-lab/schema/kandidat.schema.json",
+  "title": "Kandidat (eine Zeile in daten/kandidaten.jsonl)",
+  "description": "Eine Idee, die eine Hypothese werden könnte.",
+  "type": "object",
+  "required": [
+    "id",
+    "origin",
+    "person",
+    "date",
+    "title",
+    "statement",
+    "variable",
+    "measure",
+    "status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^.+#\\d+$",
+      "description": "<origin>#<n>, vergibt lab.py add"
+    },
+    "origin": {
+      "type": "string",
+      "description": "ID der Sichtung oder Sitzung"
+    },
+    "person": {
+      "$ref": "defs.schema.json#/$defs/person"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "title": {
+      "type": "string"
+    },
+    "claim": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Was die Quelle behauptet oder empfiehlt"
+    },
+    "source_ref": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Link auf die genaue Stelle"
+    },
+    "statement": {
+      "$ref": "defs.schema.json#/$defs/statement"
+    },
+    "variable": {
+      "type": "string",
+      "description": "Genau eine, z. B. „mit vs. ohne Skill tdd“"
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "$ref": "defs.schema.json#/$defs/phase"
+      }
+    },
+    "measure": {
+      "type": "string"
+    },
+    "test_idea": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Welche (anstehende) Aufgabe eignet sich?"
+    },
+    "harness_binding": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "effort": {
+      "enum": [
+        "S",
+        "M",
+        "L",
+        null
+      ]
+    },
+    "status": {
+      "enum": [
+        "neu",
+        "zurueckgestellt",
+        "verworfen"
+      ],
+      "description": "„übernommen“ leitet lab.py ab, sobald eine Hypothese candidate = id hat"
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Pflicht bei zurueckgestellt und verworfen"
+    },
+    "note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Uni-LiteLLM (lokal)",
+      "options": {
+        "baseURL": "http://141.19.140.104:4000/v1",
+        "apiKey": "{env:LITE_LLM_LOCAL_API_KEY}"
+      },
+      "models": {
+        "qwen3.8:27b": { "name": "Qwen3.8 27B" }
+      }
+    },
+    "litellm-academic": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Uni-LiteLLM (academic cloud)",
+      "options": {
+        "baseURL": "http://141.19.140.104:4000/v1",
+        "apiKey": "{env:LITE_LLM_ACADEMIC_CLOUD_API_KEY}"
+      },
+      "models": {
+        "qwen3.8:27b-academic": { "name": "Qwen3.8 27B academic" }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Secret-Scan der gestagten Änderungen (docs/adr/0001). Fehlalarm: Zeile mit "gitleaks:allow" markieren.
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --pre-commit --staged --redact --no-banner || {
+    echo "gitleaks hat ein mögliches Secret gefunden. Commit abgebrochen (docs/setup.md → Probleme)."
+    exit 1
+  }
+else
+  echo "Hinweis: gitleaks fehlt, kein Secret-Scan (im Devcontainer ist es installiert)."
+fi

@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Aminos061/teilbar/ai-lab/schema/defs.schema.json",
+  "title": "Gemeinsame Definitionen des KI-Labors",
+  "$defs": {
+    "person": {
+      "enum": [
+        "amin",
+        "matias",
+        "sirat",
+        "can"
+      ]
+    },
+    "phase": {
+      "enum": [
+        "Recherche",
+        "Anforderung",
+        "Design",
+        "Planung",
+        "Implementierung",
+        "Test",
+        "Review",
+        "Deployment",
+        "Doku",
+        "Organisation"
+      ]
+    },
+    "harness": {
+      "enum": [
+        "claude-code",
+        "codex",
+        "opencode",
+        "qwen-code",
+        "copilot-cli",
+        "goose",
+        "openhands",
+        "gemini-cli",
+        "jcode",
+        "cline",
+        "claude-web",
+        "chatgpt-web",
+        "gemini-web",
+        "andere"
+      ]
+    },
+    "config": {
+      "type": "object",
+      "required": [
+        "harness",
+        "model",
+        "environment"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "harness": {
+          "$ref": "#/$defs/harness"
+        },
+        "harness_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "interface": {
+          "enum": [
+            "cli",
+            "desktop",
+            "ide",
+            "web",
+            null
+          ]
+        },
+        "environment": {
+          "enum": [
+            "devcontainer",
+            "host",
+            "web"
+          ],
+          "description": "ADR 0003: Devcontainer ist Standard"
+        },
+        "model": {
+          "type": "string",
+          "description": "Modell-ID, z. B. claude-opus-5-5, qwen3.8:27b"
+        },
+        "effort": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Effort-/Reasoning-Stufe, null wenn der Harness keine hat"
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mcp": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subagents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Nennenswerte CLI-Tools und Bibliotheken"
+        }
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "required": [
+        "source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "input": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "output": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "cache_read": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "cache_write": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "source": {
+          "enum": [
+            "gemessen",
+            "geschaetzt",
+            "unbekannt"
+          ]
+        },
+        "how": {
+          "type": "string",
+          "description": "Womit gemessen, z. B. lab.py tokens, agentsview"
+        },
+        "subagents": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Tokens der Subagenten getrennt; gehen nicht in den Schattenpreis ein"
+        }
+      }
+    },
+    "minutes": {
+      "type": "object",
+      "required": [
+        "agent",
+        "human"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "agent": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "Laufzeit des Agenten, grob"
+        },
+        "human": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "Zeit der Person inkl. Prompts schreiben und prüfen"
+        },
+        "rework": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "Nacharbeit von Hand nach der Sitzung"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "type",
+        "ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "eigene-sitzung",
+            "open-source-repo",
+            "framework",
+            "werkzeug",
+            "kurs",
+            "literatur",
+            "recherche"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "description": "URL, Pfad oder Sitzungs-ID"
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Commit, Tag oder Datum des gelesenen Stands"
+        },
+        "license": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "harness_binding": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "null = portabel"
+        }
+      }
+    },
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/phase"
+      }
+    },
+    "statement": {
+      "type": "string",
+      "pattern": "^Wenn .+, dann .+, weil .+",
+      "description": "Wenn …, dann …, weil …"
+    }
+  }
+}
