@@ -256,6 +256,21 @@ h3{font-size:12px;letter-spacing:.09em}
 .chip{border-radius:999px;padding:9px 14px;border:1.5px solid #DCE8E0;transition:all .15s var(--ease)}
 .chip.on{border-color:var(--green);background:#E3F4E9;box-shadow:inset 0 0 0 1px var(--green)}
 .chip .i{width:15px;height:15px;vertical-align:-3px}
+/* Hausbuch, Freigabe, Gast */
+.hbh{background:#fff;border-radius:16px;padding:12px 14px;margin-top:10px;box-shadow:var(--shadow)}
+.hbh p{margin:6px 0 0;font-size:15px;line-height:1.45;color:var(--ink)}
+.hbh b{color:var(--ink)}
+.hk{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:99px}
+.hk .i{width:13px;height:13px}
+.hph{height:120px;border-radius:12px;margin-top:10px}
+.hph.sim{background:var(--card);color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600}
+.hbt{padding:10px 0;border-bottom:1px solid var(--line)}.hbt:last-child{border:0}
+.hbt .t{font-weight:700}.hbt small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.how{margin-left:auto;align-self:center;border:1.5px solid var(--pale);background:#fff;border-radius:99px;padding:6px 12px;font-size:14px;font-weight:700;color:var(--deep)}
+.qr{display:flex;gap:14px;align-items:center;margin-top:14px}.qr img{width:124px;height:124px;flex:none}
+.gst{text-align:center;padding-top:18px}.gst .av{margin:0 auto 10px}
+.pin{display:flex;gap:10px;justify-content:center;margin:18px 0}.pin span{width:48px;height:58px;border-radius:12px;border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800}
+.hbic{width:44px;height:44px;flex:none;border-radius:12px;background:var(--card);display:flex;align-items:center;justify-content:center;color:var(--deep)}
 .kind .i,.pill .i,.lvl .i{width:14px;height:14px;vertical-align:-2px}
 .kind{gap:6px;padding:5px 11px}
 .seg button{border-radius:16px;transition:all .15s var(--ease)}
@@ -339,9 +354,15 @@ h3{font-size:12px;letter-spacing:.09em}
 <script>
 const LOGO = document.querySelector('.ctrl h1 svg').outerHTML;
 const ICONS = {"home": "<path d=\"m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/><path d=\"M9 22V12h6v10\"/>", "users": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/>", "message": "<path d=\"M7.9 20A9 9 0 1 0 4 16.1L2 22Z\"/>", "user": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/><circle cx=\"12\" cy=\"7\" r=\"4\"/>", "paw": "<circle cx=\"11\" cy=\"4\" r=\"2\"/><circle cx=\"18\" cy=\"8\" r=\"2\"/><circle cx=\"20\" cy=\"16\" r=\"2\"/><path d=\"M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z\"/>", "key": "<circle cx=\"7.5\" cy=\"15.5\" r=\"5.5\"/><path d=\"m21 2-9.6 9.6\"/><path d=\"m15.5 7.5 3 3L22 7l-3-3\"/>", "forward": "<path d=\"m13 19 9-7-9-7z\"/><path d=\"m2 19 9-7-9-7z\"/>", "monitor": "<rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/><path d=\"M8 21h8\"/><path d=\"M12 17v4\"/>", "signpost": "<path d=\"M12 13v8\"/><path d=\"M12 3v3\"/><path d=\"M18 6a2 2 0 0 1 1.39.56l2.3 2.22a1 1 0 0 1 0 1.44l-2.3 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.39-.56l-2.3-2.22a1 1 0 0 1 0-1.44l2.3-2.22A2 2 0 0 1 6 6z\"/>", "pin": "<path d=\"M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/>", "heart": "<path d=\"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z\"/>", "flag": "<path d=\"M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z\"/><path d=\"M4 22v-7\"/>", "calendar": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M16 2v4\"/><path d=\"M8 2v4\"/><path d=\"M3 10h18\"/>", "send": "<path d=\"m22 2-7 20-4-9-9-4Z\"/><path d=\"M22 2 11 13\"/>", "reset": "<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/>", "mail": "<rect width=\"20\" height=\"16\" x=\"2\" y=\"4\" rx=\"2\"/><path d=\"m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7\"/>", "camera": "<path d=\"M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>", "checksq": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"4\"/><path d=\"m9 12 2 2 4-4\"/>", "thermo": "<path d=\"M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z\"/>", "phone": "<path d=\"M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z\"/>", "search": "<circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>", "drop": "<path d=\"M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z\"/>", "phoneoff": "<path d=\"M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67\"/><path d=\"M22 2 2 22\"/><path d=\"M4.19 12.18a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 3.11 1.37h3a2 2 0 0 1 2 1.72\"/>", "plus": "<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>", "check": "<path d=\"M20 6 9 17l-5-5\"/>", "idcard": "<rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"2\"/><circle cx=\"9\" cy=\"11\" r=\"2\"/><path d=\"M6.17 15a3 3 0 0 1 5.66 0\"/><path d=\"M16 10h2\"/><path d=\"M16 14h2\"/>", "sparkle": "<path d=\"M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0L14.06 8.5A2 2 0 0 0 15.5 9.94l6.14 1.58a.5.5 0 0 1 0 .96L15.5 14.06a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z\"/>", "alert": "<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>", "square": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"4\"/>", "chevl": "<path d=\"m15 18-6-6 6-6\"/>"};
+Object.assign(ICONS, {
+  book: '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+  lock: '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  qr: '<rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/>',
+});
 const I = (n, cls='') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]||''}</svg>`;
 /* UI emoji become line icons; emoji that people type in chats stay */
 const EMO = {"⬜": "square", "🔍": "search", "🐾": "paw", "🏠": "home", "💬": "message", "🔑": "key", "⏩": "forward", "📽": "monitor", "🛣️": "signpost", "🏘️": "pin", "🙋": "heart", "⚑": "flag", "🤝": "calendar", "➤": "send", "↺": "reset", "🏡": "home", "👪": "users", "✉️": "mail", "📷": "camera", "🌊": "sun", "✅": "checksq", "🤒": "thermo", "📞": "phone", "💧": "drop", "📵": "phoneoff", "👥": "users", "👤": "user", "＋": "plus", "✓": "check", "🪪": "idcard", "🎉": "sparkle", "🆘": "alert"};
+Object.assign(EMO, {"📖": "book", "🔒": "lock", "🔳": "qr"});
 const EMO_RE = new RegExp(Object.keys(EMO).join('|'), 'g');
 const X = h => h.replace(/ 👋/g, '').replace(EMO_RE, m => I(EMO[m]));
 const P = {
@@ -349,6 +370,7 @@ const P = {
   lena:{n:'Lena Hartmann',s:'Lena',c:'#3B7DD8',i:'L',img:'img/lena.jpg',where:'Lindenstr. 12 · 4. OG',lvl:2},
   karl:{n:'Karl Brandt',s:'Karl',c:'#8A5CD6',i:'K',img:'img/karl.jpg',where:'Lindenstr. 7',lvl:2},
   jonas:{n:'Jonas Weber',s:'Jonas',c:'#1FA8A0',i:'J',where:'Lindenstr. 14',lvl:2},
+  david:{n:'David Okafor',s:'David',c:'#2E9E5B',i:'D',where:'Gast · Sarahs Bruder',lvl:0},
 };
 const HAUS = [
   {n:'Sarah Okafor',c:'#E8732A',i:'S',img:'img/sarah.jpg',t:'2. OG · Katze Minka',l:2},
@@ -364,12 +386,52 @@ const STRASSE = [
   {n:'Petra Schulz',c:'#B5523B',i:'P',t:'Nr. 3 · sittet Katzen',l:2},
   {n:'Deniz Kaya',c:'#3B7DD8',i:'D',t:'Nr. 9',l:1},
 ];
-const TASKS = [
-  {t:'Minka füttern',d:'morgens und abends'},
-  {t:'Wasser frisch machen',d:'Küche'},
-  {t:'Katzenklo sauber machen',d:'alle zwei Tage'},
-  {t:'Pflanzen gießen',d:'Balkon, abends'},
+/* Hausbuch: Sarahs Beispiel-Aufgaben und -Hinweise. Der Zustand pro Zuhause steht in S.hb.
+   Aufgabe: id, t Titel, d Rhythmus, f für (minka|wohnung), h verknüpfte Hinweis-ids */
+const HB_TASKS = [
+  {id:0,t:'Minka füttern',d:'8 und 19 Uhr',f:'minka',h:[0,5]},
+  {id:1,t:'Wasser frisch machen',d:'täglich, Küche',f:'minka',h:[1]},
+  {id:2,t:'Katzenklo sauber machen',d:'alle zwei Tage',f:'minka',h:[2]},
+  {id:3,t:'Pflanzen gießen',d:'Balkon, abends',f:'wohnung',h:[3,4]},
+  {id:4,t:'Post reinholen',d:'jeden zweiten Tag',f:'wohnung',h:[7]},
 ];
+const HB_EXTRA = [{id:5,t:'Fenster abends schließen',d:'täglich, 21 Uhr',f:'wohnung',h:[]}];
+const VORSCHLAG = [0,1,2,3];  /* Vorschläge beim Anlegen für Katze und Wohnung */
+const HB_HINTS = [
+  {id:0,k:'wo',t:'Futter',x:'Nassfutter im Schrank links unter der Spüle. Eine halbe Dose pro Mahlzeit, den Rest abgedeckt in den Kühlschrank.',ph:1},
+  {id:1,k:'wie',t:'Trinkbrunnen',x:'Minka trinkt am liebsten aus dem Brunnen im Flur. Wasser täglich wechseln, der Stecker bleibt drin.'},
+  {id:2,k:'wo',t:'Katzenklo',x:'Im Bad. Streu steht im Schrank neben der Waschmaschine, der Beutel kommt in die graue Tonne im Hof.'},
+  {id:3,k:'dont',t:'Kakteen',x:'Tomaten und Kräuter jeden Abend gießen. Die Kakteen auf der Fensterbank bitte nicht.',ph:1},
+  {id:4,k:'achtung',t:'Balkontür',x:'Minka darf nicht allein auf den Balkon. Die Tür beim Gießen hinter dir zumachen.'},
+  {id:5,k:'do',t:'Minka kennenlernen',x:'Sie versteckt sich anfangs unterm Sofa. Nach ein, zwei Tagen kommt sie raus und freut sich übers Streicheln.',img:'img/minka.jpg'},
+  {id:6,k:'geheim',t:'Ersatzschlüssel',x:'Im Schlüsselkasten im Keller, Code 4711.'},
+  {id:7,k:'wo',t:'Briefkasten',x:'Kleiner Schlüssel am Brett neben der Wohnungstür, Briefkasten Nr. 4.'},
+];
+/* Jonas' Hausbuch für den Gassi-Ablauf */
+const JONAS_HB = {on:true, tasks:[{id:0,t:'Gassi mit Fiete',d:'Mo–Fr 17 Uhr, 30 Minuten',f:'fiete',h:[0,1]}],
+  hints:[{id:0,k:'wo',t:'Leine und Beutel',x:'Hängen an der Garderobe neben der Haustür.'},{id:1,k:'achtung',t:'Katzen',x:'Fiete zieht, wenn er Katzen sieht. Die Leine dann kurz halten.'}]};
+const clone = o => JSON.parse(JSON.stringify(o));
+const hbFull = () => ({on:true, tasks:clone(HB_TASKS), hints:clone(HB_HINTS)});
+const hbEmpty = () => ({on:false, tasks:[], hints:[]});
+const hbStarter = ids => ({on:true, tasks:clone(HB_TASKS.filter(t=>ids.includes(t.id))).map(t=>({...t,h:[]})), hints:[]});
+const nextHint = s => HB_HINTS.find(h=>!s.hb.hints.some(x=>x.id===h.id));
+const nextTask = s => [...HB_TASKS,...HB_EXTRA].find(t=>!s.hb.tasks.some(x=>x.id===t.id));
+function initHint(s){ const h = nextHint(s); s.hf = {k:h?h.k:'wo', ph:false, link:h?HB_TASKS.filter(t=>t.h.includes(h.id)&&s.hb.tasks.some(x=>x.id===t.id)).map(t=>t.id):[]}; }
+function saveHint(s){ const h = nextHint(s); if (!h) return;
+  s.hb.hints.push({id:h.id,k:s.hf.k,t:h.t,x:h.x,img:s.hf.ph?h.img:undefined,ph:s.hf.ph&&!h.img?1:0});
+  s.hb.tasks.forEach(t=>{ if (s.hf.link.includes(t.id) && !t.h.includes(h.id)) t.h.push(h.id); }); }
+function initTask(s){ const t = nextTask(s); s.tf = {d:t?t.d:'täglich', f:t?t.f:'wohnung'}; }
+function saveTask(s){ const t = nextTask(s); if (!t) return;
+  s.hb.tasks.push({...clone(t), d:s.tf.d, f:s.tf.f, h:t.h.filter(i=>s.hb.hints.some(x=>x.id===i))});
+  if (s.ret==='neu') { s.form.tasks.push(t.id); s.screen='neu'; toast('✓ Auch im Hausbuch gemerkt'); } else { s.screen='hausbuch'; toast('✓ Aufgabe im Hausbuch'); }
+  s.ret = null; }
+const tk = id => S.hb.tasks.find(t=>t.id===id);
+const reqTasks = () => ((S.req && S.req.tasks) || [0,1,2,3]).map(tk).filter(Boolean);
+const fgTasks = () => S.fg.tasks.map(tk).filter(Boolean);
+function reqTitle(){ const ts = reqTasks(); return [ts.find(t=>t.f==='minka'), ts.find(t=>t.f==='wohnung')].filter(Boolean).map(t=>t.t).join(' & ') || 'Sitting bei Sarah'; }
+const HK = {wo:['Wo','#E2ECFA','#2A5FAD'], wie:['Wie','#E7F6EC','#1B6B3A'], do:['Do','#E7F6EC','#1B6B3A'], dont:['Don’t','#FBE3DF','#A33A2E'], achtung:['Achtung','#FBE3DF','#A33A2E'], geheim:['🔒 Vertraulich','#FFF1C9','#7A5A00']};
+const HAUSREGELN = 'Nur Küche, Bad, Balkon · kein Besuch in der Wohnung · Fenster zu';
+const GTIMES = ['19:02','19:04','19:06','19:10'];
 const STEPS = ['offen','angebot','zugesagt','kennengelernt','laeuft','abgeschlossen'];
 const STEPNAMES = ['Offen','Angebot','Zugesagt','Kennengelernt','Läuft','Fertig'];
 
@@ -377,6 +439,8 @@ let S;
 function fresh(){
   return {role:'sarah',screen:'start',
     req:null, form:{kind:'tier',tasks:[0,1,2,3],kreis:'haus'},
+    hb:hbFull(), hbv:[...VORSCHLAG], hf:null, tf:null, ret:null,
+    fg:{on:false,pin:true,rev:false,tasks:[0,1,2,3]}, g:0, gdone:{},
     chat:[], day:0, done:{}, photo:false,
     meet:{sarah:false,lena:false,vers:false,key:false},
     end:{key:false,recS:false,recL:false},
@@ -396,15 +460,23 @@ function stepbar(){
 }
 function topbar(){
   const p = P[S.role];
-  return `<div class="top">${LOGO}<span class="brand">Teilbar</span><span class="where">${S.role==='karl'||S.role==='jonas'?'Lindenstraße':'Lindenstr. 12'}</span></div>`;
+  return `<div class="top">${LOGO}<span class="brand">Teilbar</span><span class="where">${S.role==='david'?'Gast':S.role==='karl'||S.role==='jonas'?'Lindenstraße':'Lindenstr. 12'}</span></div>`;
 }
+function hintCard(h, links){
+  const [l,bg,fg] = HK[h.k];
+  const zu = links ? S.hb.tasks.filter(t=>t.h.includes(h.id)).map(t=>t.t).join(', ') : '';
+  return `<div class="hbh"><div class="row" style="gap:8px"><span class="hk" style="background:${bg};color:${fg}">${l}</span><b>${h.t}</b></div><p>${h.x}</p>${h.img?`<div class="hph" style="background:url(${h.img}) center/cover"></div>`:h.ph?'<div class="hph sim">📷 Foto · in der Demo simuliert</div>':''}${zu?`<small class="meta" style="display:block;margin-top:6px">Gehört zu: ${zu}</small>`:''}</div>`;
+}
+const taskRow = t => `<div class="hbt"><div class="t">${t.t}</div><small>${t.d}${t.h.length?' · '+t.h.length+(t.h.length>1?' Hinweise':' Hinweis'):''}</small></div>`;
+const hbCard = () => `<div class="card white tap" data-go="hausbuch" style="margin-top:14px"><div class="row"><span class="hbic">📖</span><div style="flex:1"><div class="name" style="font-size:16px">Mein Hausbuch</div><div class="meta">${S.hb.on?`${S.hb.tasks.length} Aufgaben · ${S.hb.hints.length} Hinweise · Notfall`:'Noch nicht angelegt · jetzt anlegen'}</div></div><span class="meta">›</span></div></div>`;
+const howBtn = (id, book='s') => `<button class="how" data-act="how" data-v="${book}:${id}">Wie?</button>`;
 function back(to,label='Zurück'){ return `<button class="back" data-go="${to}">${I('chevl')} ${label}</button>`; }
 function reqCard(forRole){
   const r = S.req;
   return `<div class="card tap" data-go="${forRole==='sarah'?'myreq':'detail'}">
     <div class="row" style="margin-bottom:10px"><span class="kind tier">🐾 Tier</span><span class="kind wohnung">🏠 Wohnung</span><span class="pill" style="margin-left:auto">${forRole==='sarah'?STEPNAMES[st()]:'Haus'}</span></div>
-    <div class="name">Minka füttern & Pflanzen gießen</div>
-    <div class="meta">1.–10. August · 10 Tage · ${forRole==='sarah'?'sichtbar für dein Haus':'Sarah, 2. OG'}</div>
+    <div class="name">${reqTitle()}</div>
+    <div class="meta">1.–10. August · ${reqTasks().length} Aufgaben · ${forRole==='sarah'?'sichtbar für dein Haus':'Sarah, 2. OG'}</div>
     ${forRole==='sarah'?stepbar():''}
   </div>`;
 }
@@ -414,6 +486,7 @@ const V = {};
 
 V.start = () => {
   const r = S.role;
+  if (r==='david') return V.gast();
   if (r==='sarah') {
     let h = topbar() + `<h2>Hallo Sarah 👋</h2>`;
     if (!S.req) h += `<div class="hero" style="margin-top:14px"><h2>Fährst du bald weg?</h2><p>Nachbarn passen auf. Kostenlos.</p><button class="btn y" data-go="neu">＋ Anfrage stellen</button></div>`;
@@ -423,7 +496,7 @@ V.start = () => {
       if (S.req.status==='laeuft' && S.day<10) h += `<div class="banner tap" style="background:#E7F6EC" data-go="status"><b>Minka geht es gut ✓</b>Tag ${S.day} von 10 · Status ansehen ›</div>`;
       if (S.req.status==='laeuft' && S.day>=10) h += `<div class="banner"><b>Du bist zurück 🏡</b><button class="btn sm" data-go="abschluss">Sitting abschließen</button></div>`;
     }
-    h += neighborhoodCard() + `<h3>Offen in deinem Haus</h3>` + beckerCard();
+    h += hbCard() + neighborhoodCard() + `<h3>Offen in deinem Haus</h3>` + beckerCard();
     return h;
   }
   if (r==='lena') {
@@ -488,7 +561,8 @@ V.neu = () => {
     <button class="chip ${f.kind!=='tier'?'on':''}" data-act="kind" data-v="beides">🏠 Wohnung</button></div>
   <div class="field" style="margin-top:10px"><small>Tier</small><span>Minka · Katze, 6 Jahre</span></div>
   <div class="field"><small>Zeitraum</small><span>1.–10. August · 10 Tage</span></div>
-  <h3>Aufgaben · aus Vorlagen</h3><div class="chips">${TASKS.map((t,i)=>`<button class="chip ${f.tasks.includes(i)?'on':''}" data-act="task" data-v="${i}">${f.tasks.includes(i)?'✓ ':''}${t.t}</button>`).join('')}<button class="chip">＋ Post reinholen</button></div>
+  <h3>Aufgaben · ${S.hb.on?'aus deinem Hausbuch':'aus Vorlagen'}</h3><div class="chips">${(S.hb.on?S.hb.tasks:HB_TASKS.filter(t=>VORSCHLAG.includes(t.id))).map(t=>`<button class="chip ${f.tasks.includes(t.id)?'on':''}" data-act="task" data-v="${t.id}">${f.tasks.includes(t.id)?'✓ ':''}${t.t}</button>`).join('')}${S.hb.on&&nextTask(S)?'<button class="chip" data-act="newtask">＋ Neue Aufgabe</button>':''}</div>
+  <p class="flag" style="text-align:left">${S.hb.on?'Neue Aufgaben landen auch im Hausbuch. ':'Du hast noch kein Hausbuch: Es entsteht aus dieser Anfrage. '}Nachbarn sehen nur die Aufgaben, Hinweise erst nach deiner Zusage.</p>
   <h3>Wer soll es sehen?</h3><div class="seg">
     ${[['haus','🏠 Mein Haus','Lindenstr. 12','6 Nachbarn'],['strasse','🛣️ Meine Straße','Lindenstraße','23 Nachbarn'],['viertel','🏘️ Mein Viertel','Neckarstadt-West','180 Nachbarn']].map(([k,a,b,n])=>`<button class="${f.kreis===k?'on':''}" data-act="kreis" data-v="${k}"><div><b>${a}</b><small>${b}</small></div><span class="n">${n}</span></button>`).join('')}
   </div>
@@ -497,7 +571,8 @@ V.neu = () => {
 };
 
 V.myreq = () => {
-  const r = S.req; let h = back('start') + `<span class="kind tier">🐾 Tier</span> <span class="kind wohnung">🏠 Wohnung</span><h2 style="margin-top:10px">Minka füttern & Pflanzen gießen</h2><p class="sub">1.–10. August · Kreis: Haus</p>${stepbar()}`;
+  const r = S.req; let h = back('start') + `<span class="kind tier">🐾 Tier</span> <span class="kind wohnung">🏠 Wohnung</span><h2 style="margin-top:10px">${reqTitle()}</h2><p class="sub">1.–10. August · Kreis: Haus</p>${stepbar()}
+  <h3>Aufgaben · aus deinem Hausbuch</h3><div class="card">${reqTasks().map(taskRow).join('')}</div>`;
   if (r.status==='offen') h += `<div class="card" style="margin-top:16px"><div class="name">Sichtbar für 6 Nachbarn</div></div>`;
   if (r.status==='angebot') h += `<h3>Möchte helfen</h3>` + lenaOffer();
   if (['zugesagt','kennengelernt'].includes(r.status)) h += `<button class="btn" data-go="chat">💬 Chat mit Lena</button>`;
@@ -512,14 +587,17 @@ function lenaOffer(){
   <div class="two"><button class="btn o sm" data-go="chat">💬 Schreiben</button><button class="btn sm" data-act="choose">Lena auswählen</button></div></div>`;
 }
 
-V.detail = () => back('start') + `<span class="kind tier">🐾 Tier</span> <span class="kind wohnung">🏠 Wohnung</span><h2 style="margin-top:10px">Minka füttern & Pflanzen gießen</h2><p class="sub">1.–10. August · 10 Tage · in deinem Haus</p>
+V.detail = () => back('start') + `<span class="kind tier">🐾 Tier</span> <span class="kind wohnung">🏠 Wohnung</span><h2 style="margin-top:10px">${reqTitle()}</h2><p class="sub">1.–10. August · 10 Tage · in deinem Haus</p>
   <div class="card white" style="margin-top:14px"><div class="row">${av(P.sarah)}<div><div class="name">Sarah Okafor</div><div class="meta">2. OG · Projektleiterin, 2 Kinder</div></div></div><div style="margin-top:10px">${lvl(2)} <span class="pill y">2 Empfehlungen</span></div></div>
-  <h3>Aufgaben</h3><div class="card">${TASKS.map(t=>`<div class="check"><div><div class="t">${t.t}</div><small>${t.d}</small></div></div>`).join('')}</div>
+  <h3>Aufgaben · aus Sarahs Hausbuch</h3><div class="card">${reqTasks().map(t=>`<div class="check"><div><div class="t" style="text-decoration:none;color:inherit">${t.t}</div><small>${t.d}</small></div></div>`).join('')}</div>
+  <p class="flag" style="text-align:left">📖 Die Hinweise dazu (wo, wie, worauf achten) siehst du nach Sarahs Zusage.</p>
   <div class="card" style="background:#FFF8E1"><div class="name" style="font-size:15px">Sarah gibt gern zurück</div><div class="meta">Im Sommer die Wohnung mit Balkon nutzen · Lastenrad leihen</div></div>
   ${S.req.status==='offen'?'<button class="btn y" data-act="offer">🙋 Kann ich übernehmen</button>':'<button class="btn" data-go="chat">💬 Zum Chat</button>'}`;
 
 V.fiete = () => back('start') + `<span class="kind tier">🐾 Tier</span><h2 style="margin-top:10px">Fiete freut sich über Gassi-Begleitung</h2><p class="sub">Mo–Fr um 17 Uhr · 2 Wochen · Lindenstraße</p>
   <div class="card white" style="margin-top:14px"><div class="row">${av(P.jonas)}<div><div class="name">Jonas Weber</div><div class="meta">Nr. 14 · Hund Fiete, klein, freundlich</div></div></div><div style="margin-top:10px">${lvl(2)}</div></div>
+  <h3>Aufgaben · aus Jonas’ Hausbuch</h3><div class="card">${JONAS_HB.tasks.map(t=>`<div class="check"><div><div class="t" style="text-decoration:none;color:inherit">${t.t}</div><small>${t.d}</small></div>${S.karl==='angebot'?howBtn(t.id,'j'):''}</div>`).join('')}</div>
+  ${S.karl==='strasse'?'<p class="flag" style="text-align:left">📖 Die Hinweise dazu siehst du, sobald Jonas zusagt.</p>':''}
   <div class="card"><div class="name" style="font-size:16px">Ohne Schlüssel · Übergabe an der Haustür</div></div>
   ${S.karl==='strasse'?'<button class="btn y" style="min-height:64px;font-size:20px" data-act="karloffer">🙋 Kann ich übernehmen</button>':'<button class="btn" data-go="kchat">💬 Zum Chat</button>'}`;
 
@@ -554,7 +632,7 @@ V.kchat = () => {
   <div class="ctx">🐾 <div><b>Gassi mit Fiete</b> · Mo–Fr, 17 Uhr</div></div><div class="msgs">`;
   S.kchat.forEach(m=>{ h += m.sys?`<div class="m sys">${m.t}</div>`:`<div class="m ${m.from===S.role?'me':'them'}">${m.t}</div>`; });
   h += `</div>`;
-  if (S.role==='karl' && S.kchat.length<4) h += `<div class="quick"><button data-act="karlok" style="font-size:18px;padding:14px 20px">Passt mir 👍</button><button data-act="karlwhen" style="font-size:18px;padding:14px 20px">Wann darf ich vorbeikommen?</button></div>`;
+  if (S.role==='karl' && S.kchat.length<=KCHAT().length) h +=`<div class="quick"><button data-act="karlok" style="font-size:18px;padding:14px 20px">Passt mir 👍</button><button data-act="karlwhen" style="font-size:18px;padding:14px 20px">Wann darf ich vorbeikommen?</button></div>`;
   h += `<div class="input"><input id="msg" placeholder="Nachricht schreiben …" autocomplete="off"><button data-act="send">➤</button></div>`;
   return h;
 };
@@ -564,9 +642,9 @@ V.treffen = () => {
   const ck = (k,t,d) => `<div class="check ${m[k]?'on':''}" data-act="mt" data-v="${k}"><div class="box">${m[k]?'✓':''}</div><div><div class="t" style="text-decoration:none;color:inherit">${t}</div>${d?`<small>${d}</small>`:''}</div></div>`;
   return back('chat','Chat') + `<h2>Sitting-Vereinbarung</h2>
   <div class="row" style="margin:14px 0">${av(P.sarah,'sm')}<span style="font-weight:700">🤝</span>${av(P.lena,'sm')}<span class="meta">Sa, 26. Juli · 10:00</span></div>
-  <div class="field"><small>Aufgaben und Zeiten</small><span>Füttern 8 & 19 Uhr · Klo alle 2 Tage · Balkon abends gießen</span></div>
+  <div class="field"><small>Aufgaben und Zeiten · aus Sarahs Hausbuch</small><span>${reqTasks().map(t=>`${t.t} · ${t.d}`).join('<br>')}</span></div>
   <div class="two"><div class="field"><small>Notfallkontakt</small><span>Bruder David<br>0170 ···</span></div><div class="field"><small>Tierarzt</small><span>Dr. Kern, Mittelstr.<br>Vollmacht: ja</span></div></div>
-  <div class="field"><small>Hausregeln</small><span>Nur Küche, Bad, Balkon · keine Gäste · Fenster zu</span></div>
+  <div class="field"><small>Hausregeln</small><span>${HAUSREGELN}</span></div>
   <div class="card" style="margin-top:4px">${ck('vers','Versicherungs-Check','„Meine Privathaftpflicht deckt das ab“')}</div>
   <h3>Beide bestätigen</h3><div class="card">${ck('sarah','Sarah bestätigt','')}${ck('lena','Lena bestätigt','')}</div>
   ${both?`<button class="btn ${m.key?'o':'y'}" data-act="key" ${m.key?'disabled':''}>🔑 ${m.key?'Schlüssel übergeben ✓':'Schlüsselübergabe bestätigen'}</button>`:'<p class="flag">🔑 Schlüssel erst, wenn beide bestätigen.</p>'}
@@ -576,16 +654,16 @@ V.treffen = () => {
 V.sitting = () => {
   const d = Math.max(S.day,1);
   return back('start') + `<p class="sub">Tag ${d} von 10 · bei Sarah, 2. OG</p><h2>Heute für Minka</h2><div class="prog"><i style="width:${d*10}%"></i></div>
-  <div class="card" style="margin-top:12px">${TASKS.map((t,i)=>{const k=d+'-'+i;return `<div class="check ${S.done[k]?'on':''}" data-act="done" data-v="${k}"><div class="box">${S.done[k]?'✓':''}</div><div><div class="t">${t.t}</div><small>${t.d}</small></div></div>`}).join('')}</div>
+  <div class="card" style="margin-top:12px">${reqTasks().map(t=>{const k=d+'-'+t.id;return `<div class="check ${S.done[k]?'on':''}" data-act="done" data-v="${k}"><div class="box">${S.done[k]?'✓':''}</div><div><div class="t">${t.t}</div><small>${t.d}</small></div>${howBtn(t.id)}</div>`}).join('')}</div>
   <div class="two"><button class="btn o sm" data-go="chat">💬 Chat</button><button class="btn sm" style="background:var(--red)" data-act="sos">🆘 Notfall</button></div>
   ${S.day>=10?'<button class="btn y" data-go="abschluss">Sitting abschließen</button>':''}`;
 };
 
 V.status = () => {
-  const d = Math.max(S.day,1), n = TASKS.filter((_,i)=>S.done[d+'-'+i]).length;
+  const d = Math.max(S.day,1), ts = reqTasks(), n = ts.filter(t=>S.done[d+'-'+t.id]).length;
   return back('start') + `<p class="sub">Du bist im Urlaub 🌊</p><h2>Minka geht es gut</h2>
   <div class="card" style="margin-top:12px"><div class="row">${av(P.lena)}<div><div class="name">Lena kümmert sich</div><div class="meta">Tag ${d} von 10</div></div></div><div class="prog"><i style="width:${d*10}%"></i></div></div>
-  <div class="card"><div class="name" style="font-size:16px">Heute erledigt: ${n} von 4</div>${TASKS.map((t,i)=>`<div class="meta" style="margin-top:6px">${S.done[d+'-'+i]?'✅':'⬜'} ${t.t}</div>`).join('')}</div>
+  <div class="card"><div class="name" style="font-size:16px">Heute erledigt: ${n} von ${ts.length}</div>${ts.map(t=>`<div class="meta" style="margin-top:6px">${S.done[d+'-'+t.id]?'✅':'⬜'} ${t.t}</div>`).join('')}</div>
   ${S.photo?'<div class="m photo" style="max-width:100%"><div class="img" style="width:100%;height:190px;background:url(img/minka.jpg) center/cover"></div><div style="padding:8px;font-size:14px">Minka hat heute auf dem Balkon geschlafen ☀️</div></div>':''}
   <button class="btn o" data-go="chat">💬 Chat mit Lena</button>`;
 };
@@ -625,11 +703,88 @@ V.profil = () => {
   return topbar() + `<div style="text-align:center;margin:10px 0 16px"><div style="display:inline-block">${av(p,'lg')}</div><h2 style="margin-top:8px">${p.n}</h2><p class="sub">${p.where}</p><div style="margin-top:8px">${lvl(p.lvl)}</div></div>
   <div class="field"><small>Ich kann</small><span>${extra[0]}</span></div>
   <div class="field" style="background:#FFF8E1;border-color:#FFE7A6"><small>Was ich gern zurückgebe</small><span>${extra[1]}</span></div>
+  ${S.role==='sarah'?hbCard():''}
   <h3>Vertrauensstufen</h3><div class="card">
     <div class="check on"><div class="box">✓</div><div><div class="t" style="text-decoration:none;color:inherit">1 · Registriert</div><small>Klarname und Adresse</small></div></div>
     <div class="check on"><div class="box">✓</div><div><div class="t" style="text-decoration:none;color:inherit">2 · Verifiziert</div><small>Brief-Code bestätigt</small></div></div>
     <div class="check ${S.meet.key&&(S.role==='sarah'||S.role==='lena')?'on':''}"><div class="box">${S.meet.key&&(S.role==='sarah'||S.role==='lena')?'✓':''}</div><div><div class="t" style="text-decoration:none;color:inherit">3 · Persönlich bekannt</div><small>${S.meet.key&&(S.role==='sarah'||S.role==='lena')?'mit '+(S.role==='sarah'?'Lena':'Sarah'):'nach dem ersten Kennenlern-Treffen'}</small></div></div>
   </div>`;
+};
+
+V.hausbuch = () => {
+  const hb = S.hb;
+  if (!hb.on) return back('profil','Profil') + `<h2>Hausbuch anlegen</h2><p class="sub">Einmal aufschreiben, was jemand bei dir wissen muss. Gilt dann für jedes Sitting.</p>
+    <h3>Für wen?</h3><div class="chips"><span class="chip on">✓ 🐾 Minka · Katze</span><span class="chip on">✓ 🏠 Wohnung</span></div>
+    <h3>Vorschläge für Katze und Wohnung</h3><div class="card">${HB_TASKS.filter(t=>VORSCHLAG.includes(t.id)).map(t=>`<div class="check ${S.hbv.includes(t.id)?'on':''}" data-act="hbv" data-v="${t.id}"><div class="box">${S.hbv.includes(t.id)?'✓':''}</div><div><div class="t" style="text-decoration:none;color:inherit">${t.t}</div><small>${t.d}</small></div></div>`).join('')}</div>
+    <div class="two"><div class="field"><small>Notfallkontakt · aus deinem Profil</small><span>Bruder David<br>0170 ···</span></div><div class="field"><small>Tierarzt</small><span>Dr. Kern, Mittelstr.</span></div></div>
+    <button class="btn y" data-act="hbcreate">📖 Hausbuch anlegen</button><p class="flag">Danach ergänzt du eigene Aufgaben und Hinweise mit Fotos.</p>`;
+  const sec = f => hb.tasks.filter(t=>t.f===f).map(taskRow).join('') || '<div class="meta">Noch keine Aufgabe</div>';
+  return back('profil','Profil') + `<h2>Mein Hausbuch</h2><p class="sub">Alles zu Minka und der Wohnung. Gilt für jedes Sitting.</p>
+  <h3>🐾 Minka · Aufgaben</h3><div class="card">${sec('minka')}</div>
+  <h3>🏠 Wohnung · Aufgaben</h3><div class="card">${sec('wohnung')}</div>
+  ${nextTask(S)?'<button class="btn o sm" data-act="hbaddtask">＋ Aufgabe hinzufügen</button>':''}
+  <h3>Hinweise</h3>${hb.hints.length ? hb.hints.map(h=>hintCard(h,true)).join('') : '<div class="card"><div class="meta">Noch keine Hinweise. Schreib auf, wo etwas steht, wie etwas geht und worauf man achten muss.</div></div>'}
+  ${nextHint(S)?'<button class="btn o sm" data-act="hbaddhint">＋ Hinweis mit Foto</button>':''}
+  <h3>Notfall und Regeln</h3>
+  <div class="two"><div class="field"><small>Notfallkontakt</small><span>Bruder David<br>0170 ···</span></div><div class="field"><small>Tierarzt</small><span>Dr. Kern, Mittelstr.<br>Vollmacht: ja</span></div></div>
+  <div class="field"><small>Hausregeln</small><span>${HAUSREGELN}</span></div>
+  <button class="btn y" data-act="fgopen">🔳 Mit jemandem teilen, den ich kenne</button>
+  <p class="flag">In einer Anfrage sehen Nachbarn nur die Aufgaben. Hinweise erst nach deiner Zusage, Vertrauliches erst nach der Vereinbarung.</p>`;
+};
+
+V.hbhint = () => {
+  const s = nextHint(S), f = S.hf;
+  if (!s || !f) return back('hausbuch','Hausbuch') + `<h2>Neuer Hinweis</h2><p class="sub">Alle Beispiel-Hinweise der Demo sind schon im Hausbuch.</p>`;
+  return back('hausbuch','Abbrechen') + `<h2>Neuer Hinweis</h2><p class="sub">Was muss jemand bei dir wissen?</p>
+  <h3>Art</h3><div class="chips">${Object.entries(HK).map(([k,[l]])=>`<button class="chip ${f.k===k?'on':''}" data-act="hfk" data-v="${k}">${l}</button>`).join('')}</div>
+  <div class="field" style="margin-top:12px"><small>Titel</small><span>${s.t}</span></div>
+  <div class="field"><small>Text</small><span>${s.x}</span></div>
+  ${f.ph ? (s.img?`<div class="hph" style="background:url(${s.img}) center/cover;margin-bottom:10px"></div>`:'<div class="hph sim" style="margin-bottom:10px">📷 Foto aufgenommen · in der Demo simuliert</div>') : '<button class="btn o sm" data-act="hfph">📷 Foto aufnehmen</button>'}
+  <h3>Gehört zu</h3><div class="chips">${S.hb.tasks.map(t=>`<button class="chip ${f.link.includes(t.id)?'on':''}" data-act="hflink" data-v="${t.id}">${f.link.includes(t.id)?'✓ ':''}${t.t}</button>`).join('')}</div>
+  ${f.k==='geheim'?'<p class="flag" style="text-align:left">🔒 Helfende sehen das erst nach der Vereinbarung, Gäste nur mit PIN.</p>':''}
+  <button class="btn y" data-act="hfsave">Hinweis speichern</button>`;
+};
+
+V.hbtask = () => {
+  const s = nextTask(S), f = S.tf;
+  const b = S.ret==='neu' ? back('neu','Zur Anfrage') : back('hausbuch','Abbrechen');
+  if (!s || !f) return b + `<h2>Neue Aufgabe</h2><p class="sub">Alle Beispiel-Aufgaben der Demo sind schon im Hausbuch.</p>`;
+  return b + `<h2>Neue Aufgabe</h2><p class="sub">Landet im Hausbuch und steht dann in jeder Anfrage zur Auswahl.</p>
+  <div class="field" style="margin-top:12px"><small>Was ist zu tun?</small><span>${s.t}</span></div>
+  <h3>Wie oft?</h3><div class="chips">${[...new Set([s.d,'täglich','alle zwei Tage','einmal'])].map(d=>`<button class="chip ${f.d===d?'on':''}" data-act="tfd" data-v="${d}">${d}</button>`).join('')}</div>
+  <h3>Für</h3><div class="two"><button class="chip ${f.f==='minka'?'on':''}" data-act="tff" data-v="minka">🐾 Minka</button><button class="chip ${f.f==='wohnung'?'on':''}" data-act="tff" data-v="wohnung">🏠 Wohnung</button></div>
+  <button class="btn y" data-act="tfsave">Aufgabe speichern</button>`;
+};
+
+function gastLog(){
+  const any = Object.keys(S.gdone).length;
+  return `<h3>Wer war da?</h3><div class="card">${any ? fgTasks().map(t=>`<div class="meta" style="margin-top:6px">${S.gdone[t.id]?`✅ ${t.t} · <b>David, ${S.gdone[t.id]}</b>`:`⬜ ${t.t}`}</div>`).join('') : '<div class="meta">Noch niemand. Sobald jemand abhakt, siehst du es hier.</div>'}</div>`;
+}
+V.freigabe = () => {
+  const f = S.fg;
+  const h = back('hausbuch','Hausbuch') + `<h2>Hausbuch teilen</h2><p class="sub">Für jemanden, den du kennst. Ohne Anfrage, ohne Konto.</p>`;
+  if (!f.on) return h + `<div class="field" style="margin-top:12px"><small>Zeitraum</small><span>1.–10. August · danach gilt der Code nicht mehr</span></div>
+    <h3>Aufgaben · aus deinem Hausbuch</h3><div class="chips">${S.hb.tasks.map(t=>`<button class="chip ${f.tasks.includes(t.id)?'on':''}" data-act="fgtask" data-v="${t.id}">${f.tasks.includes(t.id)?'✓ ':''}${t.t}</button>`).join('')}</div>
+    <div class="card" style="margin-top:14px"><div class="check ${f.pin?'on':''}" data-act="fgpin"><div class="box">${f.pin?'✓':''}</div><div><div class="t" style="text-decoration:none;color:inherit">🔒 Mit PIN 2580</div><small>Sagst du am Telefon. Ohne PIN bleibt der Ersatzschlüssel verborgen.</small></div></div></div>
+    <button class="btn y" data-act="fgcreate">🔳 QR-Code erstellen</button>
+    <p class="flag">Du kannst die Freigabe jederzeit widerrufen.</p>`;
+  if (f.rev) return h + `<div class="banner" style="margin-top:14px;background:#E7F6EC"><b>Freigabe beendet ✓</b>Der Code zeigt nichts mehr. Dein Hausbuch bleibt bei dir.</div>` + gastLog();
+  return h + `<div class="card white qr"><img src="img/freigabe-qr.svg" alt="QR-Code der Freigabe"><div><div class="name" style="font-size:16px">Minka & Wohnung</div><div class="meta">1.–10. August · ${f.pin?'mit PIN':'ohne PIN'}</div><div class="meta" style="margin-top:6px">Scannen oder als Link schicken</div></div></div>`
+    + gastLog() + `<button class="btn o" data-act="fgrevoke">Freigabe widerrufen</button>`;
+};
+
+V.gast = () => {
+  if (S.fg.rev) return topbar() + `<div class="gst"><h2>Diese Freigabe ist beendet</h2><p class="sub">Frag Sarah nach einem neuen Code.</p></div>`;
+  if (S.g===0) return topbar() + `<div class="gst"><div style="display:inline-block">${av(P.sarah,'lg')}</div><h2>Sarah teilt ihr Hausbuch mit dir</h2><p class="sub">Minka & Wohnung · 1.–10. August</p>
+    <div class="field" style="margin-top:16px;text-align:left"><small>Dein Vorname</small><span>David</span></div>
+    <button class="btn y" data-act="gname">Weiter als Gast</button><p class="flag">Kein Konto, kein Passwort. Sarah sieht, was du abhakst.</p></div>`;
+  if (S.g===1) return topbar() + `<div class="gst"><h2>PIN eingeben</h2><p class="sub">Die PIN hat dir Sarah gesagt.</p><div class="pin">${'2580'.split('').map(c=>`<span>${c}</span>`).join('')}</div><button class="btn y" data-act="gpin">Öffnen</button></div>`;
+  const ts = fgTasks(), n = ts.filter(t=>S.gdone[t.id]).length;
+  return topbar() + `<div class="row" style="margin-bottom:6px">${av(P.sarah,'sm')}<p class="sub" style="margin:0">Gast bei Sarah · Tag 1 von 10</p></div><h2>Heute für Minka</h2><div class="prog"><i style="width:${ts.length?n*100/ts.length:0}%"></i></div>
+  <div class="card" style="margin-top:12px">${ts.map(t=>`<div class="check ${S.gdone[t.id]?'on':''}" data-act="gdone" data-v="${t.id}"><div class="box">${S.gdone[t.id]?'✓':''}</div><div><div class="t">${t.t}</div><small>${S.gdone[t.id]?'David, '+S.gdone[t.id]:t.d}</small></div>${howBtn(t.id)}</div>`).join('')}</div>
+  <h3>Gut zu wissen · aus Sarahs Hausbuch</h3>${S.hb.hints.filter(h=>h.k==='achtung'||(h.k==='geheim'&&S.fg.pin)).map(h=>hintCard(h)).join('')}
+  <button class="btn sm" style="background:var(--red)" data-act="sos">🆘 Notfall</button>
+  <div class="card white" style="margin-top:14px"><div class="name" style="font-size:16px">Sitting behalten?</div><div class="meta">Mit Konto bleibt es gespeichert, und Sarah kann dich empfehlen.</div><button class="btn o sm" data-act="gacc">Konto anlegen</button></div>`;
 };
 
 V.chats = () => {
@@ -644,6 +799,9 @@ V.chats = () => {
 };
 
 function sheet(){
+  if (S.sheet && S.sheet.startsWith('how:')) { const [,b,id] = S.sheet.split(':'), book = b==='j' ? JONAS_HB : S.hb, t = book.tasks.find(x=>x.id===+id);
+    const hs = t ? t.h.map(i=>book.hints.find(x=>x.id===i)).filter(Boolean) : [];
+    return `<div class="sheet" data-act="close"><div class="in"><h2>${t?t.t:''}</h2><p class="sub">${t?t.d:''} · aus ${b==='j'?'Jonas’':'Sarahs'} Hausbuch</p>${hs.map(h=>hintCard(h)).join('') || '<p class="sub" style="margin-top:12px">Zu dieser Aufgabe gibt es noch keinen Hinweis.</p>'}<button class="btn" data-act="close">Verstanden</button></div></div>`; }
   if (S.sheet==='sos') return `<div class="sheet" data-act="close"><div class="in"><h2>Notfall-Leitfaden</h2>
     ${[['🤒 Tier krank oder verletzt','Tierarzt Dr. Kern anrufen 📞'],['🔍 Tier entlaufen','Haus absuchen, Nachbarn fragen'],['💧 Wasserschaden','Haupthahn im Bad zudrehen'],['🔑 Schlüssel verloren','Notfallkontakt David anrufen'],['📵 Sarah nicht erreichbar','Bruder David anrufen']].map(([a,b])=>`<div class="card" style="margin-top:10px"><div class="name" style="font-size:16px">${a}</div><div class="meta" style="margin-top:4px;line-height:1.45">${b}</div></div>`).join('')}
     <button class="btn" data-act="close">Schließen</button></div></div>`;
@@ -657,9 +815,9 @@ function render(){
   if (!V[S.screen]) S.screen='start';
   const vw = document.getElementById('view'); vw.innerHTML = X(V[S.screen]());
   if (S.screen !== render.last) { vw.classList.remove('enter'); void vw.offsetWidth; vw.classList.add('enter'); render.last = S.screen; }
-  const tabOf = {start:'start',neu:'start',myreq:'start',detail:'start',fiete:'start',sitting:'start',status:'start',abschluss:'start',treffen:'chats',chat:'chats',kchat:'chats',nachbarn:'nachbarn',chats:'chats',profil:'profil'}[S.screen];
+  const tabOf = {start:'start',neu:'start',myreq:'start',detail:'start',fiete:'start',sitting:'start',status:'start',abschluss:'start',treffen:'chats',chat:'chats',kchat:'chats',nachbarn:'nachbarn',chats:'chats',profil:'profil',hausbuch:'profil',freigabe:'profil',hbhint:'profil',hbtask:S.ret==='neu'?'start':'profil'}[S.screen];
   const unread = (S.role==='sarah'&&S.req&&S.req.status==='angebot')||(S.role==='jonas'&&S.karl==='angebot');
-  document.getElementById('tabs').style.display = S.screen==='ob' ? 'none' : '';
+  document.getElementById('tabs').style.display = S.screen==='ob' || S.role==='david' ? 'none' : '';
   document.getElementById('tabs').innerHTML = X(TABS.map(([k,i,l])=>`<button class="${tabOf===k?'on':''}" data-tab="${k}"><span class="ic">${i}</span>${l}${k==='chats'&&unread?'<span class="dot">1</span>':''}</button>`).join(''));
   let ov = sheet();
   if (S.toast) { ov += `<div class="toast">${S.toast}</div>`; S.toast=null; }
@@ -715,11 +873,22 @@ const UC = [
   {id:'str', icon:'🛣️', title:'Gassi in der Straße', steps:[
     {l:'Niemand da: erweitern', c:'Im Haus hat niemand Zeit. Jonas erweitert auf die Straße.', who:'jonas', go:'start', done:s=>s.karl!=='haus', pre:s=>{}},
     {l:'Karl übernimmt', c:'Karl sieht die Anfrage und übernimmt.', who:'karl', go:'fiete', done:s=>s.karl==='angebot', pre:s=>{s.karl='strasse';}},
-    {l:'Treffen an der Haustür', c:'Kennenlernen an der Haustür, ohne Schlüssel.', who:'karl', go:'kchat', done:s=>s.kchat.length>=5, pre:s=>{s.karl='angebot';s.kchat=KCHAT();}},
+    {l:'Treffen an der Haustür', c:'Kennenlernen an der Haustür, ohne Schlüssel.', who:'karl', go:'kchat', done:s=>s.kchat.some(m=>m.sys&&m.t.includes('Kennenlernen')), pre:s=>{s.karl='angebot';s.kchat=KCHAT();}},
+  ]},
+  {id:'fg', icon:'🔳', title:'Hausbuch teilen', steps:[
+    {l:'QR-Code für David', c:'Sarah teilt ihr Hausbuch mit ihrem Bruder: nur im Urlaub, mit PIN.', who:'sarah', go:'freigabe', done:s=>s.fg.on, pre:s=>{}},
+    {l:'Als Gast öffnen', c:'David scannt den Code. Kein Konto, nur Vorname und PIN.', who:'david', go:'gast', done:s=>s.g>=2, pre:s=>{s.fg.on=true;}},
+    {l:'Abhaken mit „Wie?“', c:'David sieht bei jeder Aufgabe, wie sie geht, und hakt ab.', who:'david', go:'gast', done:s=>Object.keys(s.gdone).length>=2, pre:s=>{s.fg.on=true;s.g=2;}},
+    {l:'Sehen und beenden', c:'Sarah sieht, wer da war, und beendet die Freigabe.', who:'sarah', go:'freigabe', done:s=>s.fg.rev, pre:s=>{s.fg.on=true;s.g=2;s.gdone={0:'19:02',3:'19:10'};}},
   ]},
 ];
+UC.unshift({id:'hb', icon:'📖', title:'Hausbuch anlegen', steps:[
+  {l:'Vorschläge übernehmen', c:'Sarah legt ihr Hausbuch an, mit Vorschlägen für Katze und Wohnung.', who:'sarah', go:'hausbuch', done:s=>s.hb.on, pre:s=>{s.hb=hbEmpty();}},
+  {l:'Hinweis mit Foto', c:'Sarah schreibt auf, wo das Futter steht, und macht ein Foto.', who:'sarah', go:'hbhint', done:s=>s.hb.hints.length>0, pre:s=>{s.hb=hbStarter(VORSCHLAG);initHint(s);}},
+  {l:'Eigene Aufgabe', c:'Sarah ergänzt eine eigene Aufgabe. Ab jetzt steht sie in jeder Anfrage zur Auswahl.', who:'sarah', go:'hbtask', done:s=>s.hb.tasks.some(t=>!VORSCHLAG.includes(t.id)), pre:s=>{s.hb=hbStarter(VORSCHLAG);initHint(s);s.hf.ph=true;saveHint(s);initTask(s);}},
+]});
 UC.push(UC.splice(UC.findIndex(u=>u.id==='ob'),1)[0]);
-const KCHAT = () => [{sys:1,t:'<b>Karl</b> hat „Kann ich übernehmen“ getippt'},{from:'karl',t:'Guten Tag, ich bin Karl aus Nr. 7. Bruno kommt gern mit.'},{from:'jonas',t:'Toll! Morgen um 17 Uhr an der Haustür?'}];
+const KCHAT = () => [{sys:1,t:'<b>Karl</b> hat „Kann ich übernehmen“ getippt'},{from:'karl',t:'Guten Tag, ich bin Karl aus Nr. 7. Bruno kommt gern mit.'},{from:'jonas',t:'Toll! Morgen um 17 Uhr an der Haustür?'},{sys:1,t:'📖 <b>Jonas hat sein Hausbuch freigegeben</b> · Leine, Katzen'}];
 function st2(s){ return s.req ? STEPS.indexOf(s.req.status) : -1; }
 function gotoStep(uid, i){
   const u = UC.find(x=>x.id===uid), x = u.steps[i];
@@ -739,7 +908,7 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-go],[data-act],[data-tab],[data-role],[data-step]');
   if (!el) return;
   if (el.dataset.step){ const [u,i]=el.dataset.step.split(':'); return gotoStep(u,+i); }
-  if (el.dataset.role){ S.role=el.dataset.role; S.screen='start'; S.sheet=null; return render(); }
+  if (el.dataset.role){ S.role=el.dataset.role; S.screen=S.role==='david'?'gast':'start'; S.sheet=null; return render(); }
   if (el.dataset.tab){ S.screen=el.dataset.tab; return render(); }
   if (el.dataset.go){ S.screen=el.dataset.go; return render(); }
   const a = el.dataset.act, v = el.dataset.v;
@@ -748,7 +917,8 @@ document.addEventListener('click', e => {
     case 'kind': S.form.kind = v; break;
     case 'task': { const i=+v, t=S.form.tasks; t.includes(i)?t.splice(t.indexOf(i),1):t.push(i); break; }
     case 'kreis': S.form.kreis = v; break;
-    case 'post': S.req={status:'offen'}; S.screen='start'; toast('✓ Anfrage ist sichtbar für 6 Nachbarn in deinem Haus'); break;
+    case 'post': { const neuHb = !S.hb.on; if (neuHb) S.hb = hbStarter(S.form.tasks);
+      S.req={status:'offen',tasks:[...S.form.tasks]}; S.screen='start'; toast('✓ Anfrage ist sichtbar für 6 Nachbarn in deinem Haus' + (neuHb?' · Hausbuch angelegt':'')); break; }
     case 'offer': setStatus('angebot'); S.chat=[{sys:1,t:'<b>Lena</b> hat „Kann ich übernehmen“ getippt'},{from:'lena',t:'Hi Sarah! Ich wohne zwei Stockwerke über dir und mag Katzen sehr. Ich kann gern auf Minka aufpassen 🙂'}]; S.screen='chat'; break;
     case 'choose': setStatus('zugesagt'); sys('<b>Sarah hat Lena ausgewählt</b> · Adresse freigegeben: Lindenstr. 12, 2. OG links'); S.chat.push({from:'sarah',t:'Wie schön, danke dir! Lass uns vorher kurz kennenlernen.'}); S.screen='chat'; break;
     case 'meet': S.chat.push({meet:1}); S.chat.push({from:'sarah',t:'Passt dir Samstag um 10 bei mir? Dann zeige ich dir alles.'}); break;
@@ -784,6 +954,28 @@ document.addEventListener('click', e => {
     case 'obfin': S.ob=4; S.screen='start'; toast('✓ Willkommen in der Lindenstraße! Du bist jetzt Stufe 2.'); break;
     case 'expand': S.uc='str'; S.karl='strasse'; toast('✓ Jetzt sichtbar für 23 Nachbarn in der Lindenstraße'); break;
     case 'karloffer': S.uc='str'; S.karl='angebot'; S.kchat=KCHAT(); S.screen='kchat'; break;
+    case 'how': S.sheet='how:'+v; break;
+    case 'newtask': S.ret='neu'; initTask(S); S.screen='hbtask'; break;
+    case 'hbv': { const l=S.hbv, i=+v; l.includes(i)?l.splice(l.indexOf(i),1):l.push(i); break; }
+    case 'hbcreate': S.hb=hbStarter(S.hbv); S.uc='hb'; toast('✓ Hausbuch angelegt'); break;
+    case 'hbaddhint': initHint(S); S.screen='hbhint'; break;
+    case 'hbaddtask': S.ret=null; initTask(S); S.screen='hbtask'; break;
+    case 'hfk': S.hf.k=v; break;
+    case 'hfph': S.hf.ph=true; break;
+    case 'hflink': { const l=S.hf.link, i=+v; l.includes(i)?l.splice(l.indexOf(i),1):l.push(i); break; }
+    case 'hfsave': saveHint(S); S.screen='hausbuch'; toast('✓ Hinweis im Hausbuch'); break;
+    case 'tfd': S.tf.d=v; break;
+    case 'tff': S.tf.f=v; break;
+    case 'tfsave': saveTask(S); break;
+    case 'fgtask': { const l=S.fg.tasks, i=+v; l.includes(i)?l.splice(l.indexOf(i),1):l.push(i); break; }
+    case 'fgopen': S.uc='fg'; S.screen='freigabe'; break;
+    case 'fgpin': S.fg.pin=!S.fg.pin; break;
+    case 'fgcreate': S.fg.on=true; S.uc='fg'; toast('✓ Freigabe gilt bis 10. August'); break;
+    case 'fgrevoke': S.fg.rev=true; toast('✓ Freigabe widerrufen'); break;
+    case 'gname': S.g = S.fg.pin ? 1 : 2; S.uc='fg'; break;
+    case 'gpin': S.g=2; toast('✓ Willkommen, David'); break;
+    case 'gdone': if (S.gdone[v]) delete S.gdone[v]; else S.gdone[v]=GTIMES[Object.keys(S.gdone).length]||'19:12'; break;
+    case 'gacc': toast('In der Demo nicht nötig. Mit Konto läge das Sitting dann bei David.'); break;
     case 'karlok': S.kchat.push({from:'karl',t:'Passt mir 👍'}); S.kchat.push({sys:1,t:'<b>Kennenlernen morgen um 17 Uhr</b> · Haustür Nr. 14'}); break;
   }
   render();
@@ -808,6 +1000,13 @@ const SHOTS = {
   ob2: s=>{ s.role='karl'; s.screen='ob'; s.ob=2; s.code='12'; },
   ob3: s=>{ s.role='karl'; s.screen='ob'; s.ob=3; },
   notfall: s=>{ s.role='lena'; s.req={status:'laeuft'}; s.day=3; s.screen='sitting'; s.sheet='sos'; },
+  hbneu:    s=>{ s.role='sarah'; s.uc='hb'; s.hb=hbEmpty(); s.screen='hausbuch'; },
+  hbhint:   s=>{ s.role='sarah'; s.uc='hb'; s.hb=hbStarter(VORSCHLAG); initHint(s); s.hf.ph=true; s.screen='hbhint'; },
+  hausbuch: s=>{ s.role='sarah'; s.uc='hb'; s.screen='hausbuch'; },
+  freigabe: s=>{ s.role='sarah'; s.uc='fg'; s.fg.on=true; s.g=2; s.gdone={0:'19:02',3:'19:10'}; s.screen='freigabe'; },
+  gast:     s=>{ s.role='david'; s.uc='fg'; s.fg.on=true; s.screen='gast'; },
+  gastliste: s=>{ s.role='david'; s.uc='fg'; s.fg.on=true; s.g=2; s.gdone={0:'19:02'}; s.screen='gast'; },
+  wie:      s=>{ s.role='lena'; s.req={status:'laeuft'}; s.day=3; s.screen='sitting'; s.sheet='how:s:0'; },
 };
 document.addEventListener('keydown', e => {
   if (e.target.id==='msg') { if (e.key==='Enter') document.querySelector('[data-act="send"]').click(); return; }
@@ -827,10 +1026,15 @@ function nav(d){
 function fit(){ const st=document.getElementById('stage'); if(!st) return; st.style.setProperty('--s', Math.max(0.35, Math.min((innerWidth-32)/(document.body.classList.contains('beamer')?1000:780), (innerHeight-24)/880, 1.35))); }
 addEventListener('resize', fit); if (location.hash==='#beamer') document.body.classList.add('beamer'); fit();
 const q = new URLSearchParams(location.search);
+/* Demo-Start: Sarah hat noch kein Hausbuch, der erste Ablauf legt es an */
+function demoStart(){ const s = fresh(); s.uc='hb'; s.hb=hbEmpty(); return s; }
 if (q.get('shot') && SHOTS[q.get('shot')]) { SHOTS[q.get('shot')](S); }
+/* QR-Code der Freigabe: index.html?gast öffnet direkt die Gast-Ansicht */
+else if (q.has('gast')) { S.role='david'; S.uc='fg'; S.fg.on=true; S.screen='gast'; }
+else S = demoStart();
 if (q.has('bare')) document.body.classList.add('bare');
 document.querySelectorAll('.ctrlrow .cbtn').forEach(b=>b.innerHTML=X(b.innerHTML));
-document.querySelector('[data-act="reset"]').addEventListener('click',()=>{S=fresh();render();},true);
+document.querySelector('[data-act="reset"]').addEventListener('click',()=>{S=demoStart();render();},true);
 render();
 </script>
 </body>
