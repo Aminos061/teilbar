@@ -8,7 +8,7 @@ Für das Team (Amin, Matias, Sirat, Can). Einrichtung: [docs/setup.md](docs/setu
 |---|---|
 | Code, Reviews, Aufgaben, Board | GitHub: Repo, Issues, Projects, Pull Requests |
 | Kurze Absprachen | WhatsApp-Gruppe |
-| Meetings (einmal pro Woche, mit 10 Minuten Lab-Review) | Discord |
+| Meetings (einmal pro Woche, mit 10 Minuten Lab-Review; ein Agent trägt die Entscheidungen live ein) | Discord |
 | Ergebnisse aus Meetings | keine Notizen: Aufgaben als Issue, Entscheidungen als ADR, Lab-Review direkt in den Daten |
 | Entscheidungen | `docs/adr/NNNN-kurzname.md` (Kontext, Entscheidung, Folgen, Quellen) |
 | KI-Einsatz dokumentieren | `ai-lab/` (siehe unten) |
