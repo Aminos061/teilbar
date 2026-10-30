@@ -1,0 +1,27 @@
+name: Aufgabe
+description: Eine Arbeitseinheit für die App oder die Doku
+title: "[Aufgabe] "
+body:
+  - type: textarea
+    id: ziel
+    attributes:
+      label: Ziel
+      description: Was soll danach anders sein?
+    validations:
+      required: true
+  - type: textarea
+    id: fertig
+    attributes:
+      label: Fertig, wenn …
+      description: Prüfbare Punkte, als Checkliste
+      value: |
+        - [ ]
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options: [Recherche, Anforderung, Design, Planung, Implementierung, Test, Review, Deployment, Doku, Organisation]
+    validations:
+      required: true

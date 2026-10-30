@@ -1,0 +1,45 @@
+{
+  // Gemeinsame Entwicklungsumgebung für das Team (docs/adr/0003-ein-devcontainer.md).
+  // Versionen der Agenten-CLIs: .devcontainer/install-clis.sh. Änderungen nur per Pull Request.
+  "name": "teilbar",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "remoteUser": "vscode",
+  "features": {
+    "ghcr.io/devcontainers/features/node:2": { "version": "24" },
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  // Logins liegen in benannten Volumes auf dem eigenen Rechner, nie im Repo.
+  "mounts": [
+    "source=tb-claude,target=/home/vscode/.claude,type=volume",
+    "source=tb-codex,target=/home/vscode/.codex,type=volume",
+    "source=tb-copilot,target=/home/vscode/.copilot,type=volume",
+    "source=tb-qwen,target=/home/vscode/.qwen,type=volume",
+    "source=tb-openhands,target=/home/vscode/.openhands,type=volume",
+    "source=tb-opencode-data,target=/home/vscode/.local/share/opencode,type=volume",
+    "source=tb-goose-config,target=/home/vscode/.config/goose,type=volume",
+    "source=tb-agentsview,target=/home/vscode/.agentsview,type=volume"
+  ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "DISABLE_AUTOUPDATER": "1",
+    "AGENTSVIEW_TELEMETRY_ENABLED": "0",
+    "DO_NOT_TRACK": "1",
+    "LITE_LLM_BASE_URL": "http://141.19.140.104:4000/v1",
+    "LITE_LLM_LOCAL_API_KEY": "${localEnv:LITE_LLM_LOCAL_API_KEY}",
+    "LITE_LLM_ACADEMIC_CLOUD_API_KEY": "${localEnv:LITE_LLM_ACADEMIC_CLOUD_API_KEY}"
+  },
+  "postCreateCommand": "bash .devcontainer/install-clis.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "openai.chatgpt",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "files.eol": "\n"
+      }
+    }
+  }
+}

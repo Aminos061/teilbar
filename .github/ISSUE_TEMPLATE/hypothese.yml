@@ -1,0 +1,30 @@
+name: Hypothese (KI-Labor)
+description: Eine prüfbare Vermutung über unseren KI-Einsatz. Die Issue-Nummer wird die ID (H<nr>).
+title: "[Hypothese] "
+labels: ["ki-labor"]
+body:
+  - type: textarea
+    id: aussage
+    attributes:
+      label: Aussage
+      description: "Wenn …, dann …, weil …"
+      placeholder: "Wenn wir vor dem Coden ein Grill-Interview machen, dann brauchen wir weniger Nacharbeit, weil Missverständnisse früher auffallen."
+    validations:
+      required: true
+  - type: dropdown
+    id: quelle
+    attributes:
+      label: Quelle
+      options: [eigene Sitzung, Open-Source-Repo, Kurs, Literatur]
+    validations:
+      required: true
+  - type: input
+    id: ref
+    attributes:
+      label: Beleg / Link
+      description: Sitzungsdatei, Repo-URL oder Literaturstelle
+  - type: textarea
+    id: messung
+    attributes:
+      label: Woran messen wir es?
+      description: z. B. Nacharbeit in Minuten, beim ersten Mal gepasst, Bewertung 1–5

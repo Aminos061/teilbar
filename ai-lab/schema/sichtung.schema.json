@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Aminos061/teilbar/ai-lab/schema/sichtung.schema.json",
+  "title": "Sichtung einer Quelle (eine Zeile in daten/sichtungen.jsonl)",
+  "description": "ADR 0006: Eine Person sichtet mit ihrem Agenten eine fremde Quelle. Die Kandidaten stehen in kandidaten.jsonl mit origin = id.",
+  "type": "object",
+  "required": [
+    "id",
+    "date",
+    "person",
+    "source",
+    "goal"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}_[a-z]+_[a-z0-9-]+$",
+      "description": "JJJJ-MM-TT_<person>_<quelle>"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "person": {
+      "$ref": "defs.schema.json#/$defs/person"
+    },
+    "source": {
+      "$ref": "defs.schema.json#/$defs/source"
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Welches Problem soll die Quelle bei uns lösen?"
+    },
+    "parts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "promise": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "cost": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Größe bzw. Kontextkosten"
+          },
+          "portable": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "chosen": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "not_adopted": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "part",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "part": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Was keine Kandidaten wurde, mit Grund (Material für „Was ist Ballast?“)"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Lizenz, Sicherheit, Überschneidungen"
+    }
+  }
+}

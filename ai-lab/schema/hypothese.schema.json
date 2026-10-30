@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Aminos061/teilbar/ai-lab/schema/hypothese.schema.json",
+  "title": "Hypothese (eine Zeile in daten/hypothesen.jsonl)",
+  "description": "Eine prüfbare Aussage über unseren KI-Einsatz.",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "statement",
+    "status",
+    "evidence",
+    "owner",
+    "phases",
+    "created"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^H\\d+$",
+      "description": "H + Nummer des GitHub-Issues"
+    },
+    "title": {
+      "type": "string"
+    },
+    "statement": {
+      "$ref": "defs.schema.json#/$defs/statement"
+    },
+    "status": {
+      "enum": [
+        "offen",
+        "geplant",
+        "pilot",
+        "getestet",
+        "gestuetzt",
+        "nicht-gestuetzt",
+        "unklar",
+        "repliziert",
+        "regel",
+        "veraltet",
+        "verworfen"
+      ]
+    },
+    "evidence": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3,
+      "description": "0 Beobachtung, 1 ein Experiment, 2 repliziert, 3 zusätzlich Studie"
+    },
+    "owner": {
+      "$ref": "defs.schema.json#/$defs/person"
+    },
+    "candidate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Kandidat, aus dem sie stammt"
+    },
+    "source": {
+      "oneOf": [
+        {
+          "$ref": "defs.schema.json#/$defs/source"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "phases": {
+      "$ref": "defs.schema.json#/$defs/phases"
+    },
+    "measure": {
+      "type": "string"
+    },
+    "decision_rule": {
+      "type": "string",
+      "description": "Vor dem ersten Lauf festgeschrieben"
+    },
+    "test_task": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Issue der Testaufgabe"
+    },
+    "experiments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^E\\d+$"
+      }
+    },
+    "created": {
+      "type": "string",
+      "format": "date"
+    },
+    "decided": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "date",
+          "text"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Stand: was wann passiert ist"
+    }
+  }
+}

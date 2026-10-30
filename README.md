@@ -84,3 +84,12 @@ Der Prototyp hat kein Backend. Alle Daten sind fest eingebaut und werden beim Ne
 | `img/` | Porträts der Personas, Foto von Katze Minka und QR-Code der Demo-Freigabe |
 | `fonts/` | Schrift Inter (lokal eingebunden, damit der Prototyp offline läuft) |
 | `.nojekyll` | sorgt dafür, dass GitHub Pages die Dateien unverändert ausliefert |
+
+## Entwicklung im Team und KI-Labor
+
+Für die Weiterentwicklung arbeiten wir in einem gemeinsamen Devcontainer und dokumentieren unseren KI-Einsatz.
+
+- Einrichtung: [docs/setup.md](docs/setup.md)
+- Zusammenarbeit (Issues, Branches, Reviews, KI-Regeln): [CONTRIBUTING.md](CONTRIBUTING.md)
+- KI-Labor (Sitzungsprotokolle, Hypothesen, Experimente): [ai-lab/README.md](ai-lab/README.md)
+- Regeln für Agenten: [AGENTS.md](AGENTS.md)

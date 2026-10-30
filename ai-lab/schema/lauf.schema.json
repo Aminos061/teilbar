@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Aminos061/teilbar/ai-lab/schema/lauf.schema.json",
+  "title": "Lauf (eine Zeile in daten/laeufe.jsonl)",
+  "description": "Eine Bearbeitung der Experiment-Aufgabe in einer Konfiguration.",
+  "type": "object",
+  "required": [
+    "id",
+    "experiment",
+    "run",
+    "config",
+    "blind_label",
+    "branch"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^E\\d+/[A-Z][0-9]$",
+      "description": "<experiment>/<run>, z. B. E15/A1"
+    },
+    "experiment": {
+      "type": "string",
+      "pattern": "^E\\d+$"
+    },
+    "run": {
+      "type": "string",
+      "pattern": "^[A-Z][0-9]$"
+    },
+    "config": {
+      "type": "string",
+      "pattern": "^[A-Z]$"
+    },
+    "blind_label": {
+      "type": "string",
+      "pattern": "^[a-z]{4}$"
+    },
+    "branch": {
+      "type": "string"
+    },
+    "session": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "failed": {
+      "type": "boolean",
+      "description": "Timeout, Abbruch, leeres Ergebnis: zählt mit"
+    },
+    "tokens": {
+      "oneOf": [
+        {
+          "$ref": "defs.schema.json#/$defs/tokens"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "shadow_price_usd": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "minutes": {
+      "oneOf": [
+        {
+          "$ref": "defs.schema.json#/$defs/minutes"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "objective": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tests_pass": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "lint_clean": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "checklist_met": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "rating": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "rater",
+        "quality",
+        "clarity",
+        "rework_min"
+      ],
+      "properties": {
+        "rater": {
+          "$ref": "defs.schema.json#/$defs/person"
+        },
+        "quality": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "clarity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "rework_min": {
+          "type": "number",
+          "minimum": 0
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "second": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Zweitbewertung, gleiche Felder"
+        }
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

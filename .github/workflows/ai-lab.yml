@@ -1,0 +1,37 @@
+name: ai-lab
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ai-lab/tools/requirements.txt
+      - name: Daten, Verweise und Markdown-Index prüfen
+        run: python ai-lab/tools/lab.py check
+      - name: Skill-Kopien aktuell?
+        run: python ai-lab/tools/lab.py sync-skills --check
+      - name: Erinnerung Sitzungsprotokoll
+        if: github.event_name == 'pull_request'
+        run: |
+          if ! git diff "origin/${{ github.base_ref }}...HEAD" -- ai-lab/daten/sitzungen/ | grep -q '^+{'; then
+            echo "::warning::Dieser PR enthält kein Sitzungsprotokoll. Mit Agent gearbeitet? 'Sitzung protokollieren'. Ohne Agent: im PR 'Sitzungen: keine' eintragen."
+          fi
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
