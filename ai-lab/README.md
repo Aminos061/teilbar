@@ -11,6 +11,7 @@ Hier hält das Team fest, wie es KI-Agenten bei der Entwicklung von Teilbar eins
 | ein Repo, Framework oder Tool ausprobieren | Dem Agenten sagen: **„Ich will <Quelle> sichten“**. Er klärt das Ziel, zeigt die Bestandteile und hält mit dir Kandidaten fest. Installiert wird erst im Experiment. |
 | sehen, welche Ideen auf einen Test warten | `python ai-lab/tools/lab.py kandidaten` |
 | einen Eintrag ansehen | `python ai-lab/tools/lab.py zeige H12` (oder eine Sitzungs-, Kandidaten-, Experiment-ID) |
+| das Lab-Review im Meeting machen | Bildschirm mit einer Agenten-Sitzung teilen und sagen: **„Wir machen das Lab-Review“**. Der Agent führt durch die Punkte und trägt die Entscheidungen live ein. |
 | eine Hypothese anlegen | Im Lab-Review aus einem Kandidaten auswählen, dann dem Agenten sagen: „Leg H<n> aus Kandidat … an“ |
 | ein Experiment machen | Dem Agenten sagen: „Plane ein Experiment zu H<n>“ (Skill `ki-labor`) |
 | einen Zwischenbericht | `python ai-lab/tools/lab.py bericht` |

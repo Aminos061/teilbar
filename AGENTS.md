@@ -4,7 +4,7 @@ Kurz gehalten mit Absicht (`docs/adr/0004`). Hier steht nur, was nicht offensich
 
 ## Arbeitsweise
 
-- Jede Aufgabe ist ein GitHub-Issue. Gearbeitet wird auf dem Branch `<issue-nr>-<kurzname>`, nie direkt auf `main`. Merge nur über einen PR mit Review durch eine andere Person.
+- Jede Aufgabe ist ein GitHub-Issue. Gearbeitet wird auf dem Branch `<issue-nr>-<kurzname>` (Ausnahmen: `exp/…` für Experimente, `lab-review-<datum>`), nie direkt auf `main`. Merge nur über einen PR mit Review durch eine andere Person.
 - Arbeite im Devcontainer (`.devcontainer/`). Läuft die Sitzung auf dem Host, vermerkst du das im Sitzungsprotokoll.
 - Keine Keys, Tokens oder privaten Daten in Dateien, Commits oder PR-Texte. Das Repo ist öffentlich.
 - Begriffe der App und des KI-Labors: `GLOSSARY.md`. Verwende sie so, wie sie dort stehen.
