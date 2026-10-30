@@ -42,7 +42,7 @@ bash .devcontainer/check-env.sh
 | Werkzeug | Wer | Login im Container |
 |---|---|---|
 | Claude Code | Amin, Sirat, Matias | `claude` → Link im Browser öffnen → Code ins Terminal einfügen |
-| Codex | Amin | `codex login --device-auth` (Device-Code muss in den ChatGPT-Sicherheitseinstellungen erlaubt sein) |
+| Codex | optional, für Experimente | `codex login --device-auth` (Device-Code muss in den ChatGPT-Sicherheitseinstellungen erlaubt sein) |
 | Copilot CLI | Can (Student-Abo) | `copilot` → `/login` → Code auf github.com/login/device eingeben |
 | Qwen Code | alle | kein Login; nutzt `LITE_LLM_*` (Konfiguration wird beim ersten Start angelegt) |
 | opencode | alle | kein Login für Uni-Qwen; `opencode.json` im Repo verweist auf die Env-Variablen |
