@@ -49,6 +49,9 @@ step "AgentsView" bash -c 'curl -fsSL https://agentsview.io/install.sh | bash'
 
 step "Python-Pakete (ai-lab)" python3 -m pip install --user -q -r ai-lab/tools/requirements.txt
 
+# Abhängigkeiten der App; darin liegt auch die gepinnte Supabase CLI (web/package.json).
+step "App-Pakete (web)" bash -c 'cd web && npm ci'
+
 # Qwen Code auf den Uni-LiteLLM einstellen, falls noch keine eigene Konfiguration existiert.
 if [ ! -f ~/.qwen/settings.json ]; then
   mkdir -p ~/.qwen
