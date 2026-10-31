@@ -60,10 +60,36 @@ bash .devcontainer/check-env.sh
 | opencode | alle | kein Login für Uni-Qwen; `opencode.json` im Repo verweist auf die Env-Variablen |
 | Goose, OpenHands | optional, für Experimente | `goose configure` bzw. `openhands` und dort den Uni-LiteLLM als OpenAI-kompatiblen Endpunkt eintragen |
 | GitHub (`gh`) | alle | `gh auth login` (oder VS Code reicht deine Git-Anmeldung durch) |
+| Supabase (Cloud) | alle | kein Login im Container: Einladung per E-Mail annehmen (siehe Schritt 6) |
 
 Gemini CLI funktioniert mit dem Gemini-Plus-Studentenpaket nicht (das Paket gilt nur für die Gemini-App, nicht für die API). Gemini nutzt ihr im Browser; Sitzungen dort protokolliert ihr mit dem Prompt aus `ai-lab/README.md#ohne-skill`.
 
-## 5. Fertig. Was jetzt?
+## 5. Prüfen, ob alles läuft
+
+Der Container hat beim ersten Start `npm ci` in `web/` ausgeführt und Docker-in-Docker bereitgestellt. Prüfen:
+
+```bash
+docker version        # Client und Server müssen antworten
+cd web && npx supabase --version
+```
+
+## 6. App und Supabase
+
+Wie du die App und die lokale Datenbank startest, steht in der [README](../README.md#app-starten). Hier die Einrichtung dahinter.
+
+**Speicher.** Die lokale Supabase startet mehrere Container (Datenbank, Anmeldung, Storage, Studio, Mailpit). Plane für Docker mindestens **8 GB Arbeitsspeicher** ein. Unter Windows stellst du das in `%UserProfile%\.wslconfig` ein (`[wsl2]` → `memory=8GB`, danach `wsl --shutdown`), in Docker Desktop unter *Settings → Resources*. Die Dienste `analytics` und `edge_runtime` sind in `web/supabase/config.toml` aus, um Speicher zu sparen.
+
+**Docker-in-Docker.** Die Supabase CLI braucht Docker. Der Container bringt dafür ein eigenes Docker mit (privilegiert, Images liegen in einem Docker-Volume). Das erste `npm run db:start` lädt einige GB, danach geht es schnell. Nach einer Änderung an `.devcontainer/` den Container neu bauen: `F1` → „Dev Containers: Rebuild Container“.
+
+**Cloud-Projekt.** Das gemeinsame Supabase-Projekt (kostenloser Tarif, EU-Region) gehört einer Organisation, in die dich eine Person mit Owner-Rolle per E-Mail einlädt:
+
+1. Der Owner öffnet im Supabase-Dashboard die Organisation → *Team* → *Invite* und trägt deine E-Mail-Adresse ein. Rolle für uns: *Developer*.
+2. Du nimmst die Einladung in der E-Mail an. Sie gilt **24 Stunden**; danach lässt der Owner sie erneut senden.
+3. Project URL und Publishable Key stehen im Dashboard unter *Project Settings → API*. Kopiere `web/.env.example` nach `web/.env.local` und trage sie ein.
+
+Zugriff aufs Projekt zeigt auch die geheimen Keys. Gib sie nie weiter und committe nie eine `.env.local`. Migrationen laufen nur nach dem Merge auf `main` gegen die Cloud (ADR 0007). Keys für die CI oder ein Deployment kommen als GitHub-Secrets, sobald das Hosting entschieden ist.
+
+## 7. Fertig. Was jetzt?
 
 - Wie wir zusammenarbeiten: [CONTRIBUTING.md](../CONTRIBUTING.md)
 - KI-Labor: [ai-lab/README.md](../ai-lab/README.md)
@@ -77,3 +103,7 @@ Gemini CLI funktioniert mit dem Gemini-Plus-Studentenpaket nicht (das Paket gilt
 | Qwen: Timeout | VPN an? Test: `curl -s http://141.19.140.104:4000/v1/models -H "Authorization: Bearer $LITE_LLM_LOCAL_API_KEY" \| head` |
 | Login-Seite leitet auf `localhost` um und scheitert | URL aus dem Terminal kopieren, im Browser öffnen, den angezeigten Code zurück ins Terminal einfügen |
 | Commit wird von gitleaks blockiert | Da steht vermutlich wirklich ein Key. Entfernen. Echter Fehlalarm: Zeile mit `gitleaks:allow` markieren |
+| `docker version` meldet „Cannot connect“ im Container | Docker-in-Docker läuft nicht. Container neu bauen („Dev Containers: Rebuild Container“). Läuft Docker Desktop nicht oder ist „privileged“ gesperrt, startet das Feature nicht |
+| `npm run db:start` bricht ab oder hängt | Meist zu wenig Speicher (Schritt 6) oder ein Port ist belegt (54321–54324). `npm run db:stop`, Speicher erhöhen, noch einmal starten |
+| App meldet „NEXT_PUBLIC_SUPABASE_URL … fehlen“ | `web/.env.local` fehlt oder ist leer. `cp web/.env.example web/.env.local` und Werte aus `npm run db:status` eintragen |
+| `docker compose up` erreicht die Datenbank nicht | `npm run db:start` in `web/` zuerst ausführen. `network_mode: host` gilt nur im Devcontainer, nicht auf dem Host unter Windows oder macOS |

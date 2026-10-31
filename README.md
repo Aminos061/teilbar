@@ -1,8 +1,8 @@
-# Teilbar · Prototyp
+# Teilbar
 
 **Nachbarn statt Fremde.** Teilbar ist eine Nachbarschafts-App nach dem Allmende-Prinzip: Nachbarn passen kostenlos auf Tiere und Wohnungen auf, wenn jemand nicht da ist (Tiersitting und Housesitting). Statt Bezahlung gibt es ein Kennenlern-Treffen, Vertrauensstufen und Empfehlungen.
 
-Dieses Repository enthält einen klickbaren Prototyp als statische Webseite. Er zeigt den Ablauf eines Sittings aus Sicht der Personas Sarah, Lena, Karl und Jonas, mit Demo-Daten aus einem fiktiven Haus in der Lindenstraße. Dazu kommt das **Hausbuch**: Suchende halten Aufgaben, Hinweise mit Fotos, Notfallkontakte und Hausregeln einmal fest und nutzen sie in jeder Anfrage. Per QR-Code teilen sie es mit Personen, die sie schon kennen; diese kommen als **Gast** ohne Konto in die App (im Prototyp: Sarahs Bruder David).
+Dieses Repository enthält die App in `web/` (siehe [App starten](#app-starten)) und den klickbaren Prototyp als statische Webseite. Er zeigt den Ablauf eines Sittings aus Sicht der Personas Sarah, Lena, Karl und Jonas, mit Demo-Daten aus einem fiktiven Haus in der Lindenstraße. Dazu kommt das **Hausbuch**: Suchende halten Aufgaben, Hinweise mit Fotos, Notfallkontakte und Hausregeln einmal fest und nutzen sie in jeder Anfrage. Per QR-Code teilen sie es mit Personen, die sie schon kennen; diese kommen als **Gast** ohne Konto in die App (im Prototyp: Sarahs Bruder David).
 
 ## Prototyp starten
 
@@ -76,10 +76,76 @@ Der Prototyp hat kein Backend. Alle Daten sind fest eingebaut und werden beim Ne
 - Chat-Nachrichten, die man selbst eintippt, erscheinen nur lokal im Browser.
 - Nicht enthalten sind laut Briefing: Bezahlung, Punkte, Foodsharing, Geräte-Verleih und KI im Produkt.
 
+## App starten
+
+Die App liegt in `web/`: Next.js (TypeScript, App Router) mit Supabase für Datenbank, Anmeldung und Dateien, installierbar als PWA. Gewählt haben wir das in [ADR 0007](docs/adr/0007-tech-stack-der-app.md). Der Prototyp oben bleibt davon unberührt.
+
+Du arbeitest im Devcontainer ([docs/setup.md](docs/setup.md)). Beim ersten Start hat er `npm ci` in `web/` schon ausgeführt.
+
+### Nur die App (ohne Datenbank)
+
+```bash
+cd web
+npm run dev
+```
+
+Dann **http://localhost:3000** öffnen. Die Startseite braucht noch keine Datenbank.
+
+### Mit lokaler Datenbank (Supabase)
+
+```bash
+cd web
+npm run db:start          # startet die lokale Supabase (der erste Start lädt mehrere Images, einige Minuten)
+cp .env.example .env.local
+npm run db:status         # zeigt API-URL und Publishable Key; beides in .env.local eintragen
+npm run dev
+```
+
+| Befehl in `web/` | Wirkung |
+| --- | --- |
+| `npm run db:start` / `db:stop` | lokale Supabase starten / beenden |
+| `npm run db:status` | URLs und Keys der lokalen Supabase |
+| `npm run db:reset` | Datenbank leeren und alle Migrationen neu einspielen |
+
+Studio (Datenbank-Oberfläche) läuft dann unter http://localhost:54323, Test-E-Mails unter http://localhost:54324.
+
+### Mit Docker Compose
+
+```bash
+cd web && npm run db:start    # nur wenn du die Datenbank brauchst
+cd .. && docker compose up    # startet die App auf http://localhost:3000
+```
+
+`docker compose up` startet nur die App (Vertrag aus [ADR 0003](docs/adr/0003-ein-devcontainer.md)). Die Datenbank kommt von der Supabase CLI. Ändert sich `web/package.json`, danach `docker compose build` und `docker compose down -v`.
+
+### Cloud-Projekt statt lokaler Datenbank
+
+Für Vorschau und Deployment gibt es ein gemeinsames Supabase-Projekt im kostenlosen Tarif (EU-Region). Du bekommst eine Einladung per E-Mail ([docs/setup.md](docs/setup.md#6-app-und-supabase)). Project URL und Publishable Key stehen im Supabase-Dashboard unter *Project Settings → API*. Sie gehören in `web/.env.local`, nie ins Repo.
+
+### Als PWA ausprobieren
+
+Im Entwicklungsmodus ist der Service Worker aus. Zum Testen der Installation:
+
+```bash
+cd web && npm run build && npm start
+```
+
+Dann in Chrome oder Edge **http://localhost:3000** öffnen und über das Installieren-Symbol in der Adressleiste installieren. Unter *Entwicklertools → Application → Manifest* siehst du, ob die App als installierbar gilt. Auf dem Handy braucht die Installation HTTPS.
+
+### Prüfen
+
+```bash
+cd web && npm run lint && npm run build
+```
+
+Das macht auch die CI bei jedem Pull Request.
+
 ## Aufbau des Repositorys
 
 | Pfad | Inhalt |
 | --- | --- |
+| `web/` | die App (Next.js, PWA); darin `supabase/` mit lokaler Konfiguration und Migrationen |
+| `docker-compose.yml` | `docker compose up` startet die App |
 | `index.html` | gesamter Prototyp (HTML, CSS und JavaScript in einer Datei) |
 | `img/` | Porträts der Personas, Foto von Katze Minka und QR-Code der Demo-Freigabe |
 | `fonts/` | Schrift Inter (lokal eingebunden, damit der Prototyp offline läuft) |
