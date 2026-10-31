@@ -10,6 +10,12 @@ for cmd in "claude --version" "codex --version" "opencode --version" "qwen --ver
 done
 
 echo
+# App-Umgebung (docs/setup.md, Schritt 6): Docker-in-Docker und die gepinnte Supabase CLI.
+if docker info >/dev/null 2>&1; then echo "docker (Docker-in-Docker)  läuft"; else echo "docker (Docker-in-Docker)  FEHLT: Container neu bauen (docs/setup.md, Schritt 6)"; fi
+sb=$(cd web 2>/dev/null && npx --no-install supabase --version 2>/dev/null | head -1)
+echo "supabase CLI (web/)        ${sb:-FEHLT: cd web && npm ci}"
+
+echo
 for var in LITE_LLM_LOCAL_API_KEY LITE_LLM_ACADEMIC_CLOUD_API_KEY; do
   if [ -n "${!var:-}" ]; then echo "$var gesetzt"; else echo "$var FEHLT (docs/setup.md, Schritt 2)"; fi
 done

@@ -4,7 +4,37 @@ Agenten und Menschen verwenden diese Begriffe genau so. Unter _Avoid_ stehen Wö
 
 ## App
 
-Folgt, sobald die Codebase angelegt ist. Bis dahin gelten die Begriffe aus dem Prototyp (`index.html`).
+Die Begriffe der Produktidee stehen im Prototyp (`index.html`). Hier die technischen Begriffe der Codebase (`web/`, ADR 0007).
+
+### Technik
+
+**PWA**:
+Die App als installierbare Webseite: Sie hat ein Manifest und einen Service Worker und lässt sich auf den Startbildschirm legen. Es gibt keine App aus einem Store.
+_Avoid_: native App, Handy-App
+
+**Lokale Supabase**:
+Die Supabase-Container auf dem eigenen Rechner (`npm run db:start` in `web/`), mit eigener Testdatenbank. Sie ist für Entwickeln und Testen da, ihre Daten gehören niemandem außer dir.
+_Avoid_: Dev-Datenbank, lokale DB
+
+**Cloud-Projekt**:
+Das eine gemeinsame Supabase-Projekt im kostenlosen Tarif, für Vorschau und Deployment. Alle im Team teilen es.
+_Avoid_: Live-Datenbank, Produktion, Server
+
+**Migration**:
+Eine SQL-Datei in `web/supabase/migrations/`, die das Datenbankschema ändert. Sie wird nach dem Anlegen nie mehr geändert, sondern durch eine neue ergänzt.
+_Avoid_: Schema-Skript, DB-Update
+
+**Row Level Security** (RLS):
+Regeln in der Datenbank, die je Zeile festlegen, wer lesen oder ändern darf. Weil der Browser direkt auf die Datenbank zugreift, steht der Datenschutz hier und nicht im Frontend.
+_Avoid_: Zugriffsschutz, Berechtigungsprüfung
+
+**Publishable Key**:
+Der Supabase-Schlüssel, der im Browser stehen darf (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`). Er schützt nichts; das tut die RLS.
+_Avoid_: anon key, öffentlicher Key
+
+**Secret Key**:
+Der Supabase-Schlüssel mit vollen Rechten (früher `service_role`). Er steht nie im Browser-Code und nie im Repo.
+_Avoid_: Admin-Key, Master-Key
 
 ## KI-Labor
 

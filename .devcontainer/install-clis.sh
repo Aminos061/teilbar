@@ -22,9 +22,11 @@ case "$(uname -m)" in
   *) echo "Unbekannte Architektur $(uname -m)"; GL_ARCH=x64; GOOSE_ARCH=x86_64 ;;
 esac
 
-# Volumes gehören beim ersten Anlegen root.
+# Volumes gehören beim ersten Anlegen root, ebenso die dafür angelegten Elternordner (~/.local, ~/.local/share, ~/.config).
+sudo chown "$(id -u):$(id -g)" ~/.local ~/.local/share ~/.config 2>/dev/null || true
 sudo chown -R "$(id -u):$(id -g)" ~/.claude ~/.codex ~/.copilot ~/.qwen ~/.openhands \
   ~/.local/share/opencode ~/.config/goose ~/.agentsview 2>/dev/null || true
+mkdir -p ~/.local/bin
 
 step "npm-CLIs" npm install -g \
   "@anthropic-ai/claude-code@$CLAUDE_CODE" \
@@ -38,8 +40,8 @@ step "uv" bash -c 'command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/i
 export PATH="$HOME/.local/bin:$PATH"
 step "OpenHands" uv tool install "openhands==$OPENHANDS" --python 3.12
 
-step "Goose" bash -c "curl -fsSL https://github.com/aaif-goose/goose/releases/download/$GOOSE/goose-$GOOSE_ARCH-unknown-linux-gnu.tar.gz \
-  | tar -xz -C /tmp && install -m 755 \$(find /tmp -maxdepth 2 -name goose -type f | head -1) $HOME/.local/bin/goose"
+step "Goose" bash -c "d=\$(mktemp -d) && curl -fsSL https://github.com/aaif-goose/goose/releases/download/$GOOSE/goose-$GOOSE_ARCH-unknown-linux-gnu.tar.gz \
+  | tar -xz -C \$d && install -m 755 \$(find \$d -maxdepth 2 -name goose -type f | head -1) $HOME/.local/bin/goose; rc=\$?; rm -rf \$d; exit \$rc"
 
 step "gitleaks" bash -c "curl -fsSL https://github.com/gitleaks/gitleaks/releases/download/v$GITLEAKS/gitleaks_${GITLEAKS}_linux_$GL_ARCH.tar.gz \
   | tar -xz -C /tmp gitleaks && install -m 755 /tmp/gitleaks $HOME/.local/bin/gitleaks"
@@ -48,6 +50,9 @@ step "gitleaks" bash -c "curl -fsSL https://github.com/gitleaks/gitleaks/release
 step "AgentsView" bash -c 'curl -fsSL https://agentsview.io/install.sh | bash'
 
 step "Python-Pakete (ai-lab)" python3 -m pip install --user -q -r ai-lab/tools/requirements.txt
+
+# Abhängigkeiten der App; darin liegt auch die gepinnte Supabase CLI (web/package.json).
+step "App-Pakete (web)" bash -c 'cd web && npm ci'
 
 # Qwen Code auf den Uni-LiteLLM einstellen, falls noch keine eigene Konfiguration existiert.
 if [ ! -f ~/.qwen/settings.json ]; then

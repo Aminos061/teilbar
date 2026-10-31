@@ -8,6 +8,7 @@ Kurz gehalten mit Absicht (`docs/adr/0004`). Hier steht nur, was nicht offensich
 - Arbeite im Devcontainer (`.devcontainer/`). Läuft die Sitzung auf dem Host, vermerkst du das im Sitzungsprotokoll.
 - Keine Keys, Tokens oder privaten Daten in Dateien, Commits oder PR-Texte. Das Repo ist öffentlich.
 - Begriffe der App und des KI-Labors: `GLOSSARY.md`. Verwende sie so, wie sie dort stehen.
+- In `web/` darf nur der **Publishable Key** `NEXT_PUBLIC_` heißen. Ein Secret Key (früher `service_role`) steht nie in Browser-Code, Dateien, Logs oder Protokollen. Schema-Änderungen nur als Migration in `web/supabase/migrations/`, mit Row Level Security.
 
 ## Wohin mit etwas Neuem
 
@@ -46,11 +47,14 @@ Eine neue Art von Datei braucht einen PR, der diesen Index und `ALLOWED_MD` in `
 | `.agents/skills/` | Skills (Original) | wenn sich ein Ablauf ändert; danach `python ai-lab/tools/lab.py sync-skills` |
 | `.claude/skills/` | Kopie für Claude Code | nie von Hand |
 | `opencode.json` | OpenCode mit dem Uni-LiteLLM | wenn sich Modell oder Endpunkt ändern |
-| `.devcontainer/` | gemeinsame Umgebung mit festen Versionen | Versionen nur hier pinnen |
+| `.devcontainer/` | gemeinsame Umgebung mit festen Versionen | Versionen der Umgebung nur hier pinnen (die der App in `web/package.json`) |
 | `.githooks/`, `.gitleaks.toml` | Secret-Scan vor dem Commit, Erinnerung vor dem Push | selten |
 | `.github/` | Issue- und PR-Vorlagen, CI | wenn sich Ablauf oder Prüfungen ändern |
 | `.gitattributes` | Zeilenenden, `merge=union` für die JSONL-Daten | selten |
 | `index.html`, `img/`, `fonts/` | App-Prototyp | über Aufgaben-Issues |
+| `web/` | die App: Next.js (App Router, TypeScript), PWA. Versionen exakt in `package.json`, Lockfile im Repo. `.env.example` ist die Vorlage, `.env.local` nie committen | über Aufgaben-Issues; Versionen nur per PR |
+| `web/supabase/` | Supabase lokal: `config.toml` und `migrations/` (je Änderung am Schema eine neue Datei, bestehende nie ändern) | über Aufgaben-Issues, mit Row Level Security |
+| `docker-compose.yml`, `web/Dockerfile` | `docker compose up` startet die App (Vertrag aus ADR 0003) | wenn sich der Start der App ändert |
 
 ## KI-Labor
 

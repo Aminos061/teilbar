@@ -7,7 +7,17 @@
   "features": {
     "ghcr.io/devcontainers/features/node:2": { "version": "24" },
     "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    // Die Supabase CLI startet die lokale Datenbank in Containern (docs/adr/0007-tech-stack-der-app.md).
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  // Ports der App und der lokalen Supabase: 3000 App, 54321 API, 54323 Studio, 54324 Mailpit (Test-Mails).
+  "forwardPorts": [3000, 54321, 54323, 54324],
+  "portsAttributes": {
+    "3000": { "label": "Teilbar (web)" },
+    "54321": { "label": "Supabase API" },
+    "54323": { "label": "Supabase Studio" },
+    "54324": { "label": "Supabase Mailpit" }
   },
   // Logins liegen in benannten Volumes auf dem eigenen Rechner, nie im Repo.
   "mounts": [
@@ -25,6 +35,7 @@
     "DISABLE_AUTOUPDATER": "1",
     "AGENTSVIEW_TELEMETRY_ENABLED": "0",
     "DO_NOT_TRACK": "1",
+    "NEXT_TELEMETRY_DISABLED": "1",
     "LITE_LLM_BASE_URL": "http://141.19.140.104:4000/v1",
     "LITE_LLM_LOCAL_API_KEY": "${localEnv:LITE_LLM_LOCAL_API_KEY}",
     "LITE_LLM_ACADEMIC_CLOUD_API_KEY": "${localEnv:LITE_LLM_ACADEMIC_CLOUD_API_KEY}"

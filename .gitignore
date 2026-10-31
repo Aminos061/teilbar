@@ -1,6 +1,7 @@
 # Secrets und lokale Agenten-Einstellungen
 .env
 .env.*
+!.env.example
 auth.json
 .claude/settings.local.json
 .codex/
@@ -9,6 +10,8 @@ auth.json
 
 # Werkzeuge
 node_modules/
+web/.next/
+web/supabase/.temp/
 __pycache__/
 *.pyc
 .DS_Store
