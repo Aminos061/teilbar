@@ -69,8 +69,8 @@ Gemini CLI funktioniert mit dem Gemini-Plus-Studentenpaket nicht (das Paket gilt
 Der Container hat beim ersten Start `npm ci` in `web/` ausgeführt und Docker-in-Docker bereitgestellt. Prüfen:
 
 ```bash
-docker version        # Client und Server müssen antworten
-cd web && npx supabase --version
+bash .devcontainer/check-env.sh    # zeigt auch Docker und die Supabase CLI
+docker version                     # Client und Server müssen antworten
 ```
 
 ## 6. App und Supabase
