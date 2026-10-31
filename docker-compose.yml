@@ -1,0 +1,22 @@
+# `docker compose up` startet die App (Vertrag aus docs/adr/0003-ein-devcontainer.md).
+# Die lokale Datenbank startet die Supabase CLI getrennt: vorher `cd web && npm run db:start`.
+# Die Supabase-Werte liest Next.js selbst aus web/.env.local (Vorlage: web/.env.example).
+#
+# network_mode: host, damit die App die lokale Supabase unter derselben Adresse erreicht
+# (http://127.0.0.1:54321) wie dein Browser. Das gilt im Devcontainer (Linux). Auf dem
+# Host unter Windows/macOS funktioniert host-Netzwerk in Docker Desktop nicht wie hier gedacht.
+services:
+  web:
+    build: ./web
+    network_mode: host
+    working_dir: /app
+    volumes:
+      - ./web:/app
+      - web_node_modules:/app/node_modules
+      - web_next:/app/.next
+    environment:
+      NEXT_TELEMETRY_DISABLED: "1"
+
+volumes:
+  web_node_modules:
+  web_next:
