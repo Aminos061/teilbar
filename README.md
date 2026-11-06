@@ -48,14 +48,16 @@ Links neben dem Handy steht die Demo-Steuerung, rechts das Handy mit der App.
 
 - **Abläufe:** Links stehen fünf Abläufe mit ihren Schritten. Ein Klick auf einen Schritt springt direkt dorthin und wechselt zur passenden Person.
   - **Hausbuch anlegen** (3 Schritte): Sarah übernimmt Vorschläge für Katze und Wohnung, schreibt einen Hinweis mit Foto (wo das Futter steht) und ergänzt eine eigene Aufgabe.
-  - **Sitting im Haus** (9 Schritte): Sarah stellt eine Anfrage für Katze Minka und Pflanzen und wählt die Aufgaben aus ihrem Hausbuch, Lena aus dem 4. OG tippt „Kann ich übernehmen“, beide schreiben im Chat, treffen sich, füllen die Sitting-Vereinbarung aus (aus dem Hausbuch vorausgefüllt), übergeben den Schlüssel, Lena erledigt die Aufgaben (mit „Wie?“ zu jeder Aufgabe), Sarah sieht im Urlaub den Status, am Ende empfehlen sich beide.
+  - **Sitting im Haus** (10 Schritte): Sarah stellt eine Anfrage für Katze Minka und Pflanzen und wählt die Aufgaben aus ihrem Hausbuch, Lena aus dem 4. OG tippt „Kann ich übernehmen“, beide schreiben im Chat, treffen sich, füllen die Sitting-Vereinbarung aus (aus dem Hausbuch vorausgefüllt), übergeben den Schlüssel, Lena erledigt die Aufgaben (mit „Wie?“ zu jeder Aufgabe), Sarah sieht im Urlaub den Status, am Ende empfiehlt zuerst Sarah, dann Lena (je ein Schritt).
   - **Gassi in der Straße** (3 Schritte): Im Haus hat niemand Zeit, Jonas erweitert seine Anfrage auf die Straße, Karl übernimmt und bekommt die Hinweise aus Jonas' Hausbuch.
   - **Hausbuch teilen** (4 Schritte): Sarah erstellt einen QR-Code mit PIN für ihren Bruder David, David öffnet ihn als Gast ohne Konto und hakt ab, Sarah sieht, wer da war, und widerruft die Freigabe.
   - **Anmelden (Karl)** (4 Schritte): Registrierung mit Name, Adresse und Brief-Code. Der Demo-Code ist `1234`.
 - **Tastatur:** `→` und `←` (oder ein Presenter-Klicker) gehen zum nächsten oder vorherigen Schritt. `B` schaltet den Beamer-Modus mit großer Schrift ein und aus.
+- **Pulsierende Knöpfe:** Der Knopf, der im aktuellen Schritt als Nächstes gedrückt werden muss, pulsiert (auch „Vorspulen“ links). Sieht man gerade eine andere Person als die des Schritts, pulsiert stattdessen der Schritt in der Liste links.
+- **Chat-Vorschläge:** Der passende nächste Satz steht schon im Eingabefeld (hellgrün, darüber „Vorschlag“). Es gibt je Situation genau einen, und der ➤-Knopf pulsiert, solange er wartet. Man kann ihn ändern; erst ➤ schickt ihn ab und löst den nächsten Schritt aus (zum Beispiel „Lena auswählen“ oder das Foto). Leert man das Feld, bleibt es leer. Das Feld wächst mit dem Text, damit nichts abgeschnitten ist; Enter sendet, Umschalt+Enter macht eine neue Zeile.
 - **Vorspulen:** springt im laufenden Sitting einige Tage weiter.
 - **Neustart:** setzt alle Demo-Daten zurück.
-- **Ansicht:** Mit den runden Bildern unten links wechselt man die Person (Sarah, Lena, Karl, Jonas, David als Gast).
+- **Wer ist wer:** Unter den Abläufen steht die Besetzung mit Rolle (sucht, hilft, Gast) und einem Satz zur gewählten Person. Ein Klick auf ein Gesicht wechselt die Ansicht (Sarah, Lena, Jonas, Karl, David als Gast). Die Kopfzeile im Handy sagt dazu „Du bist …“. Mit `?bare` (Screenshots) bleibt sie wie bisher und zeigt nur den Ort.
 - **Gast-Ansicht direkt:** `index.html?gast` öffnet die App so, wie David sie nach dem Scannen des QR-Codes sieht. Der QR-Code im Prototyp (`img/freigabe-qr.svg`) führt auf https://aminos061.github.io/teilbar/?gast.
 - Auf dem Handy (Bildschirmbreite unter 500 px) erscheint die Steuerung als Leiste über und unter der App.
 
