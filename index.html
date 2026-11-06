@@ -45,14 +45,14 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .guide{display:none}
 .guide .gtop{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--mint)}
 .guide .gtop em{margin-left:auto;font-style:normal;color:var(--pale);font-weight:600}
-.guide .gcap{font-size:19px;line-height:1.25;font-weight:800;color:#fff;margin:6px 0 10px;text-wrap:balance}
+.guide .gcap{font-size:19px;line-height:1.25;font-weight:800;color:#fff;margin:6px 0 10px;text-wrap:balance;min-height:calc(2 * 1.25em)}   /* mindestens 2 Zeilen: kurze Beschreibungen machen die Kopfzeile nicht niedriger */
 .guide .gbtns{display:flex;gap:8px}
 .guide .gbtns button{flex:1;min-height:44px;border-radius:12px;font-weight:700;font-size:16px;background:rgba(255,255,255,.14);color:#fff}
 .guide .gbtns button.next{flex:2;background:var(--yellow);color:var(--ink)}
 .guide .gbtns button:disabled{opacity:.35}
 body.beamer .stage{width:1000px}
 body.beamer .ctrl{width:540px}
-body.beamer #steps,body.beamer .viewas,body.beamer .tag{display:none}
+body.beamer #steps,body.beamer .tag{display:none}
 body.beamer .cap{display:flex;flex-direction:column;gap:18px;background:rgba(0,0,0,.16);border-radius:24px;padding:28px}
 .cap .uct{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;color:var(--mint)}
 .cap .uct em{margin-left:auto;font-style:normal;color:var(--pale);font-weight:600}
@@ -86,9 +86,6 @@ body.beamer .card.white,body.beamer .field,body.beamer .chip,body.beamer .seg bu
 .ctrlrow{display:flex;gap:8px}
 .ctrlrow .cbtn{flex:1;text-align:center;padding:10px 8px;font-size:14px}
 .cbtn:disabled{opacity:.35;cursor:default}
-.viewas{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--pale)}
-.viewas button{opacity:.45}
-.viewas button.on{opacity:1;outline:2px solid var(--yellow);outline-offset:2px;border-radius:50%}
 
 /* Phone */
 .phone{width:414px;height:868px;border-radius:52px;background:#0F1F15;padding:12px;box-shadow:0 30px 80px rgba(0,0,0,.35);flex:none}
@@ -183,14 +180,13 @@ p.sub{color:var(--muted);font-size:16px;line-height:1.4}
 .m.them{align-self:flex-start;background:var(--card);border-bottom-left-radius:6px}
 .m.sys{align-self:center;background:none;color:var(--muted);font-size:13px;font-weight:600;text-align:center;max-width:95%;padding:4px}
 .m.sys b{color:var(--deep)}
+.m:not(.sys):not(.card2){white-space:pre-line}
 .m.photo{padding:6px;background:var(--card)}
 .m.photo .img{width:200px;height:150px;border-radius:14px;background:linear-gradient(160deg,#FFE7A6,#FFC83D);display:flex;align-items:center;justify-content:center;font-size:76px}
 .m.card2{background:#fff;border:2px solid var(--pale);align-self:center;max-width:100%;width:100%}
-.quick{display:flex;flex-wrap:wrap;gap:8px;padding:8px 0}
-.quick button{background:#fff;border:2px solid var(--green);color:var(--deep);border-radius:99px;padding:10px 16px;font-weight:700;font-size:16px}
-.input{display:flex;gap:8px;align-items:center;margin-top:6px}
-.input input{flex:1;min-width:0;border:2px solid var(--line);border-radius:99px;padding:12px 16px;font:inherit;font-size:16px;color:var(--ink);outline:none}
-.input input:focus{border-color:var(--green)}
+.input{display:flex;gap:8px;align-items:flex-end;margin-top:6px}
+.input textarea{flex:1;min-width:0;min-height:48px;max-height:190px;border:2px solid var(--line);border-radius:24px;padding:12px 16px;font:inherit;font-size:16px;line-height:1.3;color:var(--ink);outline:none;resize:none;overflow-y:auto}
+.input textarea:focus{border-color:var(--green)}
 .input button{width:48px;height:48px;border-radius:50%;background:var(--deep);color:#fff;font-size:20px}
 .flag{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
 
@@ -213,10 +209,10 @@ body.bare .guide{display:none !important}
   body{padding:0;gap:0;display:block;background:var(--deep);overflow:auto}
   .stage{position:static;transform:none;width:auto;height:auto;display:flex;flex-direction:column;gap:0}
   .ctrl{height:auto;order:3}
-  .guide{display:block;order:0;padding:14px 16px 10px}
+  .guide{display:block;order:0;padding:14px 16px 10px;align-self:stretch}   /* sonst schrumpft sie (align-items:center der Bühne) auf die Breite ihres Inhalts: schmal bei kurzen Beschreibungen */
   .phone{order:1}
   .keys{display:none}
-  .phone{width:100vw;height:calc(100dvh - 150px);border-radius:0;padding:0;box-shadow:none;background:none}
+  .phone{width:100vw;height:calc(100dvh - var(--gh,150px));border-radius:0;padding:0;box-shadow:none;background:none}   /* --gh: gemessene Höhe der Kopfzeile (fitGuide) */
   .screen{width:100%;height:100%;border-radius:0}
   .notch,.status{display:none}
   .ctrl{width:100%;padding:20px 16px 40px}
@@ -300,10 +296,7 @@ h3{font-size:12px;letter-spacing:.09em}
 .m.sys .i{width:14px;height:14px;vertical-align:-2px}
 .m.card2{box-shadow:var(--shadow);border:0}
 .m.photo{background:#fff;border:1px solid rgba(21,41,28,.06)}
-.quick button{border-width:1.5px;transition:all .15s var(--ease);background:#fff}
-.quick button:hover{background:#EAF7EF}
-.quick button:active{transform:scale(.96)}
-.input input{border:1.5px solid #DCE8E0;background:#fff}
+.input textarea{border:1.5px solid #DCE8E0;background:#fff}
 .input button{display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px -8px rgba(27,107,58,.9)}
 .input button .i{width:20px;height:20px;margin-left:-2px}
 /* Sheet und Toast */
@@ -322,7 +315,61 @@ h3{font-size:12px;letter-spacing:.09em}
 .uc h4 .i{width:18px;height:18px;color:var(--yellow)}
 .cap .uct .i{width:24px;height:24px;color:var(--yellow)}
 .guide .gtop .i{color:var(--yellow)}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+/* Besetzungskarte links: wer ist wer, Klick wechselt die Ansicht */
+.cast{display:flex;flex-direction:column;gap:6px}
+.cast .cl{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mint)}
+.cast .cl em{font-style:normal;font-size:11.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--pale);opacity:.8}
+.cast .cr{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.cast .cr button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 2px 4px;border-radius:12px;color:#fff;font-size:12px;line-height:1.25;opacity:.6}
+.cast .cr button:hover{opacity:.9;background:rgba(255,255,255,.08)}
+.cast .cr button.on{opacity:1;background:rgba(255,255,255,.14);outline:2px solid var(--yellow);outline-offset:-1px}
+.cast .cr button b{font-weight:700;margin-top:3px}
+.cast .cr button i{font-style:normal;font-size:11px;font-weight:500;color:var(--pale)}
+.cast .av{width:30px;height:30px;font-size:13px;box-shadow:none !important}
+.cast .cn{font-size:12.5px;line-height:1.35;color:var(--pale);min-height:34px}
+.cast .cn b{color:#fff}
+body.beamer .cast .cl{font-size:15px}
+body.beamer .cast .cl em{font-size:14px}
+body.beamer .cast .cr button{font-size:17px}
+body.beamer .cast .cr button i{font-size:14px}
+body.beamer .cast .av{width:52px;height:52px;font-size:20px}
+body.beamer .cast .cn{font-size:16px}
+/* Chat: Der Vorschlag steht im Eingabefeld (hellgrün), darüber der Hinweis. Keine Knöpfe im Chatbereich. */
+.input textarea.sug{background:#F0FAF3;border-color:var(--green)}
+.dhint{font-size:13px;line-height:1.35;color:var(--muted);padding:6px 6px 0}
+.dhint b{color:var(--deep)}
+body.beamer .dhint{font-size:15px}
+/* Kopfzeile am Handy: Wessen Handy ist das? Im Modus ?bare (Screenshots) bleibt der Ort wie zuvor */
+.top .where{display:none}
+.top .me{margin-left:auto;display:inline-flex;align-items:center;gap:8px;min-width:0;background:#fff;box-shadow:var(--shadow);border-radius:99px;padding:3px 12px 3px 3px}
+.top .me .av{width:30px;height:30px;font-size:13px;box-shadow:none !important}
+.top .me > span{display:flex;flex-direction:column;min-width:0;line-height:1.2}
+.top .me b{font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap}
+.top .me small{font-size:11px;font-weight:500;color:var(--muted);white-space:nowrap}
+body.bare .top .where{display:inline-flex}
+body.bare .top .me{display:none}
+/* Der Knopf, der als Nächstes gedrückt werden muss, pulsiert mit einem Ring (--ring: Farbe als r,g,b). Siehe markNext. */
+.tapnext{--ring:61,179,110;--off:9px;--sc:1.04;outline:3px solid rgba(var(--ring),0);animation:tapRing 1.5s var(--ease) infinite}
+.ctrl .tapnext,.guide .tapnext{--ring:255,200,61}
+button.tapnext,.btn.tapnext{animation-name:tapRingScale}
+@keyframes tapRing{0%{outline-color:rgba(var(--ring),.8);outline-offset:0}70%,100%{outline-color:rgba(var(--ring),0);outline-offset:var(--off)}}
+@keyframes tapRingScale{0%{transform:scale(1);outline-color:rgba(var(--ring),.8);outline-offset:0}70%{transform:scale(var(--sc));outline-color:rgba(var(--ring),0);outline-offset:var(--off)}100%{transform:scale(1);outline-color:rgba(var(--ring),0);outline-offset:var(--off)}}
+/* Eingabeleiste im Chat: haftet unten, damit „Senden“ beim Scrollen im Bild bleibt (Platz unten für den Ring) */
+.composer{position:sticky;bottom:0;z-index:3;margin:0 -20px -24px;padding:10px 20px 16px;background:linear-gradient(to top,#FAFCFA 82%,rgba(250,252,250,0))}
+.composer .input{margin-top:0}
+/* Am Handy: weniger Platz am Rand, deshalb kleinere Ringe */
+@media (max-width:500px){
+  .tapnext{--off:5px;--sc:1.025}
+  .input button.pulse{--spread:9px}
+}
+/* Der Abschicken-Knopf pulsiert, solange ein Vorschlag im Feld auf „Senden“ wartet */
+.input button.pulse{animation:sendPulse 1.5s var(--ease) infinite}
+@keyframes sendPulse{
+  0%{transform:scale(1);box-shadow:0 8px 18px -8px rgba(27,107,58,.9),0 0 0 0 rgba(61,179,110,.65)}
+  70%{transform:scale(1.07);box-shadow:0 8px 18px -8px rgba(27,107,58,.9),0 0 0 var(--spread,14px) rgba(61,179,110,0)}
+  100%{transform:scale(1);box-shadow:0 8px 18px -8px rgba(27,107,58,.9),0 0 0 0 rgba(61,179,110,0)}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}.input button.pulse{box-shadow:0 0 0 4px rgba(61,179,110,.5)}.tapnext{outline-color:rgba(var(--ring),.7);outline-offset:2px}}
 </style>
 </head>
 <body>
@@ -337,7 +384,7 @@ h3{font-size:12px;letter-spacing:.09em}
     <button class="cbtn" data-act="reset">↺ Neustart</button>
     <button class="cbtn" data-act="beamer" id="beambtn">📽 Beamer</button>
   </div>
-  <div class="viewas" id="roles"></div>
+  <div class="cast" id="roles"></div>
   <div class="keys"><kbd>←</kbd><kbd>→</kbd> oder Presenter-Klicker · <kbd>B</kbd> Beamer-Modus</div>
 </aside>
 
@@ -365,12 +412,13 @@ const EMO = {"⬜": "square", "🔍": "search", "🐾": "paw", "🏠": "home", "
 Object.assign(EMO, {"📖": "book", "🔒": "lock", "🔳": "qr"});
 const EMO_RE = new RegExp(Object.keys(EMO).join('|'), 'g');
 const X = h => h.replace(/ 👋/g, '').replace(EMO_RE, m => I(EMO[m]));
+/* r: Rolle in der Demo (sucht Hilfe | hilft | Gast), b: ein Satz für die Besetzungskarte links. Reihenfolge = Reihenfolge der Geschichte. */
 const P = {
-  sarah:{n:'Sarah Okafor',s:'Sarah',c:'#E8732A',i:'S',img:'img/sarah.jpg',where:'Lindenstr. 12 · 2. OG',lvl:2},
-  lena:{n:'Lena Hartmann',s:'Lena',c:'#3B7DD8',i:'L',img:'img/lena.jpg',where:'Lindenstr. 12 · 4. OG',lvl:2},
-  karl:{n:'Karl Brandt',s:'Karl',c:'#8A5CD6',i:'K',img:'img/karl.jpg',where:'Lindenstr. 7',lvl:2},
-  jonas:{n:'Jonas Weber',s:'Jonas',c:'#1FA8A0',i:'J',where:'Lindenstr. 14',lvl:2},
-  david:{n:'David Okafor',s:'David',c:'#2E9E5B',i:'D',where:'Gast · Sarahs Bruder',lvl:0},
+  sarah:{n:'Sarah Okafor',s:'Sarah',c:'#E8732A',i:'S',img:'img/sarah.jpg',where:'Lindenstr. 12 · 2. OG',lvl:2,r:'sucht',b:'Katze Minka, verreist vom 1. bis 10. August.'},
+  lena:{n:'Lena Hartmann',s:'Lena',c:'#3B7DD8',i:'L',img:'img/lena.jpg',where:'Lindenstr. 12 · 4. OG',lvl:2,r:'hilft',b:'Sittet gern Katzen und Pflanzen.'},
+  jonas:{n:'Jonas Weber',s:'Jonas',c:'#1FA8A0',i:'J',where:'Lindenstr. 14',lvl:2,r:'sucht',b:'Hund Fiete, sucht Gassi-Begleitung.'},
+  karl:{n:'Karl Brandt',s:'Karl',c:'#8A5CD6',i:'K',img:'img/karl.jpg',where:'Lindenstr. 7',lvl:2,r:'hilft',b:'Hund Bruno, geht gern Gassi.'},
+  david:{n:'David Okafor',s:'David',c:'#2E9E5B',i:'D',where:'Gast · Sarahs Bruder',lvl:0,r:'Gast',b:'Notfallkontakt, kommt ohne Konto per QR-Code.'},
 };
 const HAUS = [
   {n:'Sarah Okafor',c:'#E8732A',i:'S',img:'img/sarah.jpg',t:'2. OG · Katze Minka',l:2},
@@ -444,7 +492,7 @@ function fresh(){
     chat:[], day:0, done:{}, photo:false,
     meet:{sarah:false,lena:false,vers:false,key:false},
     end:{key:false,recS:false,recL:false},
-    karl:'haus', kchat:[], sheet:null, toast:null, uc:'sit', ob:0, code:'', obrole:'helfe', obcan:['Hunde']};
+    karl:'haus', kchat:[], draft:null, sheet:null, toast:null, uc:'sit', ob:0, code:'', obrole:'helfe', obcan:['Hunde']};
 }
 S = fresh();
 
@@ -458,9 +506,10 @@ function stepbar(){
   return `<div class="steps">${STEPS.map((_,i)=>`<i class="${i<=k?'on':''}"></i>`).join('')}</div>
   <div class="steplabels">${STEPNAMES.map((n,i)=>`<span style="${i==k?'color:#1B6B3A':''}">${n}</span>`).join('')}</div>`;
 }
+/* Kopfzeile: .me sagt, wessen Handy das ist (Demo-Hilfe); .where ist der Ort und erscheint nur im Modus ?bare */
 function topbar(){
   const p = P[S.role];
-  return `<div class="top">${LOGO}<span class="brand">Teilbar</span><span class="where">${S.role==='david'?'Gast':S.role==='karl'||S.role==='jonas'?'Lindenstraße':'Lindenstr. 12'}</span></div>`;
+  return `<div class="top">${LOGO}<span class="brand">Teilbar</span><span class="where">${S.role==='david'?'Gast':S.role==='karl'||S.role==='jonas'?'Lindenstraße':'Lindenstr. 12'}</span><span class="me" title="Ansicht von ${p.n}">${av(p)}<span><b>Du bist ${p.s}</b><small>${p.where}</small></span></span></div>`;
 }
 function hintCard(h, links){
   const [l,bg,fg] = HK[h.k];
@@ -612,19 +661,60 @@ V.chat = () => {
     else h += `<div class="m ${m.from===S.role?'me':'them'}">${m.t}</div>`;
   });
   h += `</div>`;
-  const q = quickReplies();
-  if (q.length) h += `<div class="quick">${q.map(([t,a])=>`<button data-act="${a}">${t}</button>`).join('')}</div>`;
-  h += `<div class="input"><input id="msg" placeholder="Nachricht schreiben …" autocomplete="off"><button data-act="send">➤</button></div>`;
+  h += `<div class="composer">${draftHint()}<div class="input"><textarea id="msg" rows="1" class="${draftAct()?'sug':''}" placeholder="Nachricht schreiben …" autocomplete="off"></textarea><button data-act="send" class="${draftAct()?'pulse':''}">➤</button></div></div>`;
   return h;
 };
-function quickReplies(){
+/* Vorschläge im Chat stehen von Anfang an im Eingabefeld (nie als Knöpfe im Chatbereich, sonst wirken sie wie Nachrichten).
+   Es gibt je Situation genau einen Vorschlag (S.draft); erst „Senden“ schickt ihn ab und führt den Schritt aus (quickDo).
+   Leert man das Feld (S.noQ), bleibt es leer.
+   Die Antworten und der Hinweis stehen hier, damit Feld und Aktion denselben Text benutzen. */
+function quickAct(){
+  if (S.screen==='kchat') return S.role==='karl' && S.kchat.length<=KCHAT().length ? 'karlok' : null;
+  if (!S.req) return null;
   const r = S.req.status, me = S.role;
-  if (r==='angebot' && me==='sarah') return [['Lena auswählen ✓','choose']];
-  if (r==='zugesagt' && me==='sarah' && !S.chat.some(m=>m.meet)) return [['Treffen vorschlagen: Sa 10 Uhr','meet']];
-  if (r==='zugesagt' && me==='lena' && S.chat.some(m=>m.meet) && !S.chat.some(m=>m.t==='Passt mir 👍')) return [['Passt mir 👍','ok'],['Anderer Termin?','alt']];
-  if (r==='laeuft' && me==='lena') return [['📷 Foto von Minka','photo'],['Alles gut hier','allgood']];
-  if (r==='laeuft' && me==='sarah') return [['Danke dir! 💚','thanks']];
-  return [];
+  if (r==='angebot' && me==='sarah') return 'choose';
+  if (r==='zugesagt' && me==='sarah' && !S.chat.some(m=>m.meet)) return 'meet';
+  if (r==='zugesagt' && me==='lena' && S.chat.some(m=>m.meet) && !chatOk(S)) return 'ok';
+  if (r==='laeuft' && me==='lena' && !S.photo) return 'photo';
+  if (r==='laeuft' && me==='sarah' && !S.chat.some(m=>m.thx)) return 'thanks';
+  return null;
+}
+function resetDraft(){ S.draft = null; S.noQ = false; }
+/* Das Eingabefeld wächst mit dem Text, damit man den ganzen Vorschlag lesen kann (bis max-height, dann scrollt es) */
+function fitMsg(el){
+  if (!el) return;
+  el.style.height = 'auto';
+  const h = el.scrollHeight;
+  if (h) el.style.height = (h + el.offsetHeight - el.clientHeight) + 'px';   /* + Rahmen */
+}
+function ensureDraft(){
+  const a = quickAct();
+  if (S.draft && S.draft.act && S.draft.act !== a) S.draft = null;   /* passt zum Stand nicht mehr */
+  if (!S.draft && !S.noQ && a) S.draft = {t:QTEXT[a], act:a};
+}
+const QTEXT = {
+  choose:'Wie schön, danke dir! Lass uns vorher kurz kennenlernen.',
+  meet:'Passt dir Samstag um 10 bei mir? Dann zeige ich dir alles.',
+  ok:'Passt mir 👍',
+  photo:'Minka hat heute auf dem Balkon geschlafen ☀️', thanks:'Danke dir! 💚',
+  karlok:'Passt mir 👍',
+};
+const QHINT = {choose:'Mit dem Senden wählst du Lena aus.', meet:'Mit dem Senden schlägst du Sa, 10 Uhr vor.', photo:'📷 Foto von Minka wird mitgeschickt.'};
+const draftAct = () => S.draft && S.draft.act;
+const draftHint = () => { const a = draftAct(); if (!a) return '';
+  return `<div class="dhint"><span><b>Vorschlag</b> · ${QHINT[a] || 'Ändern oder direkt senden.'}</span></div>`; };
+const esc = t => t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const chatOk = s => s.chat.some(m=>m.ok || m.t==='Passt mir 👍');   /* Lena hat dem Treffen zugestimmt */
+function quickDo(a, txt){
+  const t = txt || QTEXT[a];   /* txt: der (ggf. angepasste) Text aus dem Feld, schon maskiert */
+  switch(a){
+    case 'choose': setStatus('zugesagt'); sys('<b>Sarah hat Lena ausgewählt</b> · Adresse freigegeben: Lindenstr. 12, 2. OG links'); S.chat.push({from:'sarah',t}); S.screen='chat'; break;
+    case 'meet': S.chat.push({meet:1}); S.chat.push({from:'sarah',t}); break;
+    case 'ok': S.chat.push({from:'lena',t,ok:1}); sys('<b>Treffen am Sa um 10 Uhr bestätigt</b>'); break;
+    case 'photo': S.photo=true; S.chat.push({from:'lena',photo:1,t}); break;
+    case 'thanks': S.chat.push({from:'sarah',t,thx:1}); break;
+    case 'karlok': S.kchat.push({from:'karl',t}); S.kchat.push({sys:1,t:'<b>Kennenlernen morgen um 17 Uhr</b> · Haustür Nr. 14'}); break;
+  }
 }
 
 V.kchat = () => {
@@ -632,8 +722,7 @@ V.kchat = () => {
   <div class="ctx">🐾 <div><b>Gassi mit Fiete</b> · Mo–Fr, 17 Uhr</div></div><div class="msgs">`;
   S.kchat.forEach(m=>{ h += m.sys?`<div class="m sys">${m.t}</div>`:`<div class="m ${m.from===S.role?'me':'them'}">${m.t}</div>`; });
   h += `</div>`;
-  if (S.role==='karl' && S.kchat.length<=KCHAT().length) h +=`<div class="quick"><button data-act="karlok" style="font-size:18px;padding:14px 20px">Passt mir 👍</button><button data-act="karlwhen" style="font-size:18px;padding:14px 20px">Wann darf ich vorbeikommen?</button></div>`;
-  h += `<div class="input"><input id="msg" placeholder="Nachricht schreiben …" autocomplete="off"><button data-act="send">➤</button></div>`;
+  h += `<div class="composer">${draftHint()}<div class="input"><textarea id="msg" rows="1" class="${draftAct()?'sug':''}" ${S.role==='karl'?'style="font-size:18px;padding:14px 18px"':''} placeholder="Nachricht schreiben …" autocomplete="off"></textarea><button data-act="send" class="${draftAct()?'pulse':''}">➤</button></div></div>`;
   return h;
 };
 
@@ -813,7 +902,13 @@ function sheet(){
 const TABS = [['start','🏠','Start'],['nachbarn','👥','Nachbarn'],['chats','💬','Chats'],['profil','👤','Profil']];
 function render(){
   if (!V[S.screen]) S.screen='start';
+  if (S.screen==='chat' || S.screen==='kchat') ensureDraft();
   const vw = document.getElementById('view'); vw.innerHTML = X(V[S.screen]());
+  /* Entwurf ins Eingabefeld setzen (per JS statt im HTML: Emoji im Text bleiben, wie sie sind).
+     Kein Fokus: Mit dem Cursor im Feld würden die Pfeiltasten nicht mehr durch die Schritte gehen. */
+  const mi = document.getElementById('msg');
+  if (mi && S.draft) mi.value = S.draft.t;
+  fitMsg(mi);
   if (S.screen !== render.last) { vw.classList.remove('enter'); void vw.offsetWidth; vw.classList.add('enter'); render.last = S.screen; }
   const tabOf = {start:'start',neu:'start',myreq:'start',detail:'start',fiete:'start',sitting:'start',status:'start',abschluss:'start',treffen:'chats',chat:'chats',kchat:'chats',nachbarn:'nachbarn',chats:'chats',profil:'profil',hausbuch:'profil',freigabe:'profil',hbhint:'profil',hbtask:S.ret==='neu'?'start':'profil'}[S.screen];
   const unread = (S.role==='sarah'&&S.req&&S.req.status==='angebot')||(S.role==='jonas'&&S.karl==='angebot');
@@ -822,7 +917,10 @@ function render(){
   let ov = sheet();
   if (S.toast) { ov += `<div class="toast">${S.toast}</div>`; S.toast=null; }
   document.getElementById('overlay').innerHTML = X(ov);
-  document.getElementById('roles').innerHTML = 'Ansicht:' + Object.entries(P).map(([k,p])=>`<button class="${S.role===k?'on':''}" data-role="${k}" title="${p.n}">${av(p,'sm')}</button>`).join('');
+  const me = P[S.role];
+  document.getElementById('roles').innerHTML = X(`<div class="cl">Wer ist wer?<em>Klick wechselt die Ansicht</em></div>
+    <div class="cr">${Object.entries(P).map(([k,p])=>`<button class="${S.role===k?'on':''}" data-role="${k}" title="Ansicht von ${p.n}">${av(p)}<b>${p.s}</b><i>${p.r}</i></button>`).join('')}</div>
+    <div class="cn"><b>${me.n}</b> · ${me.where}<br>${me.b}</div>`);
   const canDay = S.req && (S.req.status==='kennengelernt' || (S.req.status==='laeuft' && S.day<10));
   const db = document.getElementById('daybtn'); db.disabled = !canDay; db.innerHTML = X(S.req&&S.req.status==='laeuft' ? `⏩ Tag ${S.day} → ${Math.min(10,S.day+(S.day<3?1:3))}` : '⏩ Vorspulen');
   document.getElementById('steps').innerHTML = X(UC.map(u=>{
@@ -837,16 +935,19 @@ function render(){
   }).join(''));
   const au = UC.find(u=>u.id===S.uc), ci = au.steps.findIndex(x=>!x.done(S)), cs = ci<0 ? null : au.steps[ci];
   const cw = cs ? P[typeof cs.who==='function'?cs.who(S):cs.who] : null;
+  const fin = !cs && allDone();   /* alle Abläufe fertig: statt „Weiter“ steht dort „Neustart“ */
   document.getElementById('cap').innerHTML = X(`<div class="uct"><span>${au.icon}</span>${au.title.replace(' (Karl)','')}<em>${ci<0?'fertig':'Schritt '+(ci+1)+' von '+au.steps.length}</em></div>
     <div class="dots">${au.steps.map((x,i)=>`<i class="${x.done(S)||i===ci?'on':''}"></i>`).join('')}</div>
-    <div class="big">${cs ? cs.c : '✓ Ablauf abgeschlossen.'}</div>
+    <div class="big">${cs ? cs.c : fin ? '✓ Alle Abläufe abgeschlossen.' : '✓ Ablauf abgeschlossen.'}</div>
     ${cw ? `<div class="who">${av(cw)}${cw.n}</div>` : ''}`);
   const flatAll = UC.flatMap(u=>u.steps.map((_,i)=>[u.id,i])), gk = flatAll.findIndex(([u,i])=>u===S.uc && i===(ci<0?au.steps.length-1:ci));
   document.getElementById('guide').innerHTML = X(`<div class="gtop"><span>${au.icon}</span>${au.title.replace(' (Karl)','')}<em>${ci<0?'fertig':(ci+1)+' / '+au.steps.length}</em></div>
-    <div class="gcap">${cs ? cs.c : '✓ Fertig. Weiter mit dem nächsten Ablauf.'}</div>
-    <div class="gbtns"><button data-act="nav" data-v="-1" ${gk<=0&&ci<=0?'disabled':''}>‹ Zurück</button><button class="next" data-act="nav" data-v="1">${cs ? (cw ? 'Zeig mir das als '+cw.s : 'Weiter') : 'Weiter ›'}</button></div>`);
+    <div class="gcap">${cs ? cs.c : fin ? '✓ Alle Abläufe abgeschlossen. Wieder von vorn?' : '✓ Fertig. Weiter mit dem nächsten Ablauf.'}</div>
+    <div class="gbtns"><button data-act="nav" data-v="-1" ${gk<=0&&ci<=0?'disabled':''}>‹ Zurück</button><button class="next" ${fin ? 'data-act="reset"' : 'data-act="nav" data-v="1"'}>${cs ? (cw ? 'Zeig mir das als '+cw.s : 'Weiter') : fin ? '↺ Neustart' : 'Weiter ›'}</button></div>`);
+  markNext(au, ci, cs);
+  fitGuide();
   document.getElementById('beambtn').innerHTML = X(document.body.classList.contains('beamer') ? '📽 Beamer aus' : '📽 Beamer');
-  document.getElementById('view').scrollTop = 0;
+  placeView();
 }
 const OFFER = () => [{sys:1,t:'<b>Lena</b> hat „Kann ich übernehmen“ getippt'},{from:'lena',t:'Hi Sarah! Ich wohne zwei Stockwerke über dir und kann gern auf Minka aufpassen 🙂'}];
 const CHOSEN = () => [...OFFER(),{sys:1,t:'<b>Sarah hat Lena ausgewählt</b> · Adresse freigegeben: 2. OG links'},{from:'sarah',t:'Wie schön, danke! Lass uns vorher kurz kennenlernen.'}];
@@ -857,12 +958,13 @@ const UC = [
     {l:'Anfrage stellen', c:'Sarah stellt in zwei Minuten eine Anfrage.', who:'sarah', go:'neu', done:s=>!!s.req, pre:s=>{}},
     {l:'„Kann ich übernehmen“', c:'Lena aus dem 4. OG bietet ihre Hilfe an.', who:'lena', go:'detail', done:s=>st2(s)>=1, pre:s=>{s.req={status:'offen'};}},
     {l:'Lena auswählen', c:'Sarah sieht Lenas Profil und wählt sie aus.', who:'sarah', go:'myreq', done:s=>st2(s)>=2, pre:s=>{s.req={status:'angebot'};s.chat=OFFER();}},
-    {l:'Treffen ausmachen', c:'Im Chat verabreden sie ein Treffen.', who:s=>s.chat.some(m=>m.meet)?'lena':'sarah', go:'chat', done:s=>st2(s)>=3||s.chat.some(m=>m.t==='Passt mir 👍'), pre:s=>{s.req={status:'zugesagt'};s.chat=CHOSEN();}},
+    {l:'Treffen ausmachen', c:'Im Chat verabreden sie ein Treffen.', who:s=>s.chat.some(m=>m.meet)?'lena':'sarah', go:'chat', done:s=>st2(s)>=3||chatOk(s), pre:s=>{s.req={status:'zugesagt'};s.chat=CHOSEN();}},
     {l:'Kennenlernen, Schlüssel', c:'Beim Treffen: Vereinbarung, dann der Schlüssel.', who:'sarah', go:'treffen', done:s=>s.meet.key, pre:s=>{s.req={status:'zugesagt'};s.chat=MET();}},
     {l:'Vorspulen: Urlaub', c:'Sarah fährt in den Urlaub.', who:'lena', go:'start', done:s=>st2(s)>=4, pre:s=>{s.req={status:'kennengelernt'};s.chat=KEYED();s.meet={sarah:true,lena:true,vers:true,key:true};}},
     {l:'Aufgaben, Katzenfoto', c:'Lena hakt Aufgaben ab und schickt ein Foto.', who:'lena', go:'sitting', done:s=>s.photo||st2(s)>=5, pre:s=>{s.req={status:'laeuft'};s.day=1;s.chat=KEYED();s.meet={sarah:true,lena:true,vers:true,key:true};}},
     {l:'Status im Urlaub', c:'Sarah sieht im Urlaub: Alles gut.', who:'sarah', go:'status', done:s=>s.day>=10||st2(s)>=5, pre:s=>{s.req={status:'laeuft'};s.day=3;s.done={'3-0':1,'3-1':1,'3-3':1};s.photo=true;s.chat=[...KEYED(),{from:'lena',photo:1,t:'Minka schläft auf dem Balkon ☀️'}];s.meet={sarah:true,lena:true,vers:true,key:true};}},
-    {l:'Zurück und empfehlen', c:'Schlüssel zurück. Beide empfehlen sich.', who:s=>s.end.recL&&!s.end.recS?'sarah':'lena', go:'abschluss', done:s=>s.end.recS&&s.end.recL, pre:s=>{s.req={status:'laeuft'};s.day=10;s.photo=true;s.chat=KEYED();s.meet={sarah:true,lena:true,vers:true,key:true};}},
+    {l:'Sarah empfiehlt', c:'Sarah ist zurück: Schlüssel zurück, Empfehlung für Lena.', who:'sarah', go:'abschluss', done:s=>s.end.recS||st2(s)>=5, pre:s=>{s.req={status:'laeuft'};s.day=10;s.photo=true;s.chat=KEYED();s.meet={sarah:true,lena:true,vers:true,key:true};}},
+    {l:'Lena empfiehlt', c:'Lena empfiehlt Sarah. Damit ist das Sitting abgeschlossen.', who:'lena', go:'abschluss', done:s=>s.end.recL||st2(s)>=5, pre:s=>{s.req={status:'laeuft'};s.day=10;s.photo=true;s.chat=KEYED();s.meet={sarah:true,lena:true,vers:true,key:true};s.end={key:true,recS:true,recL:false};}},
   ]},
   {id:'ob', icon:'🪪', title:'Anmelden (Karl)', steps:[
     {l:'Willkommen', c:'Karl richtet die App ein, gern mit Hilfe.', who:'karl', go:'ob', done:s=>s.ob>=1, pre:s=>{s.ob=0;}},
@@ -888,17 +990,119 @@ UC.unshift({id:'hb', icon:'📖', title:'Hausbuch anlegen', steps:[
   {l:'Eigene Aufgabe', c:'Sarah ergänzt eine eigene Aufgabe. Ab jetzt steht sie in jeder Anfrage zur Auswahl.', who:'sarah', go:'hbtask', done:s=>s.hb.tasks.some(t=>!VORSCHLAG.includes(t.id)), pre:s=>{s.hb=hbStarter(VORSCHLAG);initHint(s);s.hf.ph=true;saveHint(s);initTask(s);}},
 ]});
 UC.push(UC.splice(UC.findIndex(u=>u.id==='ob'),1)[0]);
+
+/* Pulsieren: Der Knopf, der im aktuellen Schritt als Nächstes gedrückt werden muss, bekommt .tapnext.
+   TAP[Ablauf][Schritt](Zustand) nennt Kandidaten in der Reihenfolge ihrer Wichtigkeit; es pulsiert der erste, den es auf dem
+   Bildschirm gibt (zuerst die Aktion selbst, danach der Weg dorthin). Im Chat pulsiert „Senden“ (siehe draftAct).
+   Sieht man gerade eine andere Person als die des Schritts, pulsiert stattdessen der Schritt links bzw. der Guide-Knopf. */
+const absTap = s => [s.end.key ? null : '[data-act="endkey"]', '[data-act="rec"]:not([disabled])', '[data-go="abschluss"]', '.back[data-go="start"]'].filter(Boolean);
+const obTap = s => s.screen!=='ob' ? [] : s.ob===2 ? [s.code.length<4 ? '[data-act="obcode"]' : '[data-act="obnext"]'] : s.ob===3 ? ['[data-act="obfin"]'] : ['[data-act="obnext"]'];
+const TAP = {
+  hb: [
+    s=>['[data-act="hbcreate"]','[data-go="hausbuch"]'],
+    s=>s.screen==='hbhint' ? [s.hf && s.hf.ph ? '[data-act="hfsave"]' : '[data-act="hfph"]'] : ['[data-act="hbaddhint"]','[data-go="hausbuch"]'],
+    s=>s.screen==='hbtask' ? ['[data-act="tfsave"]'] : ['[data-act="hbaddtask"]','[data-go="hausbuch"]'],
+  ],
+  sit: [
+    s=>['[data-act="post"]','[data-go="neu"]'],
+    s=>['[data-act="offer"]','[data-go="detail"]'],
+    s=>['[data-act="choose"]','[data-go="myreq"]'],
+    s=>s.screen==='chat' ? [] : ['[data-go="chat"]','[data-tab="chats"]'],   /* im Chat selbst pulsiert „Senden“ */
+    s=>s.screen==='treffen' ? [!s.meet.sarah ? '[data-act="mt"][data-v="sarah"]' : !s.meet.lena ? '[data-act="mt"][data-v="lena"]' : '[data-act="key"]:not([disabled])']
+      : s.screen==='chat' ? ['[data-go="treffen"]'] : ['[data-go="chat"]','[data-tab="chats"]'],
+    s=>[],   /* Vorspulen: der Knopf links, siehe markNext */
+    s=>['[data-go="chat"]','[data-go="sitting"]'],
+    s=>[],   /* Vorspulen */
+    absTap, absTap,
+  ],
+  str: [
+    s=>['[data-act="expand"]'],
+    s=>['[data-act="karloffer"]','[data-go="fiete"]'],
+    s=>['[data-go="kchat"]','[data-go="fiete"]'],
+  ],
+  fg: [
+    s=>['[data-act="fgcreate"]','[data-act="fgopen"]','[data-go="hausbuch"]'],
+    s=>s.g===0 ? ['[data-act="gname"]'] : ['[data-act="gpin"]'],
+    s=>['.check[data-act="gdone"]:not(.on)'],
+    s=>['[data-act="fgrevoke"]'],
+  ],
+  ob: [obTap, obTap, obTap, obTap],
+};
+/* Am Handy steht die Kopfzeile (Guide) über dem Bildschirm; der Bildschirm bekommt den Rest der Höhe. Die Kopfzeile ist
+   immer gleich hoch (siehe .gcap), hier wird ihre echte Höhe gemessen, damit der Bildschirm genau darunter passt. */
+function fitGuide(){
+  const g = document.getElementById('guide'), h = g && g.offsetHeight;
+  if (h) document.documentElement.style.setProperty('--gh', h + 'px');   /* auf dem Desktop ist der Guide ausgeblendet: dann bleibt der Wert */
+}
+/* Scrollposition des Handy-Bildschirms. Chat: ganz unten (neueste Nachricht und „Senden“). Sonst oben, außer ein pulsierender
+   Knopf liegt außerhalb des Bildes: dann wird er hineingescrollt, damit man ihn nicht suchen muss (am Handy ist wenig Platz).
+   Wer auf demselben Bildschirm weiterklickt, behält seine Position, solange der Knopf zu sehen ist. */
+function placeView(){
+  const vw = document.getElementById('view'), sig = [S.screen,S.role,S.uc,S.cursor].join('|'), changed = sig !== placeView.sig;
+  placeView.sig = sig;
+  if (S.screen==='chat' || S.screen==='kchat') { vw.scrollTop = vw.scrollHeight; return; }
+  const t = vw.querySelector('.tapnext');
+  if (!t) { vw.scrollTop = 0; return; }
+  if (changed) vw.scrollTop = 0;
+  const vr = vw.getBoundingClientRect(), er = t.getBoundingClientRect(), H = vw.clientHeight;
+  if (!vr.height || !er.height || !H) return;   /* kein Layout */
+  const k = vr.height / H, top = (er.top - vr.top) / k, bottom = (er.bottom - vr.top) / k;   /* k: Skalierung der Bühne */
+  if (top >= 72 && bottom <= H - 20) return;    /* 72: Kopfzeile bleibt oben stehen */
+  const still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const to = Math.max(0, vw.scrollTop + (top + bottom) / 2 - H / 2);
+  if (Math.abs(to - vw.scrollTop) < 2) return;   /* weiter nach oben geht es nicht */
+  if (vw.scrollTo) vw.scrollTo({top: to, behavior: (still || changed) ? 'auto' : 'smooth'}); else vw.scrollTop = to;
+}
+function markNext(au, ci, cs){
+  document.querySelectorAll('.tapnext').forEach(e=>e.classList.remove('tapnext'));
+  if (S.sheet) return;
+  const mark = sel => { const e = document.querySelector(sel); if (e) e.classList.add('tapnext'); return !!e; };
+  if (!cs) {   /* Ablauf fertig: weiter zum nächsten Ablauf (Guide-Knopf am Handy, sonst dessen Eintrag in der Liste links); alle fertig: Neustart */
+    if (allDone()) { ['.guide .next', '.ctrlrow [data-act="reset"]'].forEach(mark); return; }
+    const nx = nextFlow(au);
+    if (nx) ['.guide .next', `h4.fold[data-step^="${nx.id}:"]`].forEach(mark);
+    return;
+  }
+  /* Vorspulen gilt für alle Ansichten */
+  if (au.id==='sit' && (ci===5 || ci===7) && mark('#daybtn:not([disabled])')) return;
+  const who = typeof cs.who==='function' ? cs.who(S) : cs.who;
+  if (S.role === who) {
+    const f = TAP[au.id] && TAP[au.id][ci];
+    if (f && f(S).some(mark)) return;
+    if (document.querySelector('.input button.pulse')) return;   /* im Chat pulsiert schon „Senden“ */
+  }
+  ['.st.now', '.guide .next'].forEach(mark);
+}
 const KCHAT = () => [{sys:1,t:'<b>Karl</b> hat „Kann ich übernehmen“ getippt'},{from:'karl',t:'Guten Tag, ich bin Karl aus Nr. 7. Bruno kommt gern mit.'},{from:'jonas',t:'Toll! Morgen um 17 Uhr an der Haustür?'},{sys:1,t:'📖 <b>Jonas hat sein Hausbuch freigegeben</b> · Leine, Katzen'}];
 function st2(s){ return s.req ? STEPS.indexOf(s.req.status) : -1; }
+/* Zustand je Ablauf. Beim Sprung zu einem Schritt baut `pre` nur den eigenen Teil des Ziel-Ablaufs neu auf; der Fortschritt
+   der anderen Abläufe bleibt (sonst springt z. B. „Gassi“ von 3/3 auf 0/3, wenn man zu „Hausbuch teilen“ weitergeht).
+   Das Hausbuch (hb…) ist Voraussetzung für Sitting und Teilen und wird deshalb immer frisch und vollständig gesetzt,
+   außer beim Anmelden. Rolle, Bildschirm, Fenster und Entwurf sind Wegwerf-Zustand. Neue Felder in fresh() hier eintragen. */
+const OWN = {
+  hb:  ['hb','hbv','hf','tf','ret'],
+  sit: ['req','form','chat','day','done','photo','meet','end'],
+  str: ['karl','kchat'],
+  fg:  ['fg','g','gdone'],
+  ob:  ['ob','code','obrole','obcan'],
+};
+const TRANSIENT = ['role','screen','sheet','toast','draft','uc'];
 function gotoStep(uid, i){
   const u = UC.find(x=>x.id===uid), x = u.steps[i];
-  const cur = u.steps.findIndex(y=>!y.done(S));
+  const cur = u.steps.findIndex(y=>!y.done(S)), entering = S.screen !== x.go;
   if (i !== cur || S.uc !== uid) {
-    const keep = uid==='ob' ? JSON.parse(JSON.stringify(S)) : uid==='sit' ? {karl:S.karl,kchat:S.kchat,ob:S.ob,code:S.code} : {req:S.req,chat:S.chat,day:S.day,done:S.done,photo:S.photo,meet:S.meet,end:S.end,ob:S.ob,code:S.code};
+    const drop = [...TRANSIENT, ...OWN[uid], ...(uid==='ob' ? [] : OWN.hb)], keep = {};
+    Object.keys(fresh()).forEach(k => { if (!drop.includes(k)) keep[k] = S[k]; });
     S = Object.assign(fresh(), keep); x.pre(S);
+  } else {
+    /* Man ist schon im richtigen Schritt, `pre` läuft nicht. Die Formulare des Hausbuchs brauchen aber ihren Anfangszustand,
+       sonst zeigt „Weiter“ ein leeres Formular. Wie bei den Knöpfen „Hinweis mit Foto“ und „Aufgabe hinzufügen“;
+       ein Formular, in dem man schon ist, bleibt unberührt. */
+    if (x.go==='hbhint' && (entering || !S.hf)) initHint(S);
+    if (x.go==='hbtask' && (entering || !S.tf)) { S.ret = null; initTask(S); }
   }
   if (innerWidth<=500) scrollTo({top:0,behavior:'smooth'});
-  S.uc = uid; S.cursor = i; S.role = typeof x.who==='function' ? x.who(S) : x.who; S.screen = x.go; S.sheet = null;
+  S.uc = uid; S.cursor = i; S.role = typeof x.who==='function' ? x.who(S) : x.who; S.screen = x.go; S.sheet = null; resetDraft();
   render();
 }
 function sys(t){ S.chat.push({sys:1,t}); }
@@ -908,9 +1112,9 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-go],[data-act],[data-tab],[data-role],[data-step]');
   if (!el) return;
   if (el.dataset.step){ const [u,i]=el.dataset.step.split(':'); return gotoStep(u,+i); }
-  if (el.dataset.role){ S.role=el.dataset.role; S.screen=S.role==='david'?'gast':'start'; S.sheet=null; return render(); }
-  if (el.dataset.tab){ S.screen=el.dataset.tab; return render(); }
-  if (el.dataset.go){ S.screen=el.dataset.go; return render(); }
+  if (el.dataset.role){ S.role=el.dataset.role; S.screen=S.role==='david'?'gast':'start'; S.sheet=null; resetDraft(); return render(); }
+  if (el.dataset.tab){ S.screen=el.dataset.tab; resetDraft(); return render(); }
+  if (el.dataset.go){ S.screen=el.dataset.go; resetDraft(); return render(); }
   const a = el.dataset.act, v = el.dataset.v;
   if (a==='close' && el.classList.contains('sheet') && e.target!==el) return;
   switch(a){
@@ -920,9 +1124,7 @@ document.addEventListener('click', e => {
     case 'post': { const neuHb = !S.hb.on; if (neuHb) S.hb = hbStarter(S.form.tasks);
       S.req={status:'offen',tasks:[...S.form.tasks]}; S.screen='start'; toast('✓ Anfrage ist sichtbar für 6 Nachbarn in deinem Haus' + (neuHb?' · Hausbuch angelegt':'')); break; }
     case 'offer': setStatus('angebot'); S.chat=[{sys:1,t:'<b>Lena</b> hat „Kann ich übernehmen“ getippt'},{from:'lena',t:'Hi Sarah! Ich wohne zwei Stockwerke über dir und mag Katzen sehr. Ich kann gern auf Minka aufpassen 🙂'}]; S.screen='chat'; break;
-    case 'choose': setStatus('zugesagt'); sys('<b>Sarah hat Lena ausgewählt</b> · Adresse freigegeben: Lindenstr. 12, 2. OG links'); S.chat.push({from:'sarah',t:'Wie schön, danke dir! Lass uns vorher kurz kennenlernen.'}); S.screen='chat'; break;
-    case 'meet': S.chat.push({meet:1}); S.chat.push({from:'sarah',t:'Passt dir Samstag um 10 bei mir? Dann zeige ich dir alles.'}); break;
-    case 'ok': S.chat.push({from:'lena',t:'Passt mir 👍'}); sys('<b>Treffen am Sa um 10 Uhr bestätigt</b>'); break;
+    case 'choose': quickDo('choose'); break;   /* Knopf „Lena auswählen“ im Angebot; im Chat läuft es über den Vorschlag */
     case 'mt': S.meet[v]=!S.meet[v]; break;
     case 'key': S.meet.key=true; setStatus('kennengelernt'); sys('🔑 <b>Schlüssel übergeben</b> · beide bestätigt'); toast('✓ Ihr kennt euch jetzt persönlich'); break;
     case 'day':
@@ -932,20 +1134,20 @@ document.addEventListener('click', e => {
       else toast('Gerade gibt es nichts vorzuspulen');
       break;
     case 'done': S.done[v]=!S.done[v]; break;
-    case 'photo': S.photo=true; S.chat.push({from:'lena',photo:1,t:'Minka hat heute auf dem Balkon geschlafen ☀️'}); break;
-    case 'allgood': S.chat.push({from:'lena',t:'Alles gut hier 🙂'}); break;
-    case 'thanks': S.chat.push({from:'sarah',t:'Danke dir! 💚'}); break;
     case 'sos': S.sheet='sos'; break;
     case 'report': S.sheet='report'; break;
     case 'close': S.sheet=null; break;
     case 'endkey': S.end.key=!S.end.key; break;
     case 'rec': S.end[S.role==='sarah'?'recS':'recL']=true; if(S.end.recS&&S.end.recL&&S.req.status!=='abgeschlossen'){ setStatus('abgeschlossen'); sys('✓ <b>Sitting abgeschlossen</b> · Schlüssel zurück'); S.uc='str'; } break;
-    case 'send': { const f=document.getElementById('msg'), v2=f&&f.value.trim(); if(!v2) return; (S.screen==='kchat'?S.kchat:S.chat).push({from:S.role,t:v2.replace(/</g,'&lt;')}); break; }
-    case 'alt': S.chat.push({from:'lena',t:'Geht auch Sonntag?'}); break;
-    case 'karlwhen': S.kchat.push({from:'karl',t:'Wann darf ich vorbeikommen?'}); break;
+    case 'send': { const f=document.getElementById('msg'), v2=f&&f.value.trim(); if(!v2) return;
+      const act = draftAct(); resetDraft();
+      if (act) quickDo(act, esc(v2));   /* Vorschlag (auch angepasst): Nachricht plus der zugehörige Schritt */
+      else (S.screen==='kchat'?S.kchat:S.chat).push({from:S.role,t:esc(v2)});
+      break; }
     case 'reported': S.sheet=null; toast('✓ Danke. Die Meldung geht vertraulich an das Team.'); break;
     case 'blocked': S.sheet=null; toast('✓ Blockiert. Ihr seht euch gegenseitig nicht mehr.'); break;
     case 'nav': return nav(+v);
+    case 'reset': S = demoStart(); break;   /* linker Knopf „Neustart“ und der Guide-Knopf am Ende */
     case 'beamer': document.body.classList.toggle('beamer'); fit(); break;
     case 'obnext': S.ob++; S.uc='ob'; break;
     case 'obcode': S.code='1234'; break;
@@ -976,7 +1178,6 @@ document.addEventListener('click', e => {
     case 'gpin': S.g=2; toast('✓ Willkommen, David'); break;
     case 'gdone': if (S.gdone[v]) delete S.gdone[v]; else S.gdone[v]=GTIMES[Object.keys(S.gdone).length]||'19:12'; break;
     case 'gacc': toast('In der Demo nicht nötig. Mit Konto läge das Sitting dann bei David.'); break;
-    case 'karlok': S.kchat.push({from:'karl',t:'Passt mir 👍'}); S.kchat.push({sys:1,t:'<b>Kennenlernen morgen um 17 Uhr</b> · Haustür Nr. 14'}); break;
   }
   render();
 });
@@ -1008,23 +1209,49 @@ const SHOTS = {
   gastliste: s=>{ s.role='david'; s.uc='fg'; s.fg.on=true; s.g=2; s.gdone={0:'19:02'}; s.screen='gast'; },
   wie:      s=>{ s.role='lena'; s.req={status:'laeuft'}; s.day=3; s.screen='sitting'; s.sheet='how:s:0'; },
 };
+/* Getippter Text bleibt beim Neuzeichnen erhalten; leert man das Feld, ist der Vorschlag abgewählt (und bleibt es) */
+document.addEventListener('input', e => {
+  if (e.target.id !== 'msg') return;
+  const t = e.target.value;
+  fitMsg(e.target);
+  if (t.trim()) { S.draft = {t, act:draftAct()}; return; }
+  S.draft = null; S.noQ = true;
+  e.target.classList.remove('sug');
+  const sb = document.querySelector('[data-act="send"]'); if (sb) sb.classList.remove('pulse');
+  const dh = document.querySelector('.dhint'); if (dh) dh.remove();
+});
 document.addEventListener('keydown', e => {
-  if (e.target.id==='msg') { if (e.key==='Enter') document.querySelector('[data-act="send"]').click(); return; }
+  if (e.target.id==='msg') {   /* Enter sendet, Umschalt+Enter macht eine neue Zeile */
+    if (e.key==='Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); document.querySelector('[data-act="send"]').click(); }
+    return;
+  }
   if (e.key==='b' || e.key==='B') { document.body.classList.toggle('beamer'); fit(); render(); return; }
   const fwd = ['ArrowRight','ArrowDown','PageDown',' '].includes(e.key), back = ['ArrowLeft','ArrowUp','PageUp'].includes(e.key);
   if (!fwd && !back) return;
   e.preventDefault();
   nav(fwd?1:-1);
 });
+/* Alle Abläufe fertig? Dann steht am Ende „Neustart“ statt „Weiter“. */
+const allDone = () => UC.every(u => u.steps.every(x => x.done(S)));
+/* Welcher Ablauf kommt nach einem fertigen? Der nächste in der Reihenfolge; nach dem letzten der erste, der noch offen ist. */
+const nextFlow = u => UC[UC.indexOf(u) + 1] || UC.find(x => x !== u && x.steps.some(y => !y.done(S)));
 function nav(d){
   const flat = UC.flatMap(u=>u.steps.map((_,i)=>[u.id,i]));
+  const au = UC.find(x=>x.id===S.uc), cur = au.steps.findIndex(x=>!x.done(S));
   let k = flat.findIndex(([u,i])=>u===S.uc && i===S.cursor);
-  if (k<0) { const u = UC.find(x=>x.id===S.uc), cur = u.steps.findIndex(x=>!x.done(S)); k = flat.findIndex(([a,i])=>a===S.uc && i===Math.max(0,cur)) - 1; }
+  if (cur<0 && d>0) {   /* Ablauf fertig: Weiter geht zum nächsten Ablauf, egal wo der Schrittzeiger steht; sind alle fertig, gibt es nur „Neustart“ */
+    const nat = UC[UC.indexOf(au) + 1], tgt = nat || nextFlow(au);
+    if (!tgt || allDone()) return;
+    return gotoStep(tgt.id, nat ? 0 : Math.max(0, tgt.steps.findIndex(x=>!x.done(S))));
+  }
+  else if (k<0) k = flat.findIndex(([a,i])=>a===S.uc && i===Math.max(0,cur)) - 1;
   k = Math.max(0, Math.min(flat.length-1, k + d));
   gotoStep(...flat[k]);
 }
 function fit(){ const st=document.getElementById('stage'); if(!st) return; st.style.setProperty('--s', Math.max(0.35, Math.min((innerWidth-32)/(document.body.classList.contains('beamer')?1000:780), (innerHeight-24)/880, 1.35))); }
-addEventListener('resize', fit); if (location.hash==='#beamer') document.body.classList.add('beamer'); fit();
+addEventListener('resize', () => { fit(); fitMsg(document.getElementById('msg')); fitGuide(); });   /* am Handy ändert sich die Breite */
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { fitMsg(document.getElementById('msg')); fitGuide(); });   /* erst messen, wenn Inter geladen ist */
+if (location.hash==='#beamer') document.body.classList.add('beamer'); fit();
 const q = new URLSearchParams(location.search);
 /* Demo-Start: Sarah hat noch kein Hausbuch, der erste Ablauf legt es an */
 function demoStart(){ const s = fresh(); s.uc='hb'; s.hb=hbEmpty(); return s; }
@@ -1034,7 +1261,6 @@ else if (q.has('gast')) { S.role='david'; S.uc='fg'; S.fg.on=true; S.screen='gas
 else S = demoStart();
 if (q.has('bare')) document.body.classList.add('bare');
 document.querySelectorAll('.ctrlrow .cbtn').forEach(b=>b.innerHTML=X(b.innerHTML));
-document.querySelector('[data-act="reset"]').addEventListener('click',()=>{S=demoStart();render();},true);
 render();
 </script>
 </body>
