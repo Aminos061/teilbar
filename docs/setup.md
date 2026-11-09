@@ -60,7 +60,9 @@ bash .devcontainer/check-env.sh
 | opencode | alle | kein Login für Uni-Qwen; `opencode.json` im Repo verweist auf die Env-Variablen |
 | Goose, OpenHands | optional, für Experimente | `goose configure` bzw. `openhands` und dort den Uni-LiteLLM als OpenAI-kompatiblen Endpunkt eintragen |
 | GitHub (`gh`) | alle | `gh auth login` (oder VS Code reicht deine Git-Anmeldung durch) |
-| Supabase (Cloud) | alle | kein Login im Container: Einladung per E-Mail annehmen (siehe Schritt 6) |
+| Supabase (Cloud) | alle | Einladung per E-Mail annehmen (Schritt 6). `npx supabase login` brauchst du nur, wenn du Migrationen in die Cloud einspielst |
+
+**Ausnahme:** Die Logins von `gh` und der Supabase CLI liegen in keinem Volume. Nach einem Rebuild des Containers meldest du dich dort neu an.
 
 Gemini CLI funktioniert mit dem Gemini-Plus-Studentenpaket nicht (das Paket gilt nur für die Gemini-App, nicht für die API). Gemini nutzt ihr im Browser; Sitzungen dort protokolliert ihr mit dem Prompt aus `ai-lab/README.md#ohne-skill`.
 
@@ -85,9 +87,24 @@ Wie du die App und die lokale Datenbank startest, steht in der [README](../READM
 
 1. Der Owner öffnet im Supabase-Dashboard die Organisation → *Team* → *Invite* und trägt deine E-Mail-Adresse ein. Rolle für uns: *Developer*.
 2. Du nimmst die Einladung in der E-Mail an. Sie gilt **24 Stunden**; danach lässt der Owner sie erneut senden.
-3. Project URL und Publishable Key stehen im Dashboard unter *Project Settings → API*. Kopiere `web/.env.example` nach `web/.env.local` und trage sie ein.
+3. Project URL und Publishable Key stehen im Dashboard unter *Project Settings → API*. Wie du damit `web/.env.local` füllst, steht in der [README](../README.md#cloud-projekt-statt-lokaler-datenbank).
 
-Zugriff aufs Projekt zeigt auch die geheimen Keys. Gib sie nie weiter und committe nie eine `.env.local`. Migrationen laufen nur nach dem Merge auf `main` gegen die Cloud (ADR 0007). Keys für die CI oder ein Deployment kommen als GitHub-Secrets, sobald das Hosting entschieden ist.
+Zugriff aufs Projekt zeigt auch die geheimen Keys. Gib sie nie weiter und committe nie eine `.env.local`. Keys für die CI oder ein Deployment kommen als GitHub-Secrets, sobald das Hosting entschieden ist.
+
+**Migrationen in die Cloud einspielen.** Das geschieht nur nach dem Merge auf `main` (ADR 0007), weil alle dieselbe Datenbank teilen. Eine Person übernimmt es, am besten wer den PR mergt. Auf `main` mit dem Stand nach dem Merge, in `web/`:
+
+```bash
+npx supabase login                       # einmal; die ausgegebene URL im Browser öffnen, Code ins Terminal einfügen
+npx supabase link --project-ref <Ref>    # <Ref> = Reference ID, Dashboard → Project Settings → General
+npx supabase projects list               # bei „Teilbar“ muss "linked": true stehen
+npx supabase db push --dry-run           # zeigt nur, was eingespielt würde
+npx supabase db push                     # spielt die Migrationen ein
+```
+
+- `link` fragt nach dem Datenbank-Passwort des Projekts. Es kennt, wer das Projekt angelegt hat; im Dashboard unter *Project Settings → Database* lässt es sich zurücksetzen, das gilt dann für alle. Tippe es am Prompt ein und nicht mit `-p`, sonst steht es in der Shell-History.
+- Prüfe die Liste aus `--dry-run` vor dem echten `db push`: Es dürfen nur die Migrationen aus dem gemergten PR darin stehen.
+- Eine eingespielte Migration änderst du nicht mehr. Eine Korrektur ist eine neue Migration.
+- Token und Link liegen nicht im Repo (`web/supabase/.temp/` ist gitignored).
 
 ## 7. Fertig. Was jetzt?
 
@@ -106,4 +123,5 @@ Zugriff aufs Projekt zeigt auch die geheimen Keys. Gib sie nie weiter und commit
 | `docker version` meldet „Cannot connect“ im Container | Docker-in-Docker läuft nicht. Container neu bauen („Dev Containers: Rebuild Container“). Läuft Docker Desktop nicht oder ist „privileged“ gesperrt, startet das Feature nicht |
 | `npm run db:start` bricht ab oder hängt | Meist zu wenig Speicher (Schritt 6) oder ein Port ist belegt (54321–54324). `npm run db:stop`, Speicher erhöhen, noch einmal starten |
 | App meldet „NEXT_PUBLIC_SUPABASE_URL … fehlen“ | `web/.env.local` fehlt oder ist leer. `cp web/.env.example web/.env.local` und Werte aus `npm run db:status` eintragen |
+| `gh` meldet „please run: gh auth login“, die Supabase CLI „Access token not provided“ | Beide Logins gehen bei einem Rebuild verloren. Neu einloggen: `gh auth login` bzw. `npx supabase login` (Schritt 6) |
 | `docker compose up` erreicht die Datenbank nicht | `npm run db:start` in `web/` zuerst ausführen. `network_mode: host` gilt nur im Devcontainer, nicht auf dem Host unter Windows oder macOS |

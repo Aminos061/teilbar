@@ -120,7 +120,22 @@ cd .. && docker compose up    # startet die App auf http://localhost:3000
 
 ### Cloud-Projekt statt lokaler Datenbank
 
-Für Vorschau und Deployment gibt es ein gemeinsames Supabase-Projekt im kostenlosen Tarif (EU-Region). Du bekommst eine Einladung per E-Mail ([docs/setup.md](docs/setup.md#6-app-und-supabase)). Project URL und Publishable Key stehen im Supabase-Dashboard unter *Project Settings → API*. Sie gehören in `web/.env.local`, nie ins Repo.
+Für Vorschau und Deployment gibt es ein gemeinsames Cloud-Projekt im kostenlosen Tarif (EU-Region, im Dashboard: *Teilbar*). Die App läuft damit gegen die Datenbank, die alle im Team teilen, deshalb gehören dort nur Testdaten hinein ([ADR 0007](docs/adr/0007-tech-stack-der-app.md)). So füllst du deine `web/.env.local`:
+
+1. Nimm die Einladung zur Supabase-Organisation an (Einladung per E-Mail, siehe [docs/setup.md](docs/setup.md#6-app-und-supabase)).
+2. Öffne im Dashboard das Projekt *Teilbar* → *Project Settings → API* und kopiere die **Project URL** und den **Publishable Key**.
+3. Lege die Datei an, falls sie fehlt (`cd web && cp .env.example .env.local`), und trage beide Werte ein:
+
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=<Project URL>
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<Publishable Key>
+   ```
+
+4. Starte `npm run dev` neu. Next.js liest die Datei nur beim Start.
+
+Den **Secret Key** (früher `service_role`) kopierst du nie, auch wenn das Dashboard ihn zeigt. `web/.env.local` wird nie committet. Zurück zur lokalen Datenbank kommst du, indem du URL und Publishable Key aus `npm run db:status` einträgst und neu startest. Next.js liest auch eine `web/.env`, `web/.env.local` hat Vorrang. Am einfachsten nutzt du nur `.env.local`.
+
+Wie neue Migrationen in die Cloud kommen, steht in [docs/setup.md](docs/setup.md#6-app-und-supabase).
 
 ### Als PWA ausprobieren
 
